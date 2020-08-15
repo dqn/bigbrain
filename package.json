@@ -6,10 +6,14 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "test": "jest"
   },
   "devDependencies": {
+    "@types/jest": "^26.0.10",
     "@types/node": "^14.0.27",
+    "jest": "^26.4.0",
+    "ts-jest": "^26.2.0",
     "typescript": "^3.9.7"
   }
 }
