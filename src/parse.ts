@@ -1,6 +1,5 @@
+import { createStack, MAX_STACK_SIZE } from './stack';
 import { Token } from './tokenize';
-
-const MAX_ARRAY_LENGTH = 1024;
 
 export type AstNode =
   | {
@@ -29,14 +28,7 @@ type SpecificToken<T extends Token['kind']> = Extract<Token, { kind: T }>;
 
 export function parse(tokens: Token[]) {
   const globalVariables: VariableMap = {};
-  const indexStack = [...Array(MAX_ARRAY_LENGTH)].map((_, i) => i).reverse();
-
-  const popIndex = (): number => {
-    if (!indexStack.length) {
-      throw Error('stack underflow');
-    }
-    return indexStack.pop()!;
-  };
+  const indexStack = createStack([...Array(MAX_STACK_SIZE)].map((_, i) => i).reverse());
 
   const nextToken = (): Token => {
     if (!tokens.length) {
@@ -97,7 +89,7 @@ export function parse(tokens: Token[]) {
     if (token.kind === 'ident') {
       const { str: name } = token;
       if (!globalVariables[name]) {
-        globalVariables[name] = { index: popIndex() };
+        globalVariables[name] = { index: indexStack.pop() };
       }
       return { kind: 'var', index: globalVariables[name].index };
     }
