@@ -34,6 +34,7 @@ print(1 + 2 * (3 + 4) - foo * bar);
       { kind: 'ident', str: 'bar' },
       { kind: 'reserved', str: ')' },
       { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
     ];
 
     const tokens = tokenize(src);

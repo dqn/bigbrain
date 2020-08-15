@@ -78,5 +78,7 @@ export function tokenize(src: string): Token[] {
     throw new Error(`unknown token ${cur.slice(0, 10)}...`);
   }
 
+  tokens.push({ kind: 'eof' });
+
   return tokens;
 }
