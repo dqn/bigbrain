@@ -127,4 +127,69 @@ describe('parse', () => {
     const code = generateCode(nodes);
     expect(code).toEqual('>++++<[-]>[<+>>+<-]>[-]<<[>>+<+<-]>[<+>-]');
   });
+
+  test('if', () => {
+    const nodes: AstNode[] = [
+      {
+        kind: 'if',
+        cond: {
+          kind: 'add',
+          lhs: {
+            kind: 'num',
+            val: 1,
+          },
+          rhs: {
+            kind: 'num',
+            val: 2,
+          },
+        },
+        caseTrue: {
+          kind: 'print',
+          arg: {
+            kind: 'num',
+            val: 1,
+          },
+        },
+      },
+    ];
+
+    const code = generateCode(nodes);
+    expect(code).toEqual('+>++[<+>-]<[>+.[-]<[-]]');
+  });
+
+  test('if-else', () => {
+    const nodes: AstNode[] = [
+      {
+        kind: 'if',
+        cond: {
+          kind: 'sub',
+          lhs: {
+            kind: 'num',
+            val: 1,
+          },
+          rhs: {
+            kind: 'num',
+            val: 1,
+          },
+        },
+        caseTrue: {
+          kind: 'print',
+          arg: {
+            kind: 'num',
+            val: 1,
+          },
+        },
+        caseFalse: {
+          kind: 'print',
+          arg: {
+            kind: 'num',
+            val: 2,
+          },
+        },
+      },
+    ];
+
+    const code = generateCode(nodes);
+    expect(code).toEqual('+>+[<->-]+<[>>+.[-]<-<[-]]>[>++.<-]');
+  });
 });

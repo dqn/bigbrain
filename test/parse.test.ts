@@ -302,6 +302,107 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
+  test('if', () => {
+    const tokens: Token[] = [
+      { kind: 'if' },
+      { kind: 'reserved', str: '(' },
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: '+' },
+      { kind: 'num', val: 2 },
+      { kind: 'reserved', str: ')' },
+      { kind: 'print' },
+      { kind: 'reserved', str: '(' },
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: ')' },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const expected: AstNode[] = [
+      {
+        kind: 'if',
+        cond: {
+          kind: 'add',
+          lhs: {
+            kind: 'num',
+            val: 1,
+          },
+          rhs: {
+            kind: 'num',
+            val: 2,
+          },
+        },
+        caseTrue: {
+          kind: 'print',
+          arg: {
+            kind: 'num',
+            val: 1,
+          },
+        },
+      },
+    ];
+
+    const nodes = parse(tokens);
+    expect(nodes).toEqual(expected);
+  });
+
+  test('if-else', () => {
+    const tokens: Token[] = [
+      { kind: 'if' },
+      { kind: 'reserved', str: '(' },
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: '-' },
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: ')' },
+      { kind: 'print' },
+      { kind: 'reserved', str: '(' },
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: ')' },
+      { kind: 'reserved', str: ';' },
+      { kind: 'else' },
+      { kind: 'print' },
+      { kind: 'reserved', str: '(' },
+      { kind: 'num', val: 2 },
+      { kind: 'reserved', str: ')' },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const expected: AstNode[] = [
+      {
+        kind: 'if',
+        cond: {
+          kind: 'sub',
+          lhs: {
+            kind: 'num',
+            val: 1,
+          },
+          rhs: {
+            kind: 'num',
+            val: 1,
+          },
+        },
+        caseTrue: {
+          kind: 'print',
+          arg: {
+            kind: 'num',
+            val: 1,
+          },
+        },
+        caseFalse: {
+          kind: 'print',
+          arg: {
+            kind: 'num',
+            val: 2,
+          },
+        },
+      },
+    ];
+
+    const nodes = parse(tokens);
+    expect(nodes).toEqual(expected);
+  });
+
   test('complex', () => {
     const tokens: Token[] = [
       { kind: 'ident', str: 'foo' },

@@ -195,6 +195,47 @@ export function generateCode(nodes: AstNode[]): string {
 
         return i;
       }
+      case 'if': {
+        const c = gen(node.cond);
+
+        if (!node.caseFalse) {
+          move(c);
+          loop(() => {
+            const rtn = gen(node.caseTrue);
+
+            move(rtn);
+            loop(() => emmit('-'));
+            freeIndexes.push(rtn);
+
+            move(c);
+            loop(() => emmit('-'));
+          });
+        } else {
+          const i = freeIndexes.pop();
+          operate(i, '+');
+
+          move(c);
+          loop(() => {
+            const rtn = gen(node.caseTrue);
+
+            move(rtn);
+            loop(() => emmit('-'));
+            freeIndexes.push(rtn);
+
+            operate(i, '-');
+            move(c);
+            loop(() => emmit('-'));
+          });
+
+          move(i);
+          loop(() => {
+            gen(node.caseFalse!);
+            operate(i, '-');
+          });
+        }
+
+        return -1;
+      }
     }
 
     throw new Error(`unknown node kind ${node.kind}`);
@@ -203,7 +244,8 @@ export function generateCode(nodes: AstNode[]): string {
   nodes.forEach((node, i) => {
     const rtn = gen(node);
     if (i !== nodes.length - 1) {
-      operate(rtn, '[-]');
+      move(rtn);
+      loop(() => emmit('-'));
       freeIndexes.push(rtn);
     }
   });

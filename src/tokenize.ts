@@ -10,6 +10,12 @@ export type Token =
       kind: 'print';
     }
   | {
+      kind: 'if';
+    }
+  | {
+      kind: 'else';
+    }
+  | {
       kind: 'ident';
       str: string;
     }
@@ -54,6 +60,16 @@ export function tokenize(src: string): Token[] {
 
     if (consume('print')) {
       tokens.push({ kind: 'print' });
+      continue;
+    }
+
+    if (consume('if')) {
+      tokens.push({ kind: 'if' });
+      continue;
+    }
+
+    if (consume('else')) {
+      tokens.push({ kind: 'else' });
       continue;
     }
 

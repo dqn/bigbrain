@@ -146,6 +146,56 @@ describe('tokenize', () => {
     expect(tokens).toEqual(expected);
   });
 
+  test('if', () => {
+    const src = 'if (1 + 2) print(1);';
+
+    const expected: Token[] = [
+      { kind: 'if' },
+      { kind: 'reserved', str: '(' },
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: '+' },
+      { kind: 'num', val: 2 },
+      { kind: 'reserved', str: ')' },
+      { kind: 'print' },
+      { kind: 'reserved', str: '(' },
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: ')' },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const tokens = tokenize(src);
+    expect(tokens).toEqual(expected);
+  });
+
+  test('if-else', () => {
+    const src = 'if (1 - 1) print(1); else print(2);';
+
+    const expected: Token[] = [
+      { kind: 'if' },
+      { kind: 'reserved', str: '(' },
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: '-' },
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: ')' },
+      { kind: 'print' },
+      { kind: 'reserved', str: '(' },
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: ')' },
+      { kind: 'reserved', str: ';' },
+      { kind: 'else' },
+      { kind: 'print' },
+      { kind: 'reserved', str: '(' },
+      { kind: 'num', val: 2 },
+      { kind: 'reserved', str: ')' },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const tokens = tokenize(src);
+    expect(tokens).toEqual(expected);
+  });
+
   test('multi statements', () => {
     const src = `
 foo = 1;

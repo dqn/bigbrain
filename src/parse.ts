@@ -17,6 +17,12 @@ export type AstNode =
       arg: AstNode;
     }
   | {
+      kind: 'if';
+      cond: AstNode;
+      caseTrue: AstNode;
+      caseFalse?: AstNode;
+    }
+  | {
       kind: 'var';
       index: number;
     }
@@ -169,6 +175,20 @@ export function parse(tokens: Token[]) {
       expect(';');
       return { kind: 'print', arg };
     }
+
+    if (consumeKind('if')) {
+      expect('(');
+      const cond = expr();
+      expect(')');
+      const node: AstNode = { kind: 'if', cond, caseTrue: stmt() };
+
+      if (consumeKind('else')) {
+        node.caseFalse = stmt();
+      }
+
+      return node;
+    }
+
     const node = expr();
     expect(';');
     return node;
