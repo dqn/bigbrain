@@ -3,8 +3,13 @@ import { Token } from './tokenize';
 
 export type AstNode =
   | {
-      kind: 'add' | 'sub' | 'mul' | 'div' | 'assign';
+      kind: 'add' | 'sub' | 'mul' | 'div';
       lhs: AstNode;
+      rhs: AstNode;
+    }
+  | {
+      kind: 'assign';
+      lhs: SpecificAstNode<'var'>;
       rhs: AstNode;
     }
   | {
@@ -25,6 +30,8 @@ type VariableMap = {
 };
 
 type SpecificToken<T extends Token['kind']> = Extract<Token, { kind: T }>;
+
+type SpecificAstNode<T extends AstNode['kind']> = Extract<AstNode, { kind: T }>;
 
 export function parse(tokens: Token[]) {
   const globalVariables: VariableMap = {};
@@ -143,6 +150,9 @@ export function parse(tokens: Token[]) {
     const node = add();
 
     if (consume('=')) {
+      if (node.kind !== 'var') {
+        throw new Error('cannot assign to a value that is not a variable');
+      }
       return { kind: 'assign', lhs: node, rhs: assign() };
     } else {
       return node;
