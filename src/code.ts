@@ -63,6 +63,12 @@ export function generateCode(nodes: AstNode[]): string {
     }
   };
 
+  const free = (i: number) => {
+    move(i);
+    loop(() => emmit('-'));
+    freeIndexes.push(i);
+  };
+
   const operate = (i: number, operation: string) => {
     move(i);
     emmit(operation);
@@ -139,9 +145,7 @@ export function generateCode(nodes: AstNode[]): string {
         });
 
         move(r);
-        loop(() => {
-          emmit('-');
-        });
+        loop(() => emmit('-'));
 
         move(i);
         loop(() => {
@@ -203,12 +207,8 @@ export function generateCode(nodes: AstNode[]): string {
           loop(() => {
             const rtn = gen(node.caseTrue);
 
-            move(rtn);
-            loop(() => emmit('-'));
-            freeIndexes.push(rtn);
-
-            move(c);
-            loop(() => emmit('-'));
+            free(rtn);
+            free(c);
           });
         } else {
           const i = freeIndexes.pop();
@@ -218,18 +218,17 @@ export function generateCode(nodes: AstNode[]): string {
           loop(() => {
             const rtn = gen(node.caseTrue);
 
-            move(rtn);
-            loop(() => emmit('-'));
-            freeIndexes.push(rtn);
+            free(rtn);
 
             operate(i, '-');
-            move(c);
-            loop(() => emmit('-'));
+            free(c);
           });
 
           move(i);
           loop(() => {
-            gen(node.caseFalse!);
+            const rtn = gen(node.caseFalse!);
+
+            free(rtn);
             operate(i, '-');
           });
         }
@@ -244,9 +243,7 @@ export function generateCode(nodes: AstNode[]): string {
   nodes.forEach((node, i) => {
     const rtn = gen(node);
     if (i !== nodes.length - 1) {
-      move(rtn);
-      loop(() => emmit('-'));
-      freeIndexes.push(rtn);
+      free(rtn);
     }
   });
 

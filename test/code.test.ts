@@ -190,6 +190,6 @@ describe('parse', () => {
     ];
 
     const code = generateCode(nodes);
-    expect(code).toEqual('+>+[<->-]+<[>>+.[-]<-<[-]]>[>++.<-]');
+    expect(code).toEqual('+>+[<->-]+<[>>+.[-]<-<[-]]>[<++.[-]>-]');
   });
 });
