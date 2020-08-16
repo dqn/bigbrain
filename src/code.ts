@@ -144,7 +144,13 @@ export function generateCode(nodes: AstNode[]): string {
     throw new Error(`unknown node kind ${node.kind}`);
   };
 
-  nodes.forEach(gen);
+  nodes.forEach((node, i) => {
+    const rtn = gen(node);
+    if (i !== nodes.length - 1) {
+      operate(rtn, '[-]');
+      freeIndexes.push(rtn);
+    }
+  });
 
   return code;
 }
