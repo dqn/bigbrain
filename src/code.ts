@@ -53,6 +53,16 @@ export function generateCode(nodes: AstNode[]): string {
     }
   };
 
+  const loop = (func: () => void) => {
+    const start = cur;
+    emmit('[');
+    func();
+    emmit(']');
+    if (cur !== start) {
+      throw new Error('compile error: cursor must be the same at the start as at the end');
+    }
+  };
+
   const operate = (i: number, operation: string) => {
     move(i);
     emmit(operation);
@@ -81,10 +91,10 @@ export function generateCode(nodes: AstNode[]): string {
         const r = gen(node.rhs);
 
         move(r);
-        emmit('[');
-        operate(l, '+');
-        operate(r, '-');
-        emmit(']');
+        loop(() => {
+          operate(l, '+');
+          operate(r, '-');
+        });
 
         freeIndexes.push(r);
 
@@ -95,10 +105,10 @@ export function generateCode(nodes: AstNode[]): string {
         const r = gen(node.rhs);
 
         move(r);
-        emmit('[');
-        operate(l, '-');
-        operate(r, '-');
-        emmit(']');
+        loop(() => {
+          operate(l, '-');
+          operate(r, '-');
+        });
 
         freeIndexes.push(r);
 
@@ -111,28 +121,33 @@ export function generateCode(nodes: AstNode[]): string {
         const j = freeIndexes.pop();
 
         move(l);
-        emmit('[');
-        move(r);
-        emmit('[');
-        operate(i, '+');
-        operate(j, '+');
-        operate(r, '-');
-        emmit(']');
-        move(j);
-        emmit('[');
-        operate(r, '+');
-        operate(j, '-');
-        emmit(']');
-        operate(l, '-');
-        emmit(']');
+        loop(() => {
+          move(r);
+          loop(() => {
+            operate(i, '+');
+            operate(j, '+');
+            operate(r, '-');
+          });
 
-        operate(r, '[-]');
+          move(j);
+          loop(() => {
+            operate(r, '+');
+            operate(j, '-');
+          });
+
+          operate(l, '-');
+        });
+
+        move(r);
+        loop(() => {
+          emmit('-');
+        });
 
         move(i);
-        emmit('[');
-        operate(l, '+');
-        operate(i, '-');
-        emmit(']');
+        loop(() => {
+          operate(l, '+');
+          operate(i, '-');
+        });
 
         freeIndexes.push(j);
         freeIndexes.push(i);
@@ -148,11 +163,11 @@ export function generateCode(nodes: AstNode[]): string {
         operate(l, '[-]');
 
         move(r);
-        emmit('[');
-        operate(l, '+');
-        operate(i, '+');
-        operate(r, '-');
-        emmit(']');
+        loop(() => {
+          operate(l, '+');
+          operate(i, '+');
+          operate(r, '-');
+        });
 
         freeIndexes.push(r);
 
@@ -164,17 +179,17 @@ export function generateCode(nodes: AstNode[]): string {
         const j = freeIndexes.pop();
 
         move(v);
-        emmit('[');
-        operate(i, '+');
-        operate(j, '+');
-        operate(v, '-');
-        emmit(']');
+        loop(() => {
+          operate(i, '+');
+          operate(j, '+');
+          operate(v, '-');
+        });
 
         move(j);
-        emmit('[');
-        operate(v, '+');
-        operate(j, '-');
-        emmit(']');
+        loop(() => {
+          operate(v, '+');
+          operate(j, '-');
+        });
 
         freeIndexes.push(j);
 
