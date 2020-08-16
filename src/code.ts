@@ -8,9 +8,6 @@ function retrieveReservedIndexes(nodes: AstNode[]): number[] {
     const argNodes: AstNode[] = [];
 
     if (node.kind === 'assign') {
-      if (node.lhs.kind !== 'var') {
-        throw new Error('cannot assign to anything other than a variable');
-      }
       indexes.push(node.lhs.index);
     }
 
@@ -138,6 +135,46 @@ export function generateCode(nodes: AstNode[]): string {
         freeIndexes.push(r);
 
         return l;
+      }
+      case 'assign': {
+        const l = node.lhs.index;
+        const r = gen(node.rhs);
+        const i = freeIndexes.pop();
+
+        operate(l, '[-]');
+
+        move(r);
+        code += '[';
+        operate(l, '+');
+        operate(i, '+');
+        operate(r, '-');
+        code += ']';
+
+        freeIndexes.push(r);
+
+        return i;
+      }
+      case 'var': {
+        const v = node.index;
+        const i = freeIndexes.pop();
+        const j = freeIndexes.pop();
+
+        move(v);
+        code += '[';
+        operate(i, '+');
+        operate(j, '+');
+        operate(v, '-');
+        code += ']';
+
+        move(j);
+        code += '[';
+        operate(v, '+');
+        operate(j, '-');
+        code += ']';
+
+        freeIndexes.push(j);
+
+        return i;
       }
     }
 

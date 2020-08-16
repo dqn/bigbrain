@@ -85,4 +85,46 @@ describe('parse', () => {
     const code = generateCode(nodes);
     expect(code).toEqual('++++>+++<[>[>+>+<<-]>>[<<+>>-]<<<-]>[-]>[<<+>>-]');
   });
+
+  test('assign', () => {
+    const nodes: AstNode[] = [
+      {
+        kind: 'assign',
+        lhs: {
+          kind: 'var',
+          index: 0,
+        },
+        rhs: {
+          kind: 'num',
+          val: 3,
+        },
+      },
+    ];
+
+    const code = generateCode(nodes);
+    expect(code).toEqual('>+++<[-]>[<+>>+<-]');
+  });
+
+  test('var', () => {
+    const nodes: AstNode[] = [
+      {
+        kind: 'assign',
+        lhs: {
+          kind: 'var',
+          index: 0,
+        },
+        rhs: {
+          kind: 'num',
+          val: 4,
+        },
+      },
+      {
+        kind: 'var',
+        index: 0,
+      },
+    ];
+
+    const code = generateCode(nodes);
+    expect(code).toEqual('>++++<[-]>[<+>>+<-]>[-]<<[>>+<+<-]>[<+>-]');
+  });
 });
