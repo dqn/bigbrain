@@ -1,3 +1,5 @@
+import { emit } from 'process';
+
 import { AstNode } from './parse';
 import { createStack, MAX_STACK_SIZE } from './stack';
 
@@ -194,6 +196,62 @@ export function generateCode(nodes: AstNode[]): string {
           loop(() => emmit('-'));
         });
 
+        freeIndexes.push(r);
+
+        return l;
+      }
+      case 'lss': {
+        const l = gen(node.lhs);
+        const r = gen(node.rhs);
+        const i = freeIndexes.pop();
+        const j = freeIndexes.pop();
+
+        move(l);
+        loop(() => {
+          emmit('-');
+
+          move(l);
+          loop(() => {
+            operate(i, '+');
+            operate(j, '+');
+            operate(l, '-');
+          });
+
+          move(j);
+          loop(() => {
+            operate(l, '+');
+            operate(j, '-');
+          });
+
+          operate(j, '+');
+
+          move(i);
+          loop(() => {
+            operate(r, '-');
+            operate(j, '-');
+            move(i);
+            loop(() => emmit('-'));
+          });
+
+          move(j);
+          loop(() => {
+            move(l);
+            loop(() => emmit('-'));
+            operate(j, '-');
+          });
+
+          move(l);
+        });
+
+        move(r);
+        loop(() => {
+          operate(l, '+');
+          move(r);
+          loop(() => emmit('-'));
+        });
+
+        freeIndexes.push(j);
+        freeIndexes.push(i);
         freeIndexes.push(r);
 
         return l;

@@ -101,6 +101,36 @@ describe('tokenize', () => {
     expect(tokens).toEqual(expected);
   });
 
+  test('lss', () => {
+    const src = '1 < 3;';
+
+    const expected: Token[] = [
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: '<' },
+      { kind: 'num', val: 3 },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const tokens = tokenize(src);
+    expect(tokens).toEqual(expected);
+  });
+
+  test('gtr', () => {
+    const src = '1 > 3;';
+
+    const expected: Token[] = [
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: '>' },
+      { kind: 'num', val: 3 },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const tokens = tokenize(src);
+    expect(tokens).toEqual(expected);
+  });
+
   test('complex operators', () => {
     const src = '(5 + 8) * 15 - 8;';
 

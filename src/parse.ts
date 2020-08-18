@@ -3,7 +3,7 @@ import { Token } from './tokenize';
 
 export type AstNode =
   | {
-      kind: 'add' | 'sub' | 'mul' | 'div' | 'equ' | 'neq';
+      kind: 'add' | 'sub' | 'mul' | 'div' | 'equ' | 'neq' | 'lss';
       lhs: AstNode;
       rhs: AstNode;
     }
@@ -159,8 +159,26 @@ export function parse(tokens: Token[]) {
     }
   };
 
-  const equality = (): AstNode => {
+  const relational = (): AstNode => {
     let node = add();
+
+    while (true) {
+      if (consume('<')) {
+        node = { kind: 'lss', lhs: node, rhs: add() };
+        // } else if (consume('<=')) {
+        //   node = { kind: 'leq', lhs: node, rhs: add() };
+      } else if (consume('>')) {
+        node = { kind: 'lss', lhs: add(), rhs: node };
+        // } else if (consume('>=')) {
+        //   node = { kind: 'leq', lhs: add(), rhs: node };
+      } else {
+        return node;
+      }
+    }
+  };
+
+  const equality = (): AstNode => {
+    let node = relational();
 
     while (true) {
       if (consume('==')) {

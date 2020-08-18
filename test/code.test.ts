@@ -124,6 +124,25 @@ describe('parse', () => {
     expect(code).toEqual('+>+++<[>-<-]>[<+>[-]]');
   });
 
+  test('lss', () => {
+    const nodes: AstNode[] = [
+      {
+        kind: 'lss',
+        lhs: {
+          kind: 'num',
+          val: 1,
+        },
+        rhs: {
+          kind: 'num',
+          val: 3,
+        },
+      },
+    ];
+
+    const code = generateCode(nodes);
+    expect(code).toEqual('+>+++<[-[>>+>+<<<-]>>>[<<<+>>>-]+<[<->>-<[-]]>[<<<[-]>>>-]<<<]>[<+>[-]]');
+  });
+
   test('assign', () => {
     const nodes: AstNode[] = [
       {
