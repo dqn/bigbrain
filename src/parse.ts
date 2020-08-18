@@ -3,7 +3,7 @@ import { Token } from './tokenize';
 
 export type AstNode =
   | {
-      kind: 'add' | 'sub' | 'mul' | 'div';
+      kind: 'add' | 'sub' | 'mul' | 'div' | 'equ' | 'neq';
       lhs: AstNode;
       rhs: AstNode;
     }
@@ -159,8 +159,22 @@ export function parse(tokens: Token[]) {
     }
   };
 
+  const equality = (): AstNode => {
+    let node = add();
+
+    while (true) {
+      if (consume('==')) {
+        node = { kind: 'equ', lhs: node, rhs: add() };
+      } else if (consume('!=')) {
+        node = { kind: 'neq', lhs: node, rhs: add() };
+      } else {
+        return node;
+      }
+    }
+  };
+
   const assign = (): AstNode => {
-    const node = add();
+    const node = equality();
 
     if (consume('=')) {
       if (node.kind !== 'var') {

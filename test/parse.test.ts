@@ -148,6 +148,60 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
+  test('equ', () => {
+    const tokens: Token[] = [
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: '==' },
+      { kind: 'num', val: 3 },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const expected: AstNode[] = [
+      {
+        kind: 'equ',
+        lhs: {
+          kind: 'num',
+          val: 1,
+        },
+        rhs: {
+          kind: 'num',
+          val: 3,
+        },
+      },
+    ];
+
+    const nodes = parse(tokens);
+    expect(nodes).toEqual(expected);
+  });
+
+  test('neq', () => {
+    const tokens: Token[] = [
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: '!=' },
+      { kind: 'num', val: 3 },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const expected: AstNode[] = [
+      {
+        kind: 'neq',
+        lhs: {
+          kind: 'num',
+          val: 1,
+        },
+        rhs: {
+          kind: 'num',
+          val: 3,
+        },
+      },
+    ];
+
+    const nodes = parse(tokens);
+    expect(nodes).toEqual(expected);
+  });
+
   test('complex operators', () => {
     const tokens: Token[] = [
       { kind: 'reserved', str: '(' },

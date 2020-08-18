@@ -155,6 +155,49 @@ export function generateCode(nodes: AstNode[]): string {
 
         return l;
       }
+      case 'equ': {
+        const l = gen(node.lhs);
+        const r = gen(node.rhs);
+
+        move(l);
+        loop(() => {
+          operate(r, '-');
+          operate(l, '-');
+        });
+        emmit('+');
+
+        move(r);
+        loop(() => {
+          operate(l, '-');
+          move(r);
+          loop(() => emmit('-'));
+        });
+
+        freeIndexes.push(r);
+
+        return l;
+      }
+      case 'neq': {
+        const l = gen(node.lhs);
+        const r = gen(node.rhs);
+
+        move(l);
+        loop(() => {
+          operate(r, '-');
+          operate(l, '-');
+        });
+
+        move(r);
+        loop(() => {
+          operate(l, '+');
+          move(r);
+          loop(() => emmit('-'));
+        });
+
+        freeIndexes.push(r);
+
+        return l;
+      }
       case 'assign': {
         const l = node.lhs.index;
         const r = gen(node.rhs);
