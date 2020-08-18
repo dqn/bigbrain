@@ -35,7 +35,7 @@ export function generateCode(nodes: AstNode[]): string {
     code += operation;
   };
 
-  const move = (i: number) => {
+  const focus = (i: number) => {
     while (cur < i) {
       emit('>');
       ++cur;
@@ -57,7 +57,7 @@ export function generateCode(nodes: AstNode[]): string {
   };
 
   const reset = (i: number) => {
-    move(i);
+    focus(i);
     loop(() => emit('-'));
   };
 
@@ -67,19 +67,19 @@ export function generateCode(nodes: AstNode[]): string {
   };
 
   const operate = (i: number, operation: string) => {
-    move(i);
+    focus(i);
     emit(operation);
   };
 
   const copy = (src: number, dst: number, tmp: number) => {
-    move(src);
+    focus(src);
     loop(() => {
       operate(dst, '+');
       operate(tmp, '+');
       operate(src, '-');
     });
 
-    move(tmp);
+    focus(tmp);
     loop(() => {
       operate(src, '+');
       operate(tmp, '-');
@@ -91,7 +91,7 @@ export function generateCode(nodes: AstNode[]): string {
       case 'num': {
         const i = memory.pop();
 
-        move(i);
+        focus(i);
         for (let i = 0; i < node.val; ++i) {
           emit('+');
         }
@@ -107,7 +107,7 @@ export function generateCode(nodes: AstNode[]): string {
         const l = gen(node.lhs);
         const r = gen(node.rhs);
 
-        move(r);
+        focus(r);
         loop(() => {
           operate(l, '+');
           operate(r, '-');
@@ -121,7 +121,7 @@ export function generateCode(nodes: AstNode[]): string {
         const l = gen(node.lhs);
         const r = gen(node.rhs);
 
-        move(r);
+        focus(r);
         loop(() => {
           operate(l, '-');
           operate(r, '-');
@@ -137,7 +137,7 @@ export function generateCode(nodes: AstNode[]): string {
         const i = memory.pop();
         const j = memory.pop();
 
-        move(l);
+        focus(l);
         loop(() => {
           copy(r, i, j);
           operate(l, '-');
@@ -145,7 +145,7 @@ export function generateCode(nodes: AstNode[]): string {
 
         reset(r);
 
-        move(i);
+        focus(i);
         loop(() => {
           operate(l, '+');
           operate(i, '-');
@@ -161,7 +161,7 @@ export function generateCode(nodes: AstNode[]): string {
         const l = gen(node.lhs);
         const r = gen(node.rhs);
 
-        move(l);
+        focus(l);
         loop(() => {
           operate(r, '-');
           operate(l, '-');
@@ -169,7 +169,7 @@ export function generateCode(nodes: AstNode[]): string {
 
         emit('+');
 
-        move(r);
+        focus(r);
         loop(() => {
           operate(l, '-');
           reset(r);
@@ -183,13 +183,13 @@ export function generateCode(nodes: AstNode[]): string {
         const l = gen(node.lhs);
         const r = gen(node.rhs);
 
-        move(l);
+        focus(l);
         loop(() => {
           operate(r, '-');
           operate(l, '-');
         });
 
-        move(r);
+        focus(r);
         loop(() => {
           operate(l, '+');
           reset(r);
@@ -205,7 +205,7 @@ export function generateCode(nodes: AstNode[]): string {
         const i = memory.pop();
         const j = memory.pop();
 
-        move(l);
+        focus(l);
         loop(() => {
           emit('-');
 
@@ -213,23 +213,23 @@ export function generateCode(nodes: AstNode[]): string {
 
           operate(j, '+');
 
-          move(i);
+          focus(i);
           loop(() => {
             operate(r, '-');
             operate(j, '-');
             reset(i);
           });
 
-          move(j);
+          focus(j);
           loop(() => {
             reset(l);
             operate(j, '-');
           });
 
-          move(l);
+          focus(l);
         });
 
-        move(r);
+        focus(r);
         loop(() => {
           operate(l, '+');
           reset(r);
@@ -246,10 +246,10 @@ export function generateCode(nodes: AstNode[]): string {
         const r = gen(node.rhs);
         const i = memory.pop();
 
-        move(l);
+        focus(l);
         loop(() => emit('-'));
 
-        move(r);
+        focus(r);
         loop(() => {
           operate(l, '+');
           operate(i, '+');
@@ -275,7 +275,7 @@ export function generateCode(nodes: AstNode[]): string {
         const c = gen(node.cond);
 
         if (!node.caseFalse) {
-          move(c);
+          focus(c);
           loop(() => {
             const rtn = gen(node.caseTrue);
 
@@ -286,7 +286,7 @@ export function generateCode(nodes: AstNode[]): string {
           const i = memory.pop();
           operate(i, '+');
 
-          move(c);
+          focus(c);
           loop(() => {
             const rtn = gen(node.caseTrue);
 
@@ -296,7 +296,7 @@ export function generateCode(nodes: AstNode[]): string {
             free(c);
           });
 
-          move(i);
+          focus(i);
           loop(() => {
             const rtn = gen(node.caseFalse!);
 
@@ -315,7 +315,7 @@ export function generateCode(nodes: AstNode[]): string {
         if (node.cond) {
           const cond = gen(node.cond);
 
-          move(cond);
+          focus(cond);
           loop(() => {
             free(gen(node.whileTrue));
 
@@ -327,13 +327,13 @@ export function generateCode(nodes: AstNode[]): string {
 
             const rtn = gen(node.cond!);
 
-            move(rtn);
+            focus(rtn);
             loop(() => {
               operate(cond, '+');
               operate(rtn, '-');
             });
 
-            move(cond);
+            focus(cond);
           });
 
           free(cond);
@@ -341,7 +341,7 @@ export function generateCode(nodes: AstNode[]): string {
           const cond = memory.pop();
           operate(cond, '+');
 
-          move(cond);
+          focus(cond);
           loop(() => {
             free(gen(node.whileTrue));
 
@@ -349,7 +349,7 @@ export function generateCode(nodes: AstNode[]): string {
               free(gen(node.after));
             }
 
-            move(cond);
+            focus(cond);
           });
 
           free(cond);
