@@ -7,18 +7,14 @@ function retrieveReservedIndexes(nodes: AstNode[]): number[] {
   nodes.forEach((node) => {
     const argNodes: AstNode[] = [];
 
-    if (node.kind === 'assign') {
-      indexes.push(node.lhs.index);
-    }
-
-    if ('lhs' in node) {
-      argNodes.push(node.lhs);
-    }
-    if ('rhs' in node) {
-      argNodes.push(node.rhs);
-    }
-    if ('arg' in node) {
-      argNodes.push(node.arg);
+    if (node.kind === 'var') {
+      indexes.push(node.index);
+    } else {
+      Object.values(node).forEach((value: AstNode[keyof AstNode]) => {
+        if (typeof value === 'object') {
+          argNodes.push(value);
+        }
+      });
     }
 
     indexes.push(...retrieveReservedIndexes(argNodes));
@@ -231,6 +227,57 @@ export function generateCode(nodes: AstNode[]): string {
             free(rtn);
             operate(i, '-');
           });
+        }
+
+        return -1;
+      }
+      case 'for': {
+        if (node.init) {
+          free(gen(node.init));
+        }
+
+        if (node.cond) {
+          const cond = gen(node.cond);
+
+          move(cond);
+          loop(() => {
+            free(gen(node.whileTrue));
+
+            if (node.after) {
+              free(gen(node.after));
+            }
+
+            move(cond);
+            loop(() => emmit('-'));
+
+            const rtn = gen(node.cond!);
+
+            move(rtn);
+            loop(() => {
+              operate(cond, '+');
+              operate(rtn, '-');
+            });
+
+            move(cond);
+          });
+
+          free(cond);
+        } else {
+          const cond = freeIndexes.pop();
+          operate(cond, '+');
+
+          move(cond);
+          loop(() => {
+            free(gen(node.whileTrue));
+
+            if (node.after) {
+              free(gen(node.after));
+            }
+
+            move(cond);
+          });
+
+          free(cond);
         }
 
         return -1;

@@ -403,6 +403,80 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
+  test('for', () => {
+    const tokens: Token[] = [
+      { kind: 'for' },
+      { kind: 'reserved', str: '(' },
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: '=' },
+      { kind: 'num', val: 3 },
+      { kind: 'reserved', str: ';' },
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: ';' },
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: '=' },
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: '-' },
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: ')' },
+      { kind: 'print' },
+      { kind: 'reserved', str: '(' },
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: ')' },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const expected: AstNode[] = [
+      {
+        kind: 'for',
+        init: {
+          kind: 'assign',
+          lhs: {
+            kind: 'var',
+            index: 0,
+          },
+          rhs: {
+            kind: 'num',
+            val: 3,
+          },
+        },
+        cond: {
+          kind: 'var',
+          index: 0,
+        },
+        after: {
+          kind: 'assign',
+          lhs: {
+            kind: 'var',
+            index: 0,
+          },
+          rhs: {
+            kind: 'sub',
+            lhs: {
+              kind: 'var',
+              index: 0,
+            },
+            rhs: {
+              kind: 'num',
+              val: 1,
+            },
+          },
+        },
+        whileTrue: {
+          kind: 'print',
+          arg: {
+            kind: 'var',
+            index: 0,
+          },
+        },
+      },
+    ];
+
+    const nodes = parse(tokens);
+    expect(nodes).toEqual(expected);
+  });
+
   test('complex', () => {
     const tokens: Token[] = [
       { kind: 'ident', str: 'foo' },

@@ -196,6 +196,36 @@ describe('tokenize', () => {
     expect(tokens).toEqual(expected);
   });
 
+  test('for', () => {
+    const src = 'for (x = 3; x; x = x - 1) print(x);';
+
+    const expected: Token[] = [
+      { kind: 'for' },
+      { kind: 'reserved', str: '(' },
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: '=' },
+      { kind: 'num', val: 3 },
+      { kind: 'reserved', str: ';' },
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: ';' },
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: '=' },
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: '-' },
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: ')' },
+      { kind: 'print' },
+      { kind: 'reserved', str: '(' },
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: ')' },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const tokens = tokenize(src);
+    expect(tokens).toEqual(expected);
+  });
+
   test('multi statements', () => {
     const src = `
 foo = 1;

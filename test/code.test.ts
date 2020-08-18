@@ -192,4 +192,83 @@ describe('parse', () => {
     const code = generateCode(nodes);
     expect(code).toEqual('+>+[<->-]+<[>>+.[-]<-<[-]]>[<++.[-]>-]');
   });
+
+  test('for', () => {
+    const nodes: AstNode[] = [
+      {
+        kind: 'for',
+        init: {
+          kind: 'assign',
+          lhs: {
+            kind: 'var',
+            index: 0,
+          },
+          rhs: {
+            kind: 'num',
+            val: 3,
+          },
+        },
+        cond: {
+          kind: 'var',
+          index: 0,
+        },
+        after: {
+          kind: 'assign',
+          lhs: {
+            kind: 'var',
+            index: 0,
+          },
+          rhs: {
+            kind: 'sub',
+            lhs: {
+              kind: 'var',
+              index: 0,
+            },
+            rhs: {
+              kind: 'num',
+              val: 1,
+            },
+          },
+        },
+        whileTrue: {
+          kind: 'print',
+          arg: {
+            kind: 'var',
+            index: 0,
+          },
+        },
+      },
+    ];
+
+    /**
+     * >+++ [0, 3] // make 3
+     * <[-] [0, 3] // reset 'x'
+     * >[<+>>+<-] [3, 0, 3]   // assign 3 to 'x'
+     * >[-] [3, 0, 0] // free
+     * <<[>>+<+<-] [0, 3, 3]
+     * >[<+>-] [3, 0, 3]      // compute cond
+     * >[
+     *   <<[>+>>+<<<-]
+     *   >>>[<<<+>>>-] [3, 3, 3, 0] // copy 'x'
+     *   <<.[-] [3, 0, 3]           // free
+     *   <[>+>>+<<<-] [0, 3, 3, 3]
+     *   >>>[<<<+>>>-] [3, 3, 3, 0] // copy 'x'
+     *   + [3, 3, 3, 1]             // make 1
+     *   [<<->>-] [3, 2, 3, 0]      // x = x - 1
+     *   <<<[-] [0, 2, 3, 0]        // reset x
+     *   >[<+>>>+<<-] [2, 0, 3, 2]
+     *   >>[-] [2, 0, 3, 0]         // assign 2 to 'x'
+     *   <[-] [2, 0, 0, 0]          // reset cond
+     *   <<[>>>+<<+<-] [0, 2, 0, 2]
+     *   >[<+>-] [2, 0, 0, 2]
+     *   >>[<+>-] [2, 0, 2, 0]      // compute cond
+     *   <
+     * ][-]
+     */
+
+    const code = generateCode(nodes);
+    expect(code).toEqual(
+      '>+++<[-]>[<+>>+<-]>[-]<<[>>+<+<-]>[<+>-]>[<<[>+>>+<<<-]>>>[<<<+>>>-]<<.[-]<[>+>>+<<<-]>>>[<<<+>>>-]+[<<->>-]<<<[-]>[<+>>>+<<-]>>[-]<[-]<<[>>>+<<+<-]>[<+>-]>>[<+>-]<][-]',
+    );
+  });
 });

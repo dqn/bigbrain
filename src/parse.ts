@@ -23,6 +23,13 @@ export type AstNode =
       caseFalse?: AstNode;
     }
   | {
+      kind: 'for';
+      init?: AstNode;
+      cond?: AstNode;
+      after?: AstNode;
+      whileTrue: AstNode;
+    }
+  | {
       kind: 'var';
       index: number;
     }
@@ -185,6 +192,28 @@ export function parse(tokens: Token[]) {
       if (consumeKind('else')) {
         node.caseFalse = stmt();
       }
+
+      return node;
+    }
+
+    if (consumeKind('for')) {
+      const node: AstNode = { kind: 'for', whileTrue: null! };
+
+      expect('(');
+      if (!consume(';')) {
+        node.init = expr();
+        expect(';');
+      }
+      if (!consume(';')) {
+        node.cond = expr();
+        expect(';');
+      }
+      if (!consume(')')) {
+        node.after = expr();
+        expect(')');
+      }
+
+      node.whileTrue = stmt();
 
       return node;
     }

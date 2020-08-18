@@ -16,6 +16,9 @@ export type Token =
       kind: 'else';
     }
   | {
+      kind: 'for';
+    }
+  | {
       kind: 'ident';
       str: string;
     }
@@ -70,6 +73,11 @@ export function tokenize(src: string): Token[] {
 
     if (consume('else')) {
       tokens.push({ kind: 'else' });
+      continue;
+    }
+
+    if (consume('for')) {
+      tokens.push({ kind: 'for' });
       continue;
     }
 
