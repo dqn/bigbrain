@@ -1,5 +1,7 @@
-import { createStack, MAX_STACK_SIZE } from './stack';
 import { Token } from './tokenize';
+import { createStack, range } from './utils';
+
+const MAX_VARIABLE_COUNT = 512;
 
 export type AstNode =
   | {
@@ -48,7 +50,7 @@ type SpecificAstNode<T extends AstNode['kind']> = Extract<AstNode, { kind: T }>;
 
 export function parse(tokens: Token[]) {
   const globalVariables: VariableMap = {};
-  const indexStack = createStack([...Array(MAX_STACK_SIZE)].map((_, i) => i).reverse());
+  const indexStack = createStack(range(0, MAX_VARIABLE_COUNT).reverse());
 
   const nextToken = (): Token => {
     if (!tokens.length) {

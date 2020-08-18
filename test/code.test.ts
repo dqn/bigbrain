@@ -1,7 +1,7 @@
 import { generateCode } from '../src/code';
 import { AstNode } from '../src/parse';
 
-describe('parse', () => {
+describe('code', () => {
   test('num', () => {
     const nodes: AstNode[] = [
       {

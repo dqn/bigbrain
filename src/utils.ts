@@ -1,5 +1,13 @@
 export const MAX_STACK_SIZE = 1024;
 
+export function uniq<T>(array: T[]): T[] {
+  return Array.from(new Set(array));
+}
+
+export function range(start: number, end: number): number[] {
+  return [...Array(end)].map((_, i) => i).slice(start);
+}
+
 export type Stack<T> = {
   values: T[];
   pop: () => T;
