@@ -198,7 +198,7 @@ export function generateCode(nodes: AstNode[]): string {
         loop(l, () => {
           emit('-');
 
-          copy(l, i, j);
+          copy(r, i, j);
 
           operate(j, '+');
 
