@@ -227,6 +227,46 @@ export function generateCode(nodes: AstNode[]): string {
 
         return l;
       }
+      case 'leq': {
+        const l = gen(node.lhs);
+        const r = gen(node.rhs);
+        const i = memory.pop();
+        const j = memory.pop();
+
+        loop(r, () => {
+          emit('-');
+
+          copy(l, i, j);
+
+          operate(j, '+');
+
+          loop(i, () => {
+            operate(l, '-');
+            operate(j, '-');
+            reset(i);
+          });
+
+          loop(j, () => {
+            reset(r);
+            operate(j, '-');
+          });
+
+          focus(r);
+        });
+
+        emit('+');
+
+        loop(l, () => {
+          operate(r, '-');
+          reset(l);
+        });
+
+        memory.push(j);
+        memory.push(i);
+        memory.push(l);
+
+        return r;
+      }
       case 'assign': {
         const l = node.lhs.index;
         const r = gen(node.rhs);

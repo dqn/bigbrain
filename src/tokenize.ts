@@ -56,7 +56,7 @@ export function tokenize(src: string): Token[] {
       continue;
     }
 
-    if (['==', '!='].includes(next(2))) {
+    if (['==', '!=', '<=', '>='].includes(next(2))) {
       tokens.push({ kind: 'reserved', str: strshift(2) });
       continue;
     }

@@ -143,6 +143,25 @@ describe('code', () => {
     expect(code).toEqual('+>+++<[->[>+>+<<-]>>[<<+>>-]+<[<->>-<[-]]>[<<<[-]>>>-]<<<]>[<+>[-]]');
   });
 
+  test('leq', () => {
+    const nodes: AstNode[] = [
+      {
+        kind: 'leq',
+        lhs: {
+          kind: 'num',
+          val: 1,
+        },
+        rhs: {
+          kind: 'num',
+          val: 3,
+        },
+      },
+    ];
+
+    const code = generateCode(nodes);
+    expect(code).toEqual('+>+++[-<[>>+>+<<<-]>>>[<<<+>>>-]+<[<<->>>-<[-]]>[<<[-]>>-]<<]+<[>-<[-]]');
+  });
+
   test('assign', () => {
     const nodes: AstNode[] = [
       {
