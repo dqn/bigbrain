@@ -10,6 +10,10 @@ export type AstNode =
       rhs: AstNode;
     }
   | {
+      kind: 'pre-inc' | 'pre-dec' | 'post-inc' | 'post-dec';
+      operand: SpecificAstNode<'var'>;
+    }
+  | {
       kind: 'assign';
       lhs: SpecificAstNode<'var'>;
       rhs: AstNode;
@@ -99,6 +103,18 @@ export function parse(tokens: Token[]) {
     return token as SpecificToken<T>;
   };
 
+  const variable = (): SpecificAstNode<'var'> => {
+    const token = expectKind('ident');
+
+    const { str: name } = token;
+
+    if (!globalVariables[name]) {
+      globalVariables[name] = { index: indexStack.pop() };
+    }
+
+    return { kind: 'var', index: globalVariables[name].index };
+  };
+
   const primary = (): AstNode => {
     if (consume('(')) {
       const node = expr();
@@ -106,15 +122,11 @@ export function parse(tokens: Token[]) {
       return node;
     }
 
-    const token = shiftToken();
-
-    if (token.kind === 'ident') {
-      const { str: name } = token;
-      if (!globalVariables[name]) {
-        globalVariables[name] = { index: indexStack.pop() };
-      }
-      return { kind: 'var', index: globalVariables[name].index };
+    if (nextToken().kind === 'ident') {
+      return variable();
     }
+
+    const token = shiftToken();
 
     if (token.kind === 'num') {
       return { kind: 'num', val: token.val };
@@ -130,7 +142,29 @@ export function parse(tokens: Token[]) {
     if (consume('-')) {
       return { kind: 'sub', lhs: { kind: 'num', val: 0 }, rhs: primary() };
     }
-    return primary();
+    if (consume('++')) {
+      return { kind: 'pre-inc', operand: variable() };
+    }
+    if (consume('--')) {
+      return { kind: 'pre-dec', operand: variable() };
+    }
+
+    if (nextToken().kind === 'ident') {
+      const v = variable();
+
+      if (consume('++')) {
+        return { kind: 'post-inc', operand: v };
+      }
+      if (consume('--')) {
+        return { kind: 'post-dec', operand: v };
+      }
+
+      return v;
+    }
+
+    const node = primary();
+
+    return node;
   };
 
   const mul = (): AstNode => {

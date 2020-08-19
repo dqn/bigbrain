@@ -151,6 +151,54 @@ export function generateCode(nodes: AstNode[]): string {
 
         return l;
       }
+      case 'pre-inc': {
+        const o = node.operand.index;
+        const i = memory.pop();
+        const j = memory.pop();
+
+        operate(o, '+');
+        copy(o, i, j);
+
+        memory.push(j);
+
+        return i;
+      }
+      case 'pre-dec': {
+        const o = node.operand.index;
+        const i = memory.pop();
+        const j = memory.pop();
+
+        operate(o, '-');
+        copy(o, i, j);
+
+        memory.push(j);
+
+        return i;
+      }
+      case 'post-inc': {
+        const o = node.operand.index;
+        const i = memory.pop();
+        const j = memory.pop();
+
+        copy(o, i, j);
+        operate(o, '+');
+
+        memory.push(j);
+
+        return i;
+      }
+      case 'post-dec': {
+        const o = node.operand.index;
+        const i = memory.pop();
+        const j = memory.pop();
+
+        copy(o, i, j);
+        operate(o, '-');
+
+        memory.push(j);
+
+        return i;
+      }
       case 'equ': {
         const l = gen(node.lhs);
         const r = gen(node.rhs);

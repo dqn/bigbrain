@@ -110,6 +110,154 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
+  test('pre-inc', () => {
+    const tokens: Token[] = [
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: '=' },
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: ';' },
+      { kind: 'reserved', str: '++' },
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const expected: AstNode[] = [
+      {
+        kind: 'assign',
+        lhs: {
+          kind: 'var',
+          index: 0,
+        },
+        rhs: {
+          kind: 'num',
+          val: 1,
+        },
+      },
+      {
+        kind: 'pre-inc',
+        operand: {
+          kind: 'var',
+          index: 0,
+        },
+      },
+    ];
+
+    const nodes = parse(tokens);
+    expect(nodes).toEqual(expected);
+  });
+
+  test('pre-dec', () => {
+    const tokens: Token[] = [
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: '=' },
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: ';' },
+      { kind: 'reserved', str: '--' },
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const expected: AstNode[] = [
+      {
+        kind: 'assign',
+        lhs: {
+          kind: 'var',
+          index: 0,
+        },
+        rhs: {
+          kind: 'num',
+          val: 1,
+        },
+      },
+      {
+        kind: 'pre-dec',
+        operand: {
+          kind: 'var',
+          index: 0,
+        },
+      },
+    ];
+
+    const nodes = parse(tokens);
+    expect(nodes).toEqual(expected);
+  });
+
+  test('post-inc', () => {
+    const tokens: Token[] = [
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: '=' },
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: ';' },
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: '++' },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const expected: AstNode[] = [
+      {
+        kind: 'assign',
+        lhs: {
+          kind: 'var',
+          index: 0,
+        },
+        rhs: {
+          kind: 'num',
+          val: 1,
+        },
+      },
+      {
+        kind: 'post-inc',
+        operand: {
+          kind: 'var',
+          index: 0,
+        },
+      },
+    ];
+
+    const nodes = parse(tokens);
+    expect(nodes).toEqual(expected);
+  });
+
+  test('post-dec', () => {
+    const tokens: Token[] = [
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: '=' },
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: ';' },
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: '--' },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const expected: AstNode[] = [
+      {
+        kind: 'assign',
+        lhs: {
+          kind: 'var',
+          index: 0,
+        },
+        rhs: {
+          kind: 'num',
+          val: 1,
+        },
+      },
+      {
+        kind: 'post-dec',
+        operand: {
+          kind: 'var',
+          index: 0,
+        },
+      },
+    ];
+
+    const nodes = parse(tokens);
+    expect(nodes).toEqual(expected);
+  });
+
   test('parences', () => {
     const tokens: Token[] = [
       { kind: 'num', val: 4 },

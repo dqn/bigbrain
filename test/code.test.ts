@@ -86,6 +86,110 @@ describe('code', () => {
     expect(code).toEqual('++++>+++<[>[>+>+<<-]>>[<<+>>-]<<<-]>[-]>[<<+>>-]');
   });
 
+  test('pre-inc', () => {
+    const nodes: AstNode[] = [
+      {
+        kind: 'assign',
+        lhs: {
+          kind: 'var',
+          index: 0,
+        },
+        rhs: {
+          kind: 'num',
+          val: 1,
+        },
+      },
+      {
+        kind: 'pre-inc',
+        operand: {
+          kind: 'var',
+          index: 0,
+        },
+      },
+    ];
+
+    const code = generateCode(nodes);
+    expect(code).toEqual('>+<[-]>[<+>>+<-]>[-]<<+[>>+<+<-]>[<+>-]');
+  });
+
+  test('pre-dec', () => {
+    const nodes: AstNode[] = [
+      {
+        kind: 'assign',
+        lhs: {
+          kind: 'var',
+          index: 0,
+        },
+        rhs: {
+          kind: 'num',
+          val: 1,
+        },
+      },
+      {
+        kind: 'pre-dec',
+        operand: {
+          kind: 'var',
+          index: 0,
+        },
+      },
+    ];
+
+    const code = generateCode(nodes);
+    expect(code).toEqual('>+<[-]>[<+>>+<-]>[-]<<-[>>+<+<-]>[<+>-]');
+  });
+
+  test('post-inc', () => {
+    const nodes: AstNode[] = [
+      {
+        kind: 'assign',
+        lhs: {
+          kind: 'var',
+          index: 0,
+        },
+        rhs: {
+          kind: 'num',
+          val: 1,
+        },
+      },
+      {
+        kind: 'post-inc',
+        operand: {
+          kind: 'var',
+          index: 0,
+        },
+      },
+    ];
+
+    const code = generateCode(nodes);
+    expect(code).toEqual('>+<[-]>[<+>>+<-]>[-]<<[>>+<+<-]>[<+>-]<+');
+  });
+
+  test('post-dec', () => {
+    const nodes: AstNode[] = [
+      {
+        kind: 'assign',
+        lhs: {
+          kind: 'var',
+          index: 0,
+        },
+        rhs: {
+          kind: 'num',
+          val: 1,
+        },
+      },
+      {
+        kind: 'post-dec',
+        operand: {
+          kind: 'var',
+          index: 0,
+        },
+      },
+    ];
+
+    const code = generateCode(nodes);
+    expect(code).toEqual('>+<[-]>[<+>>+<-]>[-]<<[>>+<+<-]>[<+>-]<-');
+  });
+
   test('equ', () => {
     const nodes: AstNode[] = [
       {

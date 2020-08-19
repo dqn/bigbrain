@@ -52,6 +52,78 @@ describe('tokenize', () => {
     expect(tokens).toEqual(expected);
   });
 
+  test('pre-inc', () => {
+    const src = 'x = 1; ++x;';
+
+    const expected: Token[] = [
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: '=' },
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: ';' },
+      { kind: 'reserved', str: '++' },
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const tokens = tokenize(src);
+    expect(tokens).toEqual(expected);
+  });
+
+  test('pre-dec', () => {
+    const src = 'x = 1; --x;';
+
+    const expected: Token[] = [
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: '=' },
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: ';' },
+      { kind: 'reserved', str: '--' },
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const tokens = tokenize(src);
+    expect(tokens).toEqual(expected);
+  });
+
+  test('post-inc', () => {
+    const src = 'x = 1; x++;';
+
+    const expected: Token[] = [
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: '=' },
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: ';' },
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: '++' },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const tokens = tokenize(src);
+    expect(tokens).toEqual(expected);
+  });
+
+  test('post-dec', () => {
+    const src = 'x = 1; x--;';
+
+    const expected: Token[] = [
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: '=' },
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: ';' },
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: '--' },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const tokens = tokenize(src);
+    expect(tokens).toEqual(expected);
+  });
+
   test('parences', () => {
     const src = '4 * (11 + 6);';
 
