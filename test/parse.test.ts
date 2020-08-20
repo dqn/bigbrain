@@ -110,6 +110,28 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
+  test('not', () => {
+    const tokens: Token[] = [
+      { kind: 'reserved', str: '!' },
+      { kind: 'num', val: 2 },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const expected: AstNode[] = [
+      {
+        kind: 'not',
+        operand: {
+          kind: 'num',
+          val: 2,
+        },
+      },
+    ];
+
+    const nodes = parse(tokens);
+    expect(nodes).toEqual(expected);
+  });
+
   test('pre-inc', () => {
     const tokens: Token[] = [
       { kind: 'ident', str: 'x' },

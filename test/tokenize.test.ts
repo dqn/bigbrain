@@ -52,6 +52,20 @@ describe('tokenize', () => {
     expect(tokens).toEqual(expected);
   });
 
+  test('not', () => {
+    const src = '!2;';
+
+    const expected: Token[] = [
+      { kind: 'reserved', str: '!' },
+      { kind: 'num', val: 2 },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const tokens = tokenize(src);
+    expect(tokens).toEqual(expected);
+  });
+
   test('pre-inc', () => {
     const src = 'x = 1; ++x;';
 

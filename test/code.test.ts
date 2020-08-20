@@ -111,6 +111,21 @@ describe('code', () => {
     expect(code).toEqual('++++>+++<[>[>+>+<<-]>>[<<+>>-]<<<-]>[-]>[<<+>>-]');
   });
 
+  test('not', () => {
+    const nodes: AstNode[] = [
+      {
+        kind: 'not',
+        operand: {
+          kind: 'num',
+          val: 2,
+        },
+      },
+    ];
+
+    const code = generateCode(nodes);
+    expect(code).toEqual('++>+<[>-<[-]]');
+  });
+
   test('pre-inc', () => {
     const nodes: AstNode[] = [
       {

@@ -156,6 +156,20 @@ export function generateCode(nodes: AstNode[]): string {
 
         return l;
       }
+      case 'not': {
+        const o = gen(node.operand);
+        const i = memory.pop();
+
+        operate(i, '+');
+        loop(o, () => {
+          operate(i, '-');
+          reset(o);
+        });
+
+        memory.push(o);
+
+        return i;
+      }
       case 'pre-inc': {
         const o = node.operand.index;
         const i = memory.pop();
@@ -325,7 +339,7 @@ export function generateCode(nodes: AstNode[]): string {
         const r = gen(node.rhs);
         const i = memory.pop();
 
-        loop(l, () => emit('-'));
+        reset(l);
 
         loop(r, () => {
           operate(l, '+');

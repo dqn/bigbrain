@@ -10,6 +10,10 @@ export type AstNode =
       rhs: AstNode;
     }
   | {
+      kind: 'not';
+      operand: AstNode;
+    }
+  | {
       kind: 'pre-inc' | 'pre-dec' | 'post-inc' | 'post-dec';
       operand: SpecificAstNode<'var'>;
     }
@@ -149,6 +153,9 @@ export function parse(tokens: Token[]) {
   };
 
   const unary = (): AstNode => {
+    if (consume('!')) {
+      return { kind: 'not', operand: primary() };
+    }
     if (consume('+')) {
       return primary();
     }
