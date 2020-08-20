@@ -5,7 +5,7 @@ const MAX_VARIABLE_COUNT = 512;
 
 export type AstNode =
   | {
-      kind: 'add' | 'sub' | 'mul' | 'div' | 'equ' | 'neq' | 'lss' | 'leq';
+      kind: 'add' | 'sub' | 'mul' | 'div' | 'equ' | 'neq' | 'lss' | 'leq' | 'and' | 'or';
       lhs: AstNode;
       rhs: AstNode;
     }
@@ -247,8 +247,32 @@ export function parse(tokens: Token[]) {
     }
   };
 
+  const and = (): AstNode => {
+    let node = equality();
+
+    while (true) {
+      if (consume('&&')) {
+        node = { kind: 'and', lhs: node, rhs: and() };
+      } else {
+        return node;
+      }
+    }
+  };
+
+  const or = (): AstNode => {
+    let node = and();
+
+    while (true) {
+      if (consume('||')) {
+        node = { kind: 'or', lhs: node, rhs: or() };
+      } else {
+        return node;
+      }
+    }
+  };
+
   const assign = (): AstNode => {
-    const node = equality();
+    const node = or();
 
     if (consume('=')) {
       if (node.kind !== 'var') {

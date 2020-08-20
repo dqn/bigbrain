@@ -306,6 +306,44 @@ describe('code', () => {
     expect(code).toEqual('+>+++[-<[>>+>+<<<-]>>>[<<<+>>>-]+<[<<->>>-<[-]]>[<<[-]>>-]<<]+<[>-<[-]]');
   });
 
+  test('and', () => {
+    const nodes: AstNode[] = [
+      {
+        kind: 'and',
+        lhs: {
+          kind: 'num',
+          val: 1,
+        },
+        rhs: {
+          kind: 'num',
+          val: 2,
+        },
+      },
+    ];
+
+    const code = generateCode(nodes);
+    expect(code).toEqual('+>++<[>>+<<[-]]>[>+<[-]]++>[<->-]+<[>-<[-]]');
+  });
+
+  test('or', () => {
+    const nodes: AstNode[] = [
+      {
+        kind: 'or',
+        lhs: {
+          kind: 'num',
+          val: 1,
+        },
+        rhs: {
+          kind: 'num',
+          val: 2,
+        },
+      },
+    ];
+
+    const code = generateCode(nodes);
+    expect(code).toEqual('+>++<[>>+<<[-]]>[>+<[-]]>[<+>[-]]');
+  });
+
   test('assign', () => {
     const nodes: AstNode[] = [
       {

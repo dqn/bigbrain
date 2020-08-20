@@ -334,6 +334,65 @@ export function generateCode(nodes: AstNode[]): string {
 
         return r;
       }
+      case 'and': {
+        const l = gen(node.lhs);
+        const r = gen(node.rhs);
+        const i = memory.pop();
+
+        loop(l, () => {
+          operate(i, '+');
+          reset(l);
+        });
+
+        loop(r, () => {
+          operate(i, '+');
+          reset(r);
+        });
+
+        operate(r, '++');
+
+        loop(i, () => {
+          operate(r, '-');
+          operate(i, '-');
+        });
+
+        emit('+');
+
+        loop(r, () => {
+          operate(i, '-');
+          reset(r);
+        });
+
+        memory.push(r);
+        memory.push(l);
+
+        return i;
+      }
+      case 'or': {
+        const l = gen(node.lhs);
+        const r = gen(node.rhs);
+        const i = memory.pop();
+
+        loop(l, () => {
+          operate(i, '+');
+          reset(l);
+        });
+
+        loop(r, () => {
+          operate(i, '+');
+          reset(r);
+        });
+
+        loop(i, () => {
+          operate(r, '+');
+          reset(i);
+        });
+
+        memory.push(l);
+        memory.push(i);
+
+        return r;
+      }
       case 'assign': {
         const l = node.lhs.index;
         const r = gen(node.rhs);

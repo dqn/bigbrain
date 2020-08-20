@@ -247,6 +247,36 @@ describe('tokenize', () => {
     expect(tokens).toEqual(expected);
   });
 
+  test('and', () => {
+    const src = '1 && 2;';
+
+    const expected: Token[] = [
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: '&&' },
+      { kind: 'num', val: 2 },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const tokens = tokenize(src);
+    expect(tokens).toEqual(expected);
+  });
+
+  test('or', () => {
+    const src = '1 || 2;';
+
+    const expected: Token[] = [
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: '||' },
+      { kind: 'num', val: 2 },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const tokens = tokenize(src);
+    expect(tokens).toEqual(expected);
+  });
+
   test('complex operators', () => {
     const src = '(5 + 8) * 15 - 8;';
 
