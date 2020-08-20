@@ -7,6 +7,9 @@ export type Token =
       str: string;
     }
   | {
+      kind: 'input';
+    }
+  | {
       kind: 'print';
     }
   | {
@@ -63,6 +66,11 @@ export function tokenize(src: string): Token[] {
 
     if (['+', '-', '*', '/', '(', ')', ';', '=', '<', '>', '{', '}'].includes(next(1))) {
       tokens.push({ kind: 'reserved', str: strshift(1) });
+      continue;
+    }
+
+    if (consume('input')) {
+      tokens.push({ kind: 'input' });
       continue;
     }
 

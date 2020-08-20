@@ -96,6 +96,11 @@ export function generateCode(nodes: AstNode[]): string {
 
         return i;
       }
+      case 'input': {
+        const i = memory.pop();
+        operate(i, ',');
+        return i;
+      }
       case 'print': {
         const i = gen(node.arg);
         operate(i, '.');

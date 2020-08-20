@@ -291,6 +291,25 @@ describe('tokenize', () => {
   });
 
   test('print', () => {
+    const src = 'x = input() + 2;';
+
+    const expected: Token[] = [
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: '=' },
+      { kind: 'input' },
+      { kind: 'reserved', str: '(' },
+      { kind: 'reserved', str: ')' },
+      { kind: 'reserved', str: '+' },
+      { kind: 'num', val: 2 },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const tokens = tokenize(src);
+    expect(tokens).toEqual(expected);
+  });
+
+  test('print', () => {
     const src = 'print(2 + 3);';
 
     const expected: Token[] = [

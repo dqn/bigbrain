@@ -14,6 +14,31 @@ describe('code', () => {
     expect(code).toEqual('+++++++++++++');
   });
 
+  test('input', () => {
+    const nodes: AstNode[] = [
+      {
+        kind: 'assign',
+        lhs: {
+          kind: 'var',
+          index: 0,
+        },
+        rhs: {
+          kind: 'add',
+          lhs: {
+            kind: 'input',
+          },
+          rhs: {
+            kind: 'num',
+            val: 2,
+          },
+        },
+      },
+    ];
+
+    const code = generateCode(nodes);
+    expect(code).toEqual('>,>++[<+>-]<<[-]>[<+>>+<-]');
+  });
+
   test('print', () => {
     const nodes: AstNode[] = [
       {

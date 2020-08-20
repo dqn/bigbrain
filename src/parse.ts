@@ -19,6 +19,9 @@ export type AstNode =
       rhs: AstNode;
     }
   | {
+      kind: 'input';
+    }
+  | {
       kind: 'print';
       arg: AstNode;
     }
@@ -128,6 +131,12 @@ export function parse(tokens: Token[]) {
 
     if (nextToken().kind === 'ident') {
       return variable();
+    }
+
+    if (consumeKind('input')) {
+      expect('(');
+      expect(')');
+      return { kind: 'input' };
     }
 
     const token = shiftToken();
