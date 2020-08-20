@@ -423,6 +423,17 @@ export function generateCode(nodes: AstNode[]): string {
 
         return -1;
       }
+      case 'block': {
+        node.stmts.forEach((stmt) => {
+          const rtn = gen(stmt);
+
+          if (rtn !== -1) {
+            free(rtn);
+          }
+        });
+
+        return -1;
+      }
     }
 
     throw new Error(`unknown node kind ${node.kind}`);
@@ -430,7 +441,7 @@ export function generateCode(nodes: AstNode[]): string {
 
   nodes.forEach((node, i) => {
     const rtn = gen(node);
-    if (i !== nodes.length - 1) {
+    if (rtn !== -1 && i !== nodes.length - 1) {
       free(rtn);
     }
   });

@@ -787,6 +787,55 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
+  test('block', () => {
+    const tokens: Token[] = [
+      { kind: 'reserved', str: '{' },
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: '=' },
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: ';' },
+      { kind: 'ident', str: 'y' },
+      { kind: 'reserved', str: '=' },
+      { kind: 'num', val: 2 },
+      { kind: 'reserved', str: ';' },
+      { kind: 'reserved', str: '}' },
+      { kind: 'eof' },
+    ];
+
+    const expected: AstNode[] = [
+      {
+        kind: 'block',
+        stmts: [
+          {
+            kind: 'assign',
+            lhs: {
+              kind: 'var',
+              index: 0,
+            },
+            rhs: {
+              kind: 'num',
+              val: 1,
+            },
+          },
+          {
+            kind: 'assign',
+            lhs: {
+              kind: 'var',
+              index: 1,
+            },
+            rhs: {
+              kind: 'num',
+              val: 2,
+            },
+          },
+        ],
+      },
+    ];
+
+    const nodes = parse(tokens);
+    expect(nodes).toEqual(expected);
+  });
+
   test('complex', () => {
     const tokens: Token[] = [
       { kind: 'ident', str: 'foo' },

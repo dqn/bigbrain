@@ -451,4 +451,39 @@ describe('code', () => {
       '>+++<[-]>[<+>>+<-]>[-]<<[>>+<+<-]>[<+>-]>[<<[>+>>+<<<-]>>>[<<<+>>>-]<<.[-]<[>+>>+<<<-]>>>[<<<+>>>-]+[<<->>-]<<<[-]>[<+>>>+<<-]>>[-]<[-]<<[>>>+<<+<-]>[<+>-]>>[<+>-]<][-]',
     );
   });
+
+  test('block', () => {
+    const nodes: AstNode[] = [
+      {
+        kind: 'block',
+        stmts: [
+          {
+            kind: 'assign',
+            lhs: {
+              kind: 'var',
+              index: 0,
+            },
+            rhs: {
+              kind: 'num',
+              val: 1,
+            },
+          },
+          {
+            kind: 'assign',
+            lhs: {
+              kind: 'var',
+              index: 1,
+            },
+            rhs: {
+              kind: 'num',
+              val: 2,
+            },
+          },
+        ],
+      },
+    ];
+
+    const code = generateCode(nodes);
+    expect(code).toEqual('>>+<<[-]>>[<<+>>>+<-]>[-]++<<[-]>>[<<+>+>-]<[-]');
+  });
 });

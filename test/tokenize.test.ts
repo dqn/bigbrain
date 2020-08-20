@@ -388,6 +388,27 @@ describe('tokenize', () => {
     expect(tokens).toEqual(expected);
   });
 
+  test('block', () => {
+    const src = '{ x = 1; y = 2; }';
+
+    const expected: Token[] = [
+      { kind: 'reserved', str: '{' },
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: '=' },
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: ';' },
+      { kind: 'ident', str: 'y' },
+      { kind: 'reserved', str: '=' },
+      { kind: 'num', val: 2 },
+      { kind: 'reserved', str: ';' },
+      { kind: 'reserved', str: '}' },
+      { kind: 'eof' },
+    ];
+
+    const tokens = tokenize(src);
+    expect(tokens).toEqual(expected);
+  });
+
   test('multi statements', () => {
     const src = `
 foo = 1;

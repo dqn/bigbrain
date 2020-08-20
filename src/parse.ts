@@ -36,6 +36,10 @@ export type AstNode =
       whileTrue: AstNode;
     }
   | {
+      kind: 'block';
+      stmts: AstNode[];
+    }
+  | {
       kind: 'var';
       index: number;
     }
@@ -284,6 +288,14 @@ export function parse(tokens: Token[]) {
       node.whileTrue = stmt();
 
       return node;
+    }
+
+    if (consume('{')) {
+      const stmts: AstNode[] = [];
+      while (!consume('}')) {
+        stmts.push(stmt());
+      }
+      return { kind: 'block', stmts };
     }
 
     const node = expr();

@@ -61,7 +61,7 @@ export function tokenize(src: string): Token[] {
       continue;
     }
 
-    if (['+', '-', '*', '/', '(', ')', ';', '=', '<', '>'].includes(next(1))) {
+    if (['+', '-', '*', '/', '(', ')', ';', '=', '<', '>', '{', '}'].includes(next(1))) {
       tokens.push({ kind: 'reserved', str: strshift(1) });
       continue;
     }
