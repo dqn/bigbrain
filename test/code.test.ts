@@ -111,6 +111,27 @@ describe('code', () => {
     expect(code).toEqual('++++>+++<[>[>+>+<<-]>>[<<+>>-]<<<-]>[-]>[<<+>>-]');
   });
 
+  test('mod', () => {
+    const nodes: AstNode[] = [
+      {
+        kind: 'mod',
+        lhs: {
+          kind: 'num',
+          val: 5,
+        },
+        rhs: {
+          kind: 'num',
+          val: 2,
+        },
+      },
+    ];
+
+    const code = generateCode(nodes);
+    expect(code).toEqual(
+      '+++++>++<[>->+<[>>+>+<<<-]>>>[<<<+>>>-]+<[>-<[-]]>[<<[<+>-]>>-]<<<<-]>[-]',
+    );
+  });
+
   test('not', () => {
     const nodes: AstNode[] = [
       {

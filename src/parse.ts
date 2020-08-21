@@ -5,7 +5,7 @@ const MAX_VARIABLE_COUNT = 512;
 
 export type AstNode =
   | {
-      kind: 'add' | 'sub' | 'mul' | 'div' | 'equ' | 'neq' | 'lss' | 'leq' | 'and' | 'or';
+      kind: 'add' | 'sub' | 'mul' | 'div' | 'mod' | 'equ' | 'neq' | 'lss' | 'leq' | 'and' | 'or';
       lhs: AstNode;
       rhs: AstNode;
     }
@@ -195,6 +195,8 @@ export function parse(tokens: Token[]) {
         node = { kind: 'mul', lhs: node, rhs: unary() };
       } else if (consume('/')) {
         node = { kind: 'div', lhs: node, rhs: unary() };
+      } else if (consume('%')) {
+        node = { kind: 'mod', lhs: node, rhs: unary() };
       } else {
         return node;
       }

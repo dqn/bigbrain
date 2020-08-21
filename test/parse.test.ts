@@ -110,6 +110,33 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
+  test('mod', () => {
+    const tokens: Token[] = [
+      { kind: 'num', val: 5 },
+      { kind: 'reserved', str: '%' },
+      { kind: 'num', val: 2 },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const expected: AstNode[] = [
+      {
+        kind: 'mod',
+        lhs: {
+          kind: 'num',
+          val: 5,
+        },
+        rhs: {
+          kind: 'num',
+          val: 2,
+        },
+      },
+    ];
+
+    const nodes = parse(tokens);
+    expect(nodes).toEqual(expected);
+  });
+
   test('not', () => {
     const tokens: Token[] = [
       { kind: 'reserved', str: '!' },

@@ -156,6 +156,44 @@ export function generateCode(nodes: AstNode[]): string {
 
         return l;
       }
+      case 'mod': {
+        const l = gen(node.lhs);
+        const r = gen(node.rhs);
+        const i = memory.pop();
+        const j = memory.pop();
+        const k = memory.pop();
+
+        loop(l, () => {
+          operate(r, '-');
+          operate(i, '+');
+
+          copy(r, j, k);
+
+          operate(k, '+');
+
+          loop(j, () => {
+            operate(k, '-');
+            reset(j);
+          });
+
+          loop(k, () => {
+            loop(i, () => {
+              operate(r, '+');
+              operate(i, '-');
+            });
+            operate(k, '-');
+          });
+
+          operate(l, '-');
+        });
+
+        memory.push(k);
+        memory.push(j);
+        free(r);
+        memory.push(l);
+
+        return i;
+      }
       case 'not': {
         const o = gen(node.operand);
         const i = memory.pop();
