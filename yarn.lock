@@ -850,6 +850,11 @@ braces@^3.0.1:
   dependencies:
     fill-range "^7.0.1"
 
+brainfuck-node@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/brainfuck-node/-/brainfuck-node-1.0.2.tgz#34c6ac7bc100ad08ea7518bd8799371697056e83"
+  integrity sha512-4+b4t9KCQuQm5Q7A58adAn1nHAvk2T12hVZ+6nEVyax2eLTWdhF0k4QoxBMoVtY3qtlqNK44tN1bYXfJPa1PLw==
+
 browser-process-hrtime@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/browser-process-hrtime/-/browser-process-hrtime-1.0.0.tgz#3c9b4b7d782c8121e56f10106d84c0d0ffc94626"
