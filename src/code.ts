@@ -1,7 +1,7 @@
 import { AstNode } from './parse';
 import { createStack, range, uniq } from './utils';
 
-const FREE_CELL_NUM = 10;
+const FREE_CELL_NUM = 64;
 
 function retrieveReservedIndexes(nodes: AstNode[]): number[] {
   const indexes: number[] = [];
