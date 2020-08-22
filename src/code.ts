@@ -105,7 +105,7 @@ export function generateCode(nodes: AstNode[]): string {
         operate(i, ',');
         return i;
       }
-      case 'print': {
+      case 'putchar': {
         const i = gen(node.arg);
         operate(i, '.');
         return i;

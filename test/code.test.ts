@@ -39,10 +39,10 @@ describe('code', () => {
     expect(code).toEqual('>,>++[<+>-]<<[-]>[<+>>+<-]');
   });
 
-  test('print', () => {
+  test('putchar', () => {
     const nodes: AstNode[] = [
       {
-        kind: 'print',
+        kind: 'putchar',
         arg: {
           kind: 'num',
           val: 5,
@@ -423,7 +423,7 @@ describe('code', () => {
           },
         },
         caseTrue: {
-          kind: 'print',
+          kind: 'putchar',
           arg: {
             kind: 'num',
             val: 1,
@@ -452,14 +452,14 @@ describe('code', () => {
           },
         },
         caseTrue: {
-          kind: 'print',
+          kind: 'putchar',
           arg: {
             kind: 'num',
             val: 1,
           },
         },
         caseFalse: {
-          kind: 'print',
+          kind: 'putchar',
           arg: {
             kind: 'num',
             val: 2,
@@ -510,7 +510,7 @@ describe('code', () => {
           },
         },
         whileTrue: {
-          kind: 'print',
+          kind: 'putchar',
           arg: {
             kind: 'var',
             index: 0,

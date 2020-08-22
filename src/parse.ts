@@ -26,7 +26,7 @@ export type AstNode =
       kind: 'input';
     }
   | {
-      kind: 'print';
+      kind: 'putchar';
       arg: AstNode;
     }
   | {
@@ -291,10 +291,10 @@ export function parse(tokens: Token[]) {
   };
 
   const stmt = (): AstNode => {
-    if (consumeKind('print')) {
+    if (consumeKind('putchar')) {
       const arg = expr();
       expect(';');
-      return { kind: 'print', arg };
+      return { kind: 'putchar', arg };
     }
 
     if (consumeKind('if')) {

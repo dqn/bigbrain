@@ -719,9 +719,9 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('print', () => {
+  test('putchar', () => {
     const tokens: Token[] = [
-      { kind: 'print' },
+      { kind: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 2 },
       { kind: 'reserved', str: '+' },
@@ -733,7 +733,7 @@ describe('parse', () => {
 
     const expected: AstNode[] = [
       {
-        kind: 'print',
+        kind: 'putchar',
         arg: {
           kind: 'add',
           lhs: {
@@ -760,7 +760,7 @@ describe('parse', () => {
       { kind: 'reserved', str: '+' },
       { kind: 'num', val: 2 },
       { kind: 'reserved', str: ')' },
-      { kind: 'print' },
+      { kind: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: ')' },
@@ -783,7 +783,7 @@ describe('parse', () => {
           },
         },
         caseTrue: {
-          kind: 'print',
+          kind: 'putchar',
           arg: {
             kind: 'num',
             val: 1,
@@ -804,13 +804,13 @@ describe('parse', () => {
       { kind: 'reserved', str: '-' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: ')' },
-      { kind: 'print' },
+      { kind: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: ')' },
       { kind: 'reserved', str: ';' },
       { kind: 'else' },
-      { kind: 'print' },
+      { kind: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 2 },
       { kind: 'reserved', str: ')' },
@@ -833,14 +833,14 @@ describe('parse', () => {
           },
         },
         caseTrue: {
-          kind: 'print',
+          kind: 'putchar',
           arg: {
             kind: 'num',
             val: 1,
           },
         },
         caseFalse: {
-          kind: 'print',
+          kind: 'putchar',
           arg: {
             kind: 'num',
             val: 2,
@@ -869,7 +869,7 @@ describe('parse', () => {
       { kind: 'reserved', str: '-' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: ')' },
-      { kind: 'print' },
+      { kind: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'ident', str: 'x' },
       { kind: 'reserved', str: ')' },
@@ -914,7 +914,7 @@ describe('parse', () => {
           },
         },
         whileTrue: {
-          kind: 'print',
+          kind: 'putchar',
           arg: {
             kind: 'var',
             index: 0,
@@ -986,7 +986,7 @@ describe('parse', () => {
       { kind: 'reserved', str: '=' },
       { kind: 'num', val: 2 },
       { kind: 'reserved', str: ';' },
-      { kind: 'print' },
+      { kind: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: '+' },
@@ -1030,7 +1030,7 @@ describe('parse', () => {
         },
       },
       {
-        kind: 'print',
+        kind: 'putchar',
         arg: {
           kind: 'sub',
           lhs: {

@@ -10,7 +10,7 @@ export type Token =
       kind: 'input';
     }
   | {
-      kind: 'print';
+      kind: 'putchar';
     }
   | {
       kind: 'if';
@@ -74,8 +74,8 @@ export function tokenize(src: string): Token[] {
       continue;
     }
 
-    if (consume('print')) {
-      tokens.push({ kind: 'print' });
+    if (consume('putchar')) {
+      tokens.push({ kind: 'putchar' });
       continue;
     }
 

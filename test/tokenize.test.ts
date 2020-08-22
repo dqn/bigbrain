@@ -349,7 +349,7 @@ describe('tokenize', () => {
     expect(tokens).toEqual(expected);
   });
 
-  test('print', () => {
+  test('input', () => {
     const src = 'x = input() + 2;';
 
     const expected: Token[] = [
@@ -368,11 +368,11 @@ describe('tokenize', () => {
     expect(tokens).toEqual(expected);
   });
 
-  test('print', () => {
-    const src = 'print(2 + 3);';
+  test('putchar', () => {
+    const src = 'putchar(2 + 3);';
 
     const expected: Token[] = [
-      { kind: 'print' },
+      { kind: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 2 },
       { kind: 'reserved', str: '+' },
@@ -387,7 +387,7 @@ describe('tokenize', () => {
   });
 
   test('if', () => {
-    const src = 'if (1 + 2) print(1);';
+    const src = 'if (1 + 2) putchar(1);';
 
     const expected: Token[] = [
       { kind: 'if' },
@@ -396,7 +396,7 @@ describe('tokenize', () => {
       { kind: 'reserved', str: '+' },
       { kind: 'num', val: 2 },
       { kind: 'reserved', str: ')' },
-      { kind: 'print' },
+      { kind: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: ')' },
@@ -409,7 +409,7 @@ describe('tokenize', () => {
   });
 
   test('if-else', () => {
-    const src = 'if (1 - 1) print(1); else print(2);';
+    const src = 'if (1 - 1) putchar(1); else putchar(2);';
 
     const expected: Token[] = [
       { kind: 'if' },
@@ -418,13 +418,13 @@ describe('tokenize', () => {
       { kind: 'reserved', str: '-' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: ')' },
-      { kind: 'print' },
+      { kind: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: ')' },
       { kind: 'reserved', str: ';' },
       { kind: 'else' },
-      { kind: 'print' },
+      { kind: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 2 },
       { kind: 'reserved', str: ')' },
@@ -437,7 +437,7 @@ describe('tokenize', () => {
   });
 
   test('for', () => {
-    const src = 'for (x = 3; x; x = x - 1) print(x);';
+    const src = 'for (x = 3; x; x = x - 1) putchar(x);';
 
     const expected: Token[] = [
       { kind: 'for' },
@@ -454,7 +454,7 @@ describe('tokenize', () => {
       { kind: 'reserved', str: '-' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: ')' },
-      { kind: 'print' },
+      { kind: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'ident', str: 'x' },
       { kind: 'reserved', str: ')' },
@@ -491,7 +491,7 @@ describe('tokenize', () => {
     const src = `
 foo = 1;
 bar = 2;
-print(1 + 2 * (3 + 4) - foo * bar);
+putchar(1 + 2 * (3 + 4) - foo * bar);
 `;
 
     const expected: Token[] = [
@@ -503,7 +503,7 @@ print(1 + 2 * (3 + 4) - foo * bar);
       { kind: 'reserved', str: '=' },
       { kind: 'num', val: 2 },
       { kind: 'reserved', str: ';' },
-      { kind: 'print' },
+      { kind: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: '+' },
