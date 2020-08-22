@@ -62,6 +62,10 @@ export function generateCode(nodes: AstNode[]): string {
   };
 
   const free = (i: number) => {
+    if (i < 0) {
+      return;
+    }
+
     reset(i);
     memory.push(i);
   };
@@ -541,11 +545,7 @@ export function generateCode(nodes: AstNode[]): string {
       }
       case 'block': {
         node.stmts.forEach((stmt) => {
-          const rtn = gen(stmt);
-
-          if (rtn !== -1) {
-            free(rtn);
-          }
+          free(gen(stmt));
         });
 
         return -1;
@@ -557,7 +557,7 @@ export function generateCode(nodes: AstNode[]): string {
 
   nodes.forEach((node, i) => {
     const rtn = gen(node);
-    if (rtn !== -1 && i !== nodes.length - 1) {
+    if (i !== nodes.length - 1) {
       free(rtn);
     }
   });
