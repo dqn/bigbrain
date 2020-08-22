@@ -13,6 +13,9 @@ export type Token =
       kind: 'putchar';
     }
   | {
+      kind: 'print';
+    }
+  | {
       kind: 'if';
     }
   | {
@@ -76,6 +79,11 @@ export function tokenize(src: string): Token[] {
 
     if (consume('putchar')) {
       tokens.push({ kind: 'putchar' });
+      continue;
+    }
+
+    if (consume('print')) {
+      tokens.push({ kind: 'print' });
       continue;
     }
 

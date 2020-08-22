@@ -752,6 +752,39 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
+  test('print', () => {
+    const tokens: Token[] = [
+      { kind: 'print' },
+      { kind: 'reserved', str: '(' },
+      { kind: 'num', val: 2 },
+      { kind: 'reserved', str: '+' },
+      { kind: 'num', val: 3 },
+      { kind: 'reserved', str: ')' },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const expected: AstNode[] = [
+      {
+        kind: 'print',
+        arg: {
+          kind: 'add',
+          lhs: {
+            kind: 'num',
+            val: 2,
+          },
+          rhs: {
+            kind: 'num',
+            val: 3,
+          },
+        },
+      },
+    ];
+
+    const nodes = parse(tokens);
+    expect(nodes).toEqual(expected);
+  });
+
   test('if', () => {
     const tokens: Token[] = [
       { kind: 'if' },

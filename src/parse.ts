@@ -30,6 +30,10 @@ export type AstNode =
       arg: AstNode;
     }
   | {
+      kind: 'print';
+      arg: AstNode;
+    }
+  | {
       kind: 'if';
       cond: AstNode;
       caseTrue: AstNode;
@@ -295,6 +299,12 @@ export function parse(tokens: Token[]) {
       const arg = expr();
       expect(';');
       return { kind: 'putchar', arg };
+    }
+
+    if (consumeKind('print')) {
+      const arg = expr();
+      expect(';');
+      return { kind: 'print', arg };
     }
 
     if (consumeKind('if')) {

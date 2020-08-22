@@ -386,6 +386,24 @@ describe('tokenize', () => {
     expect(tokens).toEqual(expected);
   });
 
+  test('print', () => {
+    const src = 'print(2 + 3);';
+
+    const expected: Token[] = [
+      { kind: 'print' },
+      { kind: 'reserved', str: '(' },
+      { kind: 'num', val: 2 },
+      { kind: 'reserved', str: '+' },
+      { kind: 'num', val: 3 },
+      { kind: 'reserved', str: ')' },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const tokens = tokenize(src);
+    expect(tokens).toEqual(expected);
+  });
+
   test('if', () => {
     const src = 'if (1 + 2) putchar(1);';
 

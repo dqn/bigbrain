@@ -110,6 +110,121 @@ export function generateCode(nodes: AstNode[]): string {
         operate(i, '.');
         return i;
       }
+      case 'print': {
+        const a = gen(node.arg);
+        const i = memory.pop();
+        const j = memory.pop();
+        const k = memory.pop();
+        const l = memory.pop();
+        const m = memory.pop();
+        const n = memory.pop();
+        const o = memory.pop();
+
+        operate(i, '+'.repeat(10));
+
+        loop(a, () => {
+          operate(a, '-');
+          operate(i, '-');
+          operate(j, '+');
+
+          copy(i, k, l);
+
+          operate(l, '+');
+
+          loop(k, () => {
+            operate(l, '-');
+            reset(k);
+          });
+
+          loop(l, () => {
+            loop(j, () => {
+              operate(i, '+');
+              operate(j, '-');
+            });
+            operate(m, '+');
+            operate(l, '-');
+          });
+
+          focus(a);
+        });
+
+        loop(j, () => {
+          operate(o, '+');
+          operate(j, '-');
+        });
+
+        loop(m, () => {
+          operate(a, '+');
+          operate(m, '-');
+        });
+
+        reset(i);
+        operate(i, '+'.repeat(10));
+
+        loop(a, () => {
+          operate(a, '-');
+          operate(i, '-');
+          operate(j, '+');
+
+          copy(i, k, l);
+
+          operate(l, '+');
+
+          loop(k, () => {
+            operate(l, '-');
+            reset(k);
+          });
+
+          loop(l, () => {
+            loop(j, () => {
+              operate(i, '+');
+              operate(j, '-');
+            });
+            operate(m, '+');
+            operate(l, '-');
+          });
+
+          focus(a);
+        });
+
+        loop(j, () => {
+          operate(n, '+');
+          operate(j, '-');
+        });
+
+        loop(m, () => {
+          operate(m, '+'.repeat(48));
+          operate(m, '.');
+          operate(l, '+');
+          operate(n, '+');
+          reset(m);
+        });
+
+        loop(n, () => {
+          loop(l, () => {
+            operate(n, '-');
+            operate(l, '-');
+          });
+          operate(n, '+'.repeat(48));
+          operate(n, '.');
+          reset(n);
+        });
+
+        operate(o, '+'.repeat(48));
+        operate(o, '.');
+        reset(o);
+
+        memory.push(o);
+        memory.push(n);
+        memory.push(m);
+        memory.push(l);
+        memory.push(k);
+        memory.push(j);
+        free(i);
+        memory.push(a);
+
+        return -1;
+      }
       case 'add': {
         const l = gen(node.lhs);
         const r = gen(node.rhs);
