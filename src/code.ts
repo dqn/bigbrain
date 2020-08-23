@@ -36,42 +36,42 @@ export function generateCode(nodes: AstNode[]): string {
     code += operation;
   };
 
-  const focus = (i: number) => {
-    while (cur < i) {
+  const focus = (p: number) => {
+    while (cur < p) {
       emit('>');
       ++cur;
     }
-    while (cur > i) {
+    while (cur > p) {
       emit('<');
       --cur;
     }
   };
 
-  const loop = (i: number, body: () => void) => {
-    focus(i);
+  const loop = (p: number, body: () => void) => {
+    focus(p);
     emit('[');
     body();
     emit(']');
-    if (cur !== i) {
+    if (cur !== p) {
       throw new Error('compile error: cursor must be the same at the start as at the end');
     }
   };
 
-  const reset = (i: number) => {
-    loop(i, () => emit('-'));
+  const reset = (p: number) => {
+    loop(p, () => emit('-'));
   };
 
-  const free = (i: number) => {
-    if (i < 0) {
+  const free = (p: number) => {
+    if (p < 0) {
       return;
     }
 
-    reset(i);
-    memory.push(i);
+    reset(p);
+    memory.push(p);
   };
 
-  const operate = (i: number, operation: string) => {
-    focus(i);
+  const operate = (p: number, operation: string) => {
+    focus(p);
     emit(operation);
   };
 
@@ -91,137 +91,137 @@ export function generateCode(nodes: AstNode[]): string {
   const gen = (node: AstNode): number => {
     switch (node.kind) {
       case 'num': {
-        const i = memory.pop();
+        const t = memory.pop();
 
-        focus(i);
+        focus(t);
         for (let i = 0; i < node.val; ++i) {
           emit('+');
         }
 
-        return i;
+        return t;
       }
       case 'input': {
-        const i = memory.pop();
-        operate(i, ',');
-        return i;
+        const arg = memory.pop();
+        operate(arg, ',');
+        return arg;
       }
       case 'putchar': {
-        const i = gen(node.arg);
-        operate(i, '.');
-        return i;
+        const arg = gen(node.arg);
+        operate(arg, '.');
+        return arg;
       }
       case 'print': {
-        const a = gen(node.arg);
-        const i = memory.pop();
-        const j = memory.pop();
-        const k = memory.pop();
-        const l = memory.pop();
-        const m = memory.pop();
-        const n = memory.pop();
-        const o = memory.pop();
+        const arg = gen(node.arg);
+        const t0 = memory.pop();
+        const t1 = memory.pop();
+        const t2 = memory.pop();
+        const t3 = memory.pop();
+        const t4 = memory.pop();
+        const t5 = memory.pop();
+        const t6 = memory.pop();
 
-        operate(i, '+'.repeat(10));
+        operate(t0, '+'.repeat(10));
 
-        loop(a, () => {
-          operate(a, '-');
-          operate(i, '-');
-          operate(j, '+');
+        loop(arg, () => {
+          operate(arg, '-');
+          operate(t0, '-');
+          operate(t1, '+');
 
-          copy(i, k, l);
+          copy(t0, t2, t3);
 
-          operate(l, '+');
+          operate(t3, '+');
 
-          loop(k, () => {
-            operate(l, '-');
-            reset(k);
+          loop(t2, () => {
+            operate(t3, '-');
+            reset(t2);
           });
 
-          loop(l, () => {
-            loop(j, () => {
-              operate(i, '+');
-              operate(j, '-');
+          loop(t3, () => {
+            loop(t1, () => {
+              operate(t0, '+');
+              operate(t1, '-');
             });
-            operate(m, '+');
-            operate(l, '-');
+            operate(t4, '+');
+            operate(t3, '-');
           });
 
-          focus(a);
+          focus(arg);
         });
 
-        loop(j, () => {
-          operate(o, '+');
-          operate(j, '-');
+        loop(t1, () => {
+          operate(t6, '+');
+          operate(t1, '-');
         });
 
-        loop(m, () => {
-          operate(a, '+');
-          operate(m, '-');
+        loop(t4, () => {
+          operate(arg, '+');
+          operate(t4, '-');
         });
 
-        reset(i);
-        operate(i, '+'.repeat(10));
+        reset(t0);
+        operate(t0, '+'.repeat(10));
 
-        loop(a, () => {
-          operate(a, '-');
-          operate(i, '-');
-          operate(j, '+');
+        loop(arg, () => {
+          operate(arg, '-');
+          operate(t0, '-');
+          operate(t1, '+');
 
-          copy(i, k, l);
+          copy(t0, t2, t3);
 
-          operate(l, '+');
+          operate(t3, '+');
 
-          loop(k, () => {
-            operate(l, '-');
-            reset(k);
+          loop(t2, () => {
+            operate(t3, '-');
+            reset(t2);
           });
 
-          loop(l, () => {
-            loop(j, () => {
-              operate(i, '+');
-              operate(j, '-');
+          loop(t3, () => {
+            loop(t1, () => {
+              operate(t0, '+');
+              operate(t1, '-');
             });
-            operate(m, '+');
-            operate(l, '-');
+            operate(t4, '+');
+            operate(t3, '-');
           });
 
-          focus(a);
+          focus(arg);
         });
 
-        loop(j, () => {
-          operate(n, '+');
-          operate(j, '-');
+        loop(t1, () => {
+          operate(t5, '+');
+          operate(t1, '-');
         });
 
-        loop(m, () => {
-          operate(m, '+'.repeat(48));
-          operate(m, '.');
-          operate(l, '+');
-          operate(n, '+');
-          reset(m);
+        loop(t4, () => {
+          operate(t4, '+'.repeat(48));
+          operate(t4, '.');
+          operate(t3, '+');
+          operate(t5, '+');
+          reset(t4);
         });
 
-        loop(n, () => {
-          loop(l, () => {
-            operate(n, '-');
-            operate(l, '-');
+        loop(t5, () => {
+          loop(t3, () => {
+            operate(t5, '-');
+            operate(t3, '-');
           });
-          operate(n, '+'.repeat(48));
-          operate(n, '.');
-          reset(n);
+          operate(t5, '+'.repeat(48));
+          operate(t5, '.');
+          reset(t5);
         });
 
-        operate(o, '+'.repeat(48));
-        operate(o, '.');
-        reset(o);
+        operate(t6, '+'.repeat(48));
+        operate(t6, '.');
+        reset(t6);
 
-        memory.push(o);
-        memory.push(n);
-        memory.push(m);
-        memory.push(l);
-        memory.push(k);
-        memory.push(j);
-        free(i);
-        memory.push(a);
+        memory.push(t6);
+        memory.push(t5);
+        memory.push(t4);
+        memory.push(t3);
+        memory.push(t2);
+        memory.push(t1);
+        free(t0);
+        memory.push(arg);
 
         return -1;
       }
@@ -254,23 +254,23 @@ export function generateCode(nodes: AstNode[]): string {
       case 'mul': {
         const l = gen(node.lhs);
         const r = gen(node.rhs);
-        const i = memory.pop();
-        const j = memory.pop();
+        const t0 = memory.pop();
+        const t1 = memory.pop();
 
         loop(l, () => {
-          copy(r, i, j);
+          copy(r, t0, t1);
           operate(l, '-');
         });
 
         reset(r);
 
-        loop(i, () => {
+        loop(t0, () => {
           operate(l, '+');
-          operate(i, '-');
+          operate(t0, '-');
         });
 
-        memory.push(j);
-        memory.push(i);
+        memory.push(t1);
+        memory.push(t0);
         memory.push(r);
 
         return l;
@@ -278,102 +278,102 @@ export function generateCode(nodes: AstNode[]): string {
       case 'mod': {
         const l = gen(node.lhs);
         const r = gen(node.rhs);
-        const i = memory.pop();
-        const j = memory.pop();
-        const k = memory.pop();
+        const t0 = memory.pop();
+        const t1 = memory.pop();
+        const t2 = memory.pop();
 
         loop(l, () => {
           operate(r, '-');
-          operate(i, '+');
+          operate(t0, '+');
 
-          copy(r, j, k);
+          copy(r, t1, t2);
 
-          operate(k, '+');
+          operate(t2, '+');
 
-          loop(j, () => {
-            operate(k, '-');
-            reset(j);
+          loop(t1, () => {
+            operate(t2, '-');
+            reset(t1);
           });
 
-          loop(k, () => {
-            loop(i, () => {
+          loop(t2, () => {
+            loop(t0, () => {
               operate(r, '+');
-              operate(i, '-');
+              operate(t0, '-');
             });
-            operate(k, '-');
+            operate(t2, '-');
           });
 
           operate(l, '-');
         });
 
-        memory.push(k);
-        memory.push(j);
+        memory.push(t2);
+        memory.push(t1);
         free(r);
         memory.push(l);
 
-        return i;
+        return t0;
       }
       case 'not': {
-        const o = gen(node.operand);
-        const i = memory.pop();
+        const ope = gen(node.operand);
+        const t = memory.pop();
 
-        operate(i, '+');
-        loop(o, () => {
-          operate(i, '-');
-          reset(o);
+        operate(t, '+');
+        loop(ope, () => {
+          operate(t, '-');
+          reset(ope);
         });
 
-        memory.push(o);
+        memory.push(ope);
 
-        return i;
+        return t;
       }
       case 'pre-inc': {
         const o = node.operand.index;
-        const i = memory.pop();
-        const j = memory.pop();
+        const t0 = memory.pop();
+        const t1 = memory.pop();
 
         operate(o, '+');
-        copy(o, i, j);
+        copy(o, t0, t1);
 
-        memory.push(j);
+        memory.push(t1);
 
-        return i;
+        return t0;
       }
       case 'pre-dec': {
         const o = node.operand.index;
-        const i = memory.pop();
-        const j = memory.pop();
+        const t0 = memory.pop();
+        const t1 = memory.pop();
 
         operate(o, '-');
-        copy(o, i, j);
+        copy(o, t0, t1);
 
-        memory.push(j);
+        memory.push(t1);
 
-        return i;
+        return t0;
       }
       case 'post-inc': {
         const o = node.operand.index;
-        const i = memory.pop();
-        const j = memory.pop();
+        const t0 = memory.pop();
+        const t1 = memory.pop();
 
-        copy(o, i, j);
+        copy(o, t0, t1);
         operate(o, '+');
 
-        memory.push(j);
+        memory.push(t1);
 
-        return i;
+        return t0;
       }
       case 'post-dec': {
         const o = node.operand.index;
-        const i = memory.pop();
-        const j = memory.pop();
+        const t0 = memory.pop();
+        const t1 = memory.pop();
 
-        copy(o, i, j);
+        copy(o, t0, t1);
         operate(o, '-');
 
-        memory.push(j);
+        memory.push(t1);
 
-        return i;
+        return t0;
       }
       case 'equ': {
         const l = gen(node.lhs);
@@ -416,25 +416,25 @@ export function generateCode(nodes: AstNode[]): string {
       case 'lss': {
         const l = gen(node.lhs);
         const r = gen(node.rhs);
-        const i = memory.pop();
-        const j = memory.pop();
+        const t0 = memory.pop();
+        const t1 = memory.pop();
 
         loop(l, () => {
           emit('-');
 
-          copy(r, i, j);
+          copy(r, t0, t1);
 
-          operate(j, '+');
+          operate(t1, '+');
 
-          loop(i, () => {
+          loop(t0, () => {
             operate(r, '-');
-            operate(j, '-');
-            reset(i);
+            operate(t1, '-');
+            reset(t0);
           });
 
-          loop(j, () => {
+          loop(t1, () => {
             reset(l);
-            operate(j, '-');
+            operate(t1, '-');
           });
 
           focus(l);
@@ -445,8 +445,8 @@ export function generateCode(nodes: AstNode[]): string {
           reset(r);
         });
 
-        memory.push(j);
-        memory.push(i);
+        memory.push(t1);
+        memory.push(t0);
         memory.push(r);
 
         return l;
@@ -454,25 +454,25 @@ export function generateCode(nodes: AstNode[]): string {
       case 'leq': {
         const l = gen(node.lhs);
         const r = gen(node.rhs);
-        const i = memory.pop();
-        const j = memory.pop();
+        const t0 = memory.pop();
+        const t1 = memory.pop();
 
         loop(r, () => {
           emit('-');
 
-          copy(l, i, j);
+          copy(l, t0, t1);
 
-          operate(j, '+');
+          operate(t1, '+');
 
-          loop(i, () => {
+          loop(t0, () => {
             operate(l, '-');
-            operate(j, '-');
-            reset(i);
+            operate(t1, '-');
+            reset(t0);
           });
 
-          loop(j, () => {
+          loop(t1, () => {
             reset(r);
-            operate(j, '-');
+            operate(t1, '-');
           });
 
           focus(r);
@@ -485,8 +485,8 @@ export function generateCode(nodes: AstNode[]): string {
           reset(l);
         });
 
-        memory.push(j);
-        memory.push(i);
+        memory.push(t1);
+        memory.push(t0);
         memory.push(l);
 
         return r;
@@ -494,118 +494,118 @@ export function generateCode(nodes: AstNode[]): string {
       case 'and': {
         const l = gen(node.lhs);
         const r = gen(node.rhs);
-        const i = memory.pop();
+        const t = memory.pop();
 
         loop(l, () => {
-          operate(i, '+');
+          operate(t, '+');
           reset(l);
         });
 
         loop(r, () => {
-          operate(i, '+');
+          operate(t, '+');
           reset(r);
         });
 
         operate(r, '++');
 
-        loop(i, () => {
+        loop(t, () => {
           operate(r, '-');
-          operate(i, '-');
+          operate(t, '-');
         });
 
         emit('+');
 
         loop(r, () => {
-          operate(i, '-');
+          operate(t, '-');
           reset(r);
         });
 
         memory.push(r);
         memory.push(l);
 
-        return i;
+        return t;
       }
       case 'or': {
         const l = gen(node.lhs);
         const r = gen(node.rhs);
-        const i = memory.pop();
+        const t = memory.pop();
 
         loop(l, () => {
-          operate(i, '+');
+          operate(t, '+');
           reset(l);
         });
 
         loop(r, () => {
-          operate(i, '+');
+          operate(t, '+');
           reset(r);
         });
 
-        loop(i, () => {
+        loop(t, () => {
           operate(r, '+');
-          reset(i);
+          reset(t);
         });
 
         memory.push(l);
-        memory.push(i);
+        memory.push(t);
 
         return r;
       }
       case 'assign': {
         const l = node.lhs.index;
         const r = gen(node.rhs);
-        const i = memory.pop();
+        const t = memory.pop();
 
         reset(l);
 
         loop(r, () => {
           operate(l, '+');
-          operate(i, '+');
+          operate(t, '+');
           operate(r, '-');
         });
 
         memory.push(r);
 
-        return i;
+        return t;
       }
       case 'var': {
-        const v = node.index;
-        const i = memory.pop();
-        const j = memory.pop();
+        const p = node.index;
+        const t0 = memory.pop();
+        const t1 = memory.pop();
 
-        copy(v, i, j);
+        copy(p, t0, t1);
 
-        memory.push(j);
+        memory.push(t1);
 
-        return i;
+        return t0;
       }
       case 'if': {
-        const c = gen(node.cond);
+        const cond = gen(node.cond);
 
         if (!node.caseFalse) {
-          loop(c, () => {
+          loop(cond, () => {
             const rtn = gen(node.caseTrue);
 
             free(rtn);
-            free(c);
+            free(cond);
           });
         } else {
-          const i = memory.pop();
-          operate(i, '+');
+          const t = memory.pop();
+          operate(t, '+');
 
-          loop(c, () => {
+          loop(cond, () => {
             const rtn = gen(node.caseTrue);
 
             free(rtn);
 
-            operate(i, '-');
-            free(c);
+            operate(t, '-');
+            free(cond);
           });
 
-          loop(i, () => {
+          loop(t, () => {
             const rtn = gen(node.caseFalse!);
 
             free(rtn);
-            operate(i, '-');
+            operate(t, '-');
           });
         }
 
