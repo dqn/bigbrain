@@ -1,5 +1,7 @@
 # Bigbrain
 
+[![build status](https://github.com/dqn/bigbrain/workflows/build/badge.svg)](https://github.com/dqn/bigbrain/actions)
+
 High-level programming language that can be compiled to Brainfuck.
 
 ## Example
