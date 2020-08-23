@@ -52,6 +52,21 @@ describe('tokenize', () => {
     expect(tokens).toEqual(expected);
   });
 
+  test('div', () => {
+    const src = '6 / 2;';
+
+    const expected: Token[] = [
+      { kind: 'num', val: 6 },
+      { kind: 'reserved', str: '/' },
+      { kind: 'num', val: 2 },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const tokens = tokenize(src);
+    expect(tokens).toEqual(expected);
+  });
+
   test('mod', () => {
     const src = '5 % 2;';
 

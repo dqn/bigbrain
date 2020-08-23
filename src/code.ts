@@ -313,6 +313,64 @@ export function generateCode(nodes: AstNode[]): string {
 
         return t0;
       }
+      case 'div': {
+        const l = gen(node.lhs);
+        const r = gen(node.rhs);
+        const t0 = memory.pop();
+        const t1 = memory.pop();
+        const t2 = memory.pop();
+        const t3 = memory.pop();
+
+        loop(l, () => {
+          operate(t0, '+');
+          operate(l, '-');
+        });
+
+        loop(t0, () => {
+          copy(r, t1, t2);
+
+          loop(t1, () => {
+            operate(t2, '+');
+            operate(t0, '-');
+
+            loop(t0, () => {
+              reset(t2);
+              operate(t3, '+');
+              operate(t0, '-');
+            });
+
+            loop(t3, () => {
+              operate(t0, '+');
+              operate(t3, '-');
+            });
+
+            loop(t2, () => {
+              operate(t1, '-');
+
+              loop(t1, () => {
+                operate(l, '-');
+                reset(t1);
+              });
+
+              operate(t1, '+');
+              operate(t2, '-');
+            });
+
+            operate(t1, '-');
+          });
+
+          operate(l, '+');
+          focus(t0);
+        });
+
+        memory.push(t3);
+        memory.push(t2);
+        memory.push(t1);
+        memory.push(t0);
+        free(r);
+
+        return l;
+      }
       case 'not': {
         const ope = gen(node.operand);
         const t = memory.pop();
@@ -666,8 +724,6 @@ export function generateCode(nodes: AstNode[]): string {
         return -1;
       }
     }
-
-    throw new Error(`unknown node kind ${node.kind}`);
   };
 
   nodes.forEach((node, i) => {
