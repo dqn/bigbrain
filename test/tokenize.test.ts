@@ -355,7 +355,7 @@ describe('tokenize', () => {
     const expected: Token[] = [
       { kind: 'ident', str: 'x' },
       { kind: 'reserved', str: '=' },
-      { kind: 'input' },
+      { kind: 'reserved', str: 'input' },
       { kind: 'reserved', str: '(' },
       { kind: 'reserved', str: ')' },
       { kind: 'reserved', str: '+' },
@@ -372,7 +372,7 @@ describe('tokenize', () => {
     const src = 'putchar(2 + 3);';
 
     const expected: Token[] = [
-      { kind: 'putchar' },
+      { kind: 'reserved', str: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 2 },
       { kind: 'reserved', str: '+' },
@@ -390,7 +390,7 @@ describe('tokenize', () => {
     const src = 'print(2 + 3);';
 
     const expected: Token[] = [
-      { kind: 'print' },
+      { kind: 'reserved', str: 'print' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 2 },
       { kind: 'reserved', str: '+' },
@@ -408,13 +408,13 @@ describe('tokenize', () => {
     const src = 'if (1 + 2) putchar(1);';
 
     const expected: Token[] = [
-      { kind: 'if' },
+      { kind: 'reserved', str: 'if' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: '+' },
       { kind: 'num', val: 2 },
       { kind: 'reserved', str: ')' },
-      { kind: 'putchar' },
+      { kind: 'reserved', str: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: ')' },
@@ -430,19 +430,19 @@ describe('tokenize', () => {
     const src = 'if (1 - 1) putchar(1); else putchar(2);';
 
     const expected: Token[] = [
-      { kind: 'if' },
+      { kind: 'reserved', str: 'if' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: '-' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: ')' },
-      { kind: 'putchar' },
+      { kind: 'reserved', str: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: ')' },
       { kind: 'reserved', str: ';' },
-      { kind: 'else' },
-      { kind: 'putchar' },
+      { kind: 'reserved', str: 'else' },
+      { kind: 'reserved', str: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 2 },
       { kind: 'reserved', str: ')' },
@@ -458,7 +458,7 @@ describe('tokenize', () => {
     const src = 'for (x = 3; x; x = x - 1) putchar(x);';
 
     const expected: Token[] = [
-      { kind: 'for' },
+      { kind: 'reserved', str: 'for' },
       { kind: 'reserved', str: '(' },
       { kind: 'ident', str: 'x' },
       { kind: 'reserved', str: '=' },
@@ -472,7 +472,7 @@ describe('tokenize', () => {
       { kind: 'reserved', str: '-' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: ')' },
-      { kind: 'putchar' },
+      { kind: 'reserved', str: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'ident', str: 'x' },
       { kind: 'reserved', str: ')' },
@@ -521,7 +521,7 @@ putchar(1 + 2 * (3 + 4) - foo * bar);
       { kind: 'reserved', str: '=' },
       { kind: 'num', val: 2 },
       { kind: 'reserved', str: ';' },
-      { kind: 'putchar' },
+      { kind: 'reserved', str: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: '+' },

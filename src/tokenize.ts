@@ -1,28 +1,45 @@
+// must sort them in order of increasing string length for lexical analysis.
+const symbols = [
+  '==',
+  '!=',
+  '<=',
+  '>=',
+  '&&',
+  '||',
+  '++',
+  '--',
+  '+',
+  '-',
+  '*',
+  '/',
+  '%',
+  '(',
+  ')',
+  ';',
+  '=',
+  '<',
+  '>',
+  '!',
+  '{',
+  '}',
+] as const;
+
+const builtInFunctions = ['input', 'putchar', 'print'] as const;
+
+const controlStructures = ['if', 'else', 'for'] as const;
+
+export type ReservedWord =
+  | typeof symbols[number]
+  | typeof builtInFunctions[number]
+  | typeof controlStructures[number];
+
 export type Token =
   | {
       kind: 'eof';
     }
   | {
       kind: 'reserved';
-      str: string;
-    }
-  | {
-      kind: 'input';
-    }
-  | {
-      kind: 'putchar';
-    }
-  | {
-      kind: 'print';
-    }
-  | {
-      kind: 'if';
-    }
-  | {
-      kind: 'else';
-    }
-  | {
-      kind: 'for';
+      str: ReservedWord;
     }
   | {
       kind: 'ident';
@@ -62,43 +79,22 @@ export function tokenize(src: string): Token[] {
       continue;
     }
 
-    if (['==', '!=', '<=', '>=', '&&', '||', '++', '--'].includes(next(2))) {
-      tokens.push({ kind: 'reserved', str: strshift(2) });
+    const symbol = symbols.find((sym) => next(sym.length) === sym);
+    if (symbol) {
+      strshift(symbol.length);
+      tokens.push({ kind: 'reserved', str: symbol });
       continue;
     }
 
-    if (['+', '-', '*', '/', '%', '(', ')', ';', '=', '<', '>', '!', '{', '}'].includes(next(1))) {
-      tokens.push({ kind: 'reserved', str: strshift(1) });
+    const builtInFunction = builtInFunctions.find((func) => consume(func));
+    if (builtInFunction) {
+      tokens.push({ kind: 'reserved', str: builtInFunction });
       continue;
     }
 
-    if (consume('input')) {
-      tokens.push({ kind: 'input' });
-      continue;
-    }
-
-    if (consume('putchar')) {
-      tokens.push({ kind: 'putchar' });
-      continue;
-    }
-
-    if (consume('print')) {
-      tokens.push({ kind: 'print' });
-      continue;
-    }
-
-    if (consume('if')) {
-      tokens.push({ kind: 'if' });
-      continue;
-    }
-
-    if (consume('else')) {
-      tokens.push({ kind: 'else' });
-      continue;
-    }
-
-    if (consume('for')) {
-      tokens.push({ kind: 'for' });
+    const controlStructure = controlStructures.find((struct) => consume(struct));
+    if (controlStructure) {
+      tokens.push({ kind: 'reserved', str: controlStructure });
       continue;
     }
 

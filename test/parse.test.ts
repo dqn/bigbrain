@@ -686,7 +686,7 @@ describe('parse', () => {
     const tokens: Token[] = [
       { kind: 'ident', str: 'x' },
       { kind: 'reserved', str: '=' },
-      { kind: 'input' },
+      { kind: 'reserved', str: 'input' },
       { kind: 'reserved', str: '(' },
       { kind: 'reserved', str: ')' },
       { kind: 'reserved', str: '+' },
@@ -721,7 +721,7 @@ describe('parse', () => {
 
   test('putchar', () => {
     const tokens: Token[] = [
-      { kind: 'putchar' },
+      { kind: 'reserved', str: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 2 },
       { kind: 'reserved', str: '+' },
@@ -754,7 +754,7 @@ describe('parse', () => {
 
   test('print', () => {
     const tokens: Token[] = [
-      { kind: 'print' },
+      { kind: 'reserved', str: 'print' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 2 },
       { kind: 'reserved', str: '+' },
@@ -787,13 +787,13 @@ describe('parse', () => {
 
   test('if', () => {
     const tokens: Token[] = [
-      { kind: 'if' },
+      { kind: 'reserved', str: 'if' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: '+' },
       { kind: 'num', val: 2 },
       { kind: 'reserved', str: ')' },
-      { kind: 'putchar' },
+      { kind: 'reserved', str: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: ')' },
@@ -831,19 +831,19 @@ describe('parse', () => {
 
   test('if-else', () => {
     const tokens: Token[] = [
-      { kind: 'if' },
+      { kind: 'reserved', str: 'if' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: '-' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: ')' },
-      { kind: 'putchar' },
+      { kind: 'reserved', str: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: ')' },
       { kind: 'reserved', str: ';' },
-      { kind: 'else' },
-      { kind: 'putchar' },
+      { kind: 'reserved', str: 'else' },
+      { kind: 'reserved', str: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 2 },
       { kind: 'reserved', str: ')' },
@@ -888,7 +888,7 @@ describe('parse', () => {
 
   test('for', () => {
     const tokens: Token[] = [
-      { kind: 'for' },
+      { kind: 'reserved', str: 'for' },
       { kind: 'reserved', str: '(' },
       { kind: 'ident', str: 'x' },
       { kind: 'reserved', str: '=' },
@@ -902,7 +902,7 @@ describe('parse', () => {
       { kind: 'reserved', str: '-' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: ')' },
-      { kind: 'putchar' },
+      { kind: 'reserved', str: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'ident', str: 'x' },
       { kind: 'reserved', str: ')' },
@@ -1019,7 +1019,7 @@ describe('parse', () => {
       { kind: 'reserved', str: '=' },
       { kind: 'num', val: 2 },
       { kind: 'reserved', str: ';' },
-      { kind: 'putchar' },
+      { kind: 'reserved', str: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: '+' },

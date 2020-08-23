@@ -26,11 +26,7 @@ export type AstNode =
       kind: 'input';
     }
   | {
-      kind: 'putchar';
-      arg: AstNode;
-    }
-  | {
-      kind: 'print';
+      kind: 'print' | 'putchar';
       arg: AstNode;
     }
   | {
@@ -94,14 +90,6 @@ export function parse(tokens: Token[]) {
     return true;
   };
 
-  const consumeKind = (kind: Token['kind']): boolean => {
-    if (nextToken().kind !== kind) {
-      return false;
-    }
-    tokens.shift();
-    return true;
-  };
-
   const expect = (op: string): Token => {
     const token = shiftToken();
     if (token.kind !== 'reserved' || token.str !== op) {
@@ -141,7 +129,7 @@ export function parse(tokens: Token[]) {
       return variable();
     }
 
-    if (consumeKind('input')) {
+    if (consume('input')) {
       expect('(');
       expect(')');
       return { kind: 'input' };
@@ -295,32 +283,32 @@ export function parse(tokens: Token[]) {
   };
 
   const stmt = (): AstNode => {
-    if (consumeKind('putchar')) {
+    if (consume('putchar')) {
       const arg = expr();
       expect(';');
       return { kind: 'putchar', arg };
     }
 
-    if (consumeKind('print')) {
+    if (consume('print')) {
       const arg = expr();
       expect(';');
       return { kind: 'print', arg };
     }
 
-    if (consumeKind('if')) {
+    if (consume('if')) {
       expect('(');
       const cond = expr();
       expect(')');
       const node: AstNode = { kind: 'if', cond, caseTrue: stmt() };
 
-      if (consumeKind('else')) {
+      if (consume('else')) {
         node.caseFalse = stmt();
       }
 
       return node;
     }
 
-    if (consumeKind('for')) {
+    if (consume('for')) {
       const node: AstNode = { kind: 'for', whileTrue: null! };
 
       expect('(');
