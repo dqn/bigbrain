@@ -624,6 +624,47 @@ describe('code', () => {
     );
   });
 
+  test('while', () => {
+    const nodes: AstNode[] = [
+      {
+        kind: 'while',
+        cond: {
+          kind: 'lss',
+          lhs: {
+            kind: 'pre-inc',
+            operand: {
+              kind: 'var',
+              index: 0,
+            },
+          },
+          rhs: {
+            kind: 'num',
+            val: 3,
+          },
+        },
+        whileTrue: {
+          kind: 'putchar',
+          arg: {
+            kind: 'add',
+            lhs: {
+              kind: 'num',
+              val: 48,
+            },
+            rhs: {
+              kind: 'var',
+              index: 0,
+            },
+          },
+        },
+      },
+    ];
+
+    const code = generateCode(nodes);
+    expect(code).toEqual(
+      '+[>+>+<<-]>>[<<+>>-]+++<[->[>+>+<<-]>>[<<+>>-]+<[<->>-<[-]]>[<<<[-]>>>-]<<<]>[<+>[-]]<[>++++++++++++++++++++++++++++++++++++++++++++++++<<[>>>+>+<<<<-]>>>>[<<<<+>>>>-]<[<+>-]<.[-]<[-]<+[>>+>+<<<-]>>>[<<<+>>>-]+++<[->[>+>+<<-]>>[<<+>>-]+<[<->>-<[-]]>[<<<[-]>>>-]<<<]>[<+>[-]]<[<+>-]<]',
+    );
+  });
+
   test('block', () => {
     const nodes: AstNode[] = [
       {

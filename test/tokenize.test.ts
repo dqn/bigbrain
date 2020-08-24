@@ -516,6 +516,31 @@ describe('tokenize', () => {
     expect(tokens).toEqual(expected);
   });
 
+  test('while', () => {
+    const src = 'while (++x < 3) putchar(48 + x);';
+
+    const expected: Token[] = [
+      { kind: 'reserved', str: 'while' },
+      { kind: 'reserved', str: '(' },
+      { kind: 'reserved', str: '++' },
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: '<' },
+      { kind: 'num', val: 3 },
+      { kind: 'reserved', str: ')' },
+      { kind: 'reserved', str: 'putchar' },
+      { kind: 'reserved', str: '(' },
+      { kind: 'num', val: 48 },
+      { kind: 'reserved', str: '+' },
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: ')' },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const tokens = tokenize(src);
+    expect(tokens).toEqual(expected);
+  });
+
   test('block', () => {
     const src = '{ x = 1; y = 2; }';
 

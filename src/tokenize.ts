@@ -27,7 +27,7 @@ const symbols = [
 
 const builtInFunctions = ['input', 'putchar', 'print'] as const;
 
-const controlStructures = ['if', 'else', 'for'] as const;
+const controlStructures = ['if', 'else', 'for', 'while'] as const;
 
 export type ReservedWord =
   | typeof symbols[number]

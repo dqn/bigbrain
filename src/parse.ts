@@ -55,6 +55,11 @@ export type AstNode =
       whileTrue: AstNode;
     }
   | {
+      kind: 'while';
+      cond: AstNode;
+      whileTrue: AstNode;
+    }
+  | {
       kind: 'block';
       stmts: AstNode[];
     }
@@ -356,6 +361,16 @@ export function parse(tokens: Token[]) {
       node.whileTrue = stmt();
 
       return node;
+    }
+
+    if (consume('while')) {
+      expect('(');
+      const cond = expr();
+      expect(')');
+
+      const whileTrue = stmt();
+
+      return { kind: 'while', cond, whileTrue };
     }
 
     if (consume('{')) {

@@ -754,6 +754,29 @@ export function generateCode(nodes: AstNode[]): string {
 
         return -1;
       }
+      case 'while': {
+        const cond = gen(node.cond);
+
+        loop(cond, () => {
+          free(gen(node.whileTrue));
+
+          reset(cond);
+          const t0 = gen(node.cond!);
+
+          loop(t0, () => {
+            operate(cond, '+');
+            operate(t0, '-');
+          });
+
+          memory.push(t0);
+
+          focus(cond);
+        });
+
+        memory.push(cond);
+
+        return -1;
+      }
       case 'block': {
         node.stmts.forEach((stmt) => {
           free(gen(stmt));

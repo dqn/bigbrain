@@ -1023,6 +1023,63 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
+  test('while', () => {
+    const tokens: Token[] = [
+      { kind: 'reserved', str: 'while' },
+      { kind: 'reserved', str: '(' },
+      { kind: 'reserved', str: '++' },
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: '<' },
+      { kind: 'num', val: 3 },
+      { kind: 'reserved', str: ')' },
+      { kind: 'reserved', str: 'putchar' },
+      { kind: 'reserved', str: '(' },
+      { kind: 'num', val: 48 },
+      { kind: 'reserved', str: '+' },
+      { kind: 'ident', str: 'x' },
+      { kind: 'reserved', str: ')' },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const expected: AstNode[] = [
+      {
+        kind: 'while',
+        cond: {
+          kind: 'lss',
+          lhs: {
+            kind: 'pre-inc',
+            operand: {
+              kind: 'var',
+              index: 0,
+            },
+          },
+          rhs: {
+            kind: 'num',
+            val: 3,
+          },
+        },
+        whileTrue: {
+          kind: 'putchar',
+          arg: {
+            kind: 'add',
+            lhs: {
+              kind: 'num',
+              val: 48,
+            },
+            rhs: {
+              kind: 'var',
+              index: 0,
+            },
+          },
+        },
+      },
+    ];
+
+    const nodes = parse(tokens);
+    expect(nodes).toEqual(expected);
+  });
+
   test('block', () => {
     const tokens: Token[] = [
       { kind: 'reserved', str: '{' },
