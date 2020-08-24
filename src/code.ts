@@ -108,7 +108,8 @@ export function generateCode(nodes: AstNode[]): string {
       case 'putchar': {
         const arg = gen(node.arg);
         operate(arg, '.');
-        return arg;
+        free(arg);
+        return -1;
       }
       case 'print': {
         const arg = gen(node.arg);
@@ -679,9 +680,7 @@ export function generateCode(nodes: AstNode[]): string {
 
         if (!node.caseFalse) {
           loop(cond, () => {
-            const rtn = gen(node.caseTrue);
-
-            free(rtn);
+            free(gen(node.caseTrue));
             free(cond);
           });
         } else {
@@ -689,20 +688,18 @@ export function generateCode(nodes: AstNode[]): string {
           operate(t, '+');
 
           loop(cond, () => {
-            const rtn = gen(node.caseTrue);
-
-            free(rtn);
+            free(gen(node.caseTrue));
 
             operate(t, '-');
             free(cond);
           });
 
           loop(t, () => {
-            const rtn = gen(node.caseFalse!);
-
-            free(rtn);
+            free(gen(node.caseFalse!));
             operate(t, '-');
           });
+
+          memory.push(t);
         }
 
         return -1;
@@ -723,18 +720,19 @@ export function generateCode(nodes: AstNode[]): string {
             }
 
             reset(cond);
+            const t = gen(node.cond!);
 
-            const rtn = gen(node.cond!);
-
-            loop(rtn, () => {
+            loop(t, () => {
               operate(cond, '+');
-              operate(rtn, '-');
+              operate(t, '-');
             });
+
+            memory.push(t);
 
             focus(cond);
           });
 
-          free(cond);
+          memory.push(cond);
         } else {
           const cond = memory.pop();
           operate(cond, '+');
@@ -749,7 +747,7 @@ export function generateCode(nodes: AstNode[]): string {
             focus(cond);
           });
 
-          free(cond);
+          memory.push(cond);
         }
 
         return -1;
@@ -761,14 +759,14 @@ export function generateCode(nodes: AstNode[]): string {
           free(gen(node.whileTrue));
 
           reset(cond);
-          const t0 = gen(node.cond!);
+          const t = gen(node.cond!);
 
-          loop(t0, () => {
+          loop(t, () => {
             operate(cond, '+');
-            operate(t0, '-');
+            operate(t, '-');
           });
 
-          memory.push(t0);
+          memory.push(t);
 
           focus(cond);
         });
@@ -788,9 +786,9 @@ export function generateCode(nodes: AstNode[]): string {
   };
 
   nodes.forEach((node, i) => {
-    const rtn = gen(node);
+    const t = gen(node);
     if (i !== nodes.length - 1) {
-      free(rtn);
+      free(t);
     }
   });
 
