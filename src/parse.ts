@@ -1,11 +1,23 @@
-import { Token } from './tokenize';
+import { ReservedWord, Token } from './tokenize';
 import { createStack, range } from './utils';
 
 const MAX_VARIABLE_COUNT = 512;
 
 export type AstNode =
   | {
-      kind: 'add' | 'sub' | 'mul' | 'div' | 'mod' | 'equ' | 'neq' | 'lss' | 'leq' | 'and' | 'or';
+      kind:
+        | 'add'
+        | 'sub'
+        | 'mul'
+        | 'div'
+        | 'mod'
+        | 'exp'
+        | 'equ'
+        | 'neq'
+        | 'lss'
+        | 'leq'
+        | 'and'
+        | 'or';
       lhs: AstNode;
       rhs: AstNode;
     }
@@ -81,7 +93,7 @@ export function parse(tokens: Token[]) {
     return tokens.shift()!;
   };
 
-  const consume = (op: string): boolean => {
+  const consume = (op: ReservedWord): boolean => {
     const token = nextToken();
     if (token.kind !== 'reserved' || token.str !== op) {
       return false;
@@ -90,7 +102,7 @@ export function parse(tokens: Token[]) {
     return true;
   };
 
-  const expect = (op: string): Token => {
+  const expect = (op: ReservedWord): Token => {
     const token = shiftToken();
     if (token.kind !== 'reserved' || token.str !== op) {
       throw new Error(`could not find ${op}`);
@@ -179,8 +191,24 @@ export function parse(tokens: Token[]) {
     return node;
   };
 
+  const exp = (): AstNode => {
+    const nodes = [unary()];
+
+    while (consume('**')) {
+      nodes.push(unary());
+    }
+
+    let node = nodes.pop()!;
+
+    while (nodes.length) {
+      node = { kind: 'exp', lhs: nodes.pop()!, rhs: node };
+    }
+
+    return node;
+  };
+
   const mul = (): AstNode => {
-    let node = unary();
+    let node = exp();
 
     while (true) {
       if (consume('*')) {

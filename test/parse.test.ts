@@ -164,6 +164,42 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
+  test('exp', () => {
+    const tokens: Token[] = [
+      { kind: 'num', val: 2 },
+      { kind: 'reserved', str: '**' },
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: '**' },
+      { kind: 'num', val: 2 },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const expected: AstNode[] = [
+      {
+        kind: 'exp',
+        lhs: {
+          kind: 'num',
+          val: 2,
+        },
+        rhs: {
+          kind: 'exp',
+          lhs: {
+            kind: 'num',
+            val: 1,
+          },
+          rhs: {
+            kind: 'num',
+            val: 2,
+          },
+        },
+      },
+    ];
+
+    const nodes = parse(tokens);
+    expect(nodes).toEqual(expected);
+  });
+
   test('not', () => {
     const tokens: Token[] = [
       { kind: 'reserved', str: '!' },

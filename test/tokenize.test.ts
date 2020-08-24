@@ -82,6 +82,23 @@ describe('tokenize', () => {
     expect(tokens).toEqual(expected);
   });
 
+  test('exp', () => {
+    const src = '2 ** 1 ** 2;';
+
+    const expected: Token[] = [
+      { kind: 'num', val: 2 },
+      { kind: 'reserved', str: '**' },
+      { kind: 'num', val: 1 },
+      { kind: 'reserved', str: '**' },
+      { kind: 'num', val: 2 },
+      { kind: 'reserved', str: ';' },
+      { kind: 'eof' },
+    ];
+
+    const tokens = tokenize(src);
+    expect(tokens).toEqual(expected);
+  });
+
   test('not', () => {
     const src = '!2;';
 

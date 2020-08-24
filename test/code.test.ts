@@ -177,6 +177,34 @@ describe('code', () => {
     );
   });
 
+  test('exp', () => {
+    const nodes: AstNode[] = [
+      {
+        kind: 'exp',
+        lhs: {
+          kind: 'num',
+          val: 2,
+        },
+        rhs: {
+          kind: 'exp',
+          lhs: {
+            kind: 'num',
+            val: 1,
+          },
+          rhs: {
+            kind: 'num',
+            val: 2,
+          },
+        },
+      },
+    ];
+
+    const code = generateCode(nodes);
+    expect(code).toEqual(
+      '++>+>++<[>>+<<-]+>[>>[-]>[-]<<<<[>>>>+<<<<-]>>>>[<<[<<+>>>+<-]>[<+>-]>-]<<<-]>[-]<<<[>>+<<-]+>[>>[-]>[-]<<<<[>>>>+<<<<-]>>>>[<<[<<+>>>+<-]>[<+>-]>-]<<<-]>[-]',
+    );
+  });
+
   test('not', () => {
     const nodes: AstNode[] = [
       {
