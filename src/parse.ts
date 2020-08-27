@@ -84,14 +84,14 @@ export function parse(tokens: Token[]) {
   const globalVariables: VariableMap = {};
   const indexStack = createStack(range(0, MAX_VARIABLE_COUNT).reverse());
 
-  const nextToken = (): Token => {
+  const next = (): Token => {
     if (!tokens.length) {
       throw Error('there are no tokens');
     }
     return tokens[0];
   };
 
-  const shiftToken = (): Token => {
+  const shift = (): Token => {
     if (!tokens.length) {
       throw Error('there are no tokens');
     }
@@ -99,7 +99,7 @@ export function parse(tokens: Token[]) {
   };
 
   const consume = (op: ReservedWord): boolean => {
-    const token = nextToken();
+    const token = next();
     if (token.kind !== 'reserved' || token.str !== op) {
       return false;
     }
@@ -108,7 +108,7 @@ export function parse(tokens: Token[]) {
   };
 
   const expect = (op: ReservedWord): Token => {
-    const token = shiftToken();
+    const token = shift();
     if (token.kind !== 'reserved' || token.str !== op) {
       throw new Error(`could not find ${op}`);
     }
@@ -116,7 +116,7 @@ export function parse(tokens: Token[]) {
   };
 
   const expectKind = <T extends Token['kind']>(kind: T): SpecificToken<T> => {
-    const token = shiftToken();
+    const token = shift();
     if (token.kind !== kind) {
       throw new Error(`expected ${kind}`);
     }
@@ -142,7 +142,7 @@ export function parse(tokens: Token[]) {
       return node;
     }
 
-    if (nextToken().kind === 'ident') {
+    if (next().kind === 'ident') {
       return variable();
     }
 
@@ -152,7 +152,7 @@ export function parse(tokens: Token[]) {
       return { kind: 'input' };
     }
 
-    const token = shiftToken();
+    const token = shift();
 
     if (token.kind === 'num') {
       return { kind: 'num', val: token.val };
@@ -178,7 +178,7 @@ export function parse(tokens: Token[]) {
       return { kind: 'pre-dec', operand: variable() };
     }
 
-    if (nextToken().kind === 'ident') {
+    if (next().kind === 'ident') {
       const v = variable();
 
       if (consume('++')) {
@@ -212,7 +212,7 @@ export function parse(tokens: Token[]) {
     return node;
   };
 
-  const mul = (): AstNode => {
+  const mulDivMod = (): AstNode => {
     let node = exp();
 
     while (true) {
@@ -228,14 +228,14 @@ export function parse(tokens: Token[]) {
     }
   };
 
-  const add = (): AstNode => {
-    let node = mul();
+  const addSub = (): AstNode => {
+    let node = mulDivMod();
 
     while (true) {
       if (consume('+')) {
-        node = { kind: 'add', lhs: node, rhs: mul() };
+        node = { kind: 'add', lhs: node, rhs: mulDivMod() };
       } else if (consume('-')) {
-        node = { kind: 'sub', lhs: node, rhs: mul() };
+        node = { kind: 'sub', lhs: node, rhs: mulDivMod() };
       } else {
         return node;
       }
@@ -243,17 +243,17 @@ export function parse(tokens: Token[]) {
   };
 
   const relational = (): AstNode => {
-    let node = add();
+    let node = addSub();
 
     while (true) {
       if (consume('<')) {
-        node = { kind: 'lss', lhs: node, rhs: add() };
+        node = { kind: 'lss', lhs: node, rhs: addSub() };
       } else if (consume('<=')) {
-        node = { kind: 'leq', lhs: node, rhs: add() };
+        node = { kind: 'leq', lhs: node, rhs: addSub() };
       } else if (consume('>')) {
-        node = { kind: 'lss', lhs: add(), rhs: node };
+        node = { kind: 'lss', lhs: addSub(), rhs: node };
       } else if (consume('>=')) {
-        node = { kind: 'leq', lhs: add(), rhs: node };
+        node = { kind: 'leq', lhs: addSub(), rhs: node };
       } else {
         return node;
       }
@@ -388,7 +388,7 @@ export function parse(tokens: Token[]) {
 
   const program = (): AstNode[] => {
     const nodes: AstNode[] = [];
-    while (nextToken().kind !== 'eof') {
+    while (next().kind !== 'eof') {
       nodes.push(stmt());
     }
     return nodes;
