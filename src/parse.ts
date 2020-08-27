@@ -217,11 +217,11 @@ export function parse(tokens: Token[]) {
 
     while (true) {
       if (consume('*')) {
-        node = { kind: 'mul', lhs: node, rhs: unary() };
+        node = { kind: 'mul', lhs: node, rhs: exp() };
       } else if (consume('/')) {
-        node = { kind: 'div', lhs: node, rhs: unary() };
+        node = { kind: 'div', lhs: node, rhs: exp() };
       } else if (consume('%')) {
-        node = { kind: 'mod', lhs: node, rhs: unary() };
+        node = { kind: 'mod', lhs: node, rhs: exp() };
       } else {
         return node;
       }
@@ -265,9 +265,9 @@ export function parse(tokens: Token[]) {
 
     while (true) {
       if (consume('==')) {
-        node = { kind: 'equ', lhs: node, rhs: add() };
+        node = { kind: 'equ', lhs: node, rhs: relational() };
       } else if (consume('!=')) {
-        node = { kind: 'neq', lhs: node, rhs: add() };
+        node = { kind: 'neq', lhs: node, rhs: relational() };
       } else {
         return node;
       }
@@ -279,7 +279,7 @@ export function parse(tokens: Token[]) {
 
     while (true) {
       if (consume('&&')) {
-        node = { kind: 'and', lhs: node, rhs: and() };
+        node = { kind: 'and', lhs: node, rhs: equality() };
       } else {
         return node;
       }
@@ -291,7 +291,7 @@ export function parse(tokens: Token[]) {
 
     while (true) {
       if (consume('||')) {
-        node = { kind: 'or', lhs: node, rhs: or() };
+        node = { kind: 'or', lhs: node, rhs: and() };
       } else {
         return node;
       }
