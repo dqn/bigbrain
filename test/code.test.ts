@@ -668,31 +668,41 @@ describe('code', () => {
   test('block', () => {
     const nodes: AstNode[] = [
       {
-        kind: 'block',
-        stmts: [
-          {
-            kind: 'assign',
-            lhs: {
-              kind: 'var',
-              index: 0,
+        kind: 'assign',
+        lhs: {
+          kind: 'var',
+          index: 0,
+        },
+        rhs: {
+          kind: 'block',
+          stmts: [
+            {
+              kind: 'assign',
+              lhs: {
+                kind: 'var',
+                index: 1,
+              },
+              rhs: {
+                kind: 'num',
+                val: 1,
+              },
             },
-            rhs: {
-              kind: 'num',
-              val: 1,
+            {
+              kind: 'rtn',
+              expr: {
+                kind: 'assign',
+                lhs: {
+                  kind: 'var',
+                  index: 2,
+                },
+                rhs: {
+                  kind: 'num',
+                  val: 2,
+                },
+              },
             },
-          },
-          {
-            kind: 'assign',
-            lhs: {
-              kind: 'var',
-              index: 1,
-            },
-            rhs: {
-              kind: 'num',
-              val: 2,
-            },
-          },
-        ],
+          ],
+        },
       },
     ];
 

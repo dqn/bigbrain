@@ -1082,6 +1082,8 @@ describe('parse', () => {
 
   test('block', () => {
     const tokens: Token[] = [
+      { kind: 'ident', str: 'z' },
+      { kind: 'reserved', str: '=' },
       { kind: 'reserved', str: '{' },
       { kind: 'ident', str: 'x' },
       { kind: 'reserved', str: '=' },
@@ -1090,38 +1092,48 @@ describe('parse', () => {
       { kind: 'ident', str: 'y' },
       { kind: 'reserved', str: '=' },
       { kind: 'num', val: 2 },
-      { kind: 'reserved', str: ';' },
       { kind: 'reserved', str: '}' },
+      { kind: 'reserved', str: ';' },
       { kind: 'eof' },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'block',
-        stmts: [
-          {
-            kind: 'assign',
-            lhs: {
-              kind: 'var',
-              index: 0,
+        kind: 'assign',
+        lhs: {
+          kind: 'var',
+          index: 0,
+        },
+        rhs: {
+          kind: 'block',
+          stmts: [
+            {
+              kind: 'assign',
+              lhs: {
+                kind: 'var',
+                index: 1,
+              },
+              rhs: {
+                kind: 'num',
+                val: 1,
+              },
             },
-            rhs: {
-              kind: 'num',
-              val: 1,
+            {
+              kind: 'rtn',
+              expr: {
+                kind: 'assign',
+                lhs: {
+                  kind: 'var',
+                  index: 2,
+                },
+                rhs: {
+                  kind: 'num',
+                  val: 2,
+                },
+              },
             },
-          },
-          {
-            kind: 'assign',
-            lhs: {
-              kind: 'var',
-              index: 1,
-            },
-            rhs: {
-              kind: 'num',
-              val: 2,
-            },
-          },
-        ],
+          ],
+        },
       },
     ];
 

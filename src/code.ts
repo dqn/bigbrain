@@ -790,11 +790,17 @@ export function generateCode(nodes: AstNode[]): string {
         return -1;
       }
       case 'block': {
+        let rtn = -1;
+
         node.stmts.forEach((stmt) => {
-          free(gen(stmt));
+          if (stmt.kind !== 'rtn') {
+            free(gen(stmt));
+          } else {
+            rtn = gen(stmt.expr);
+          }
         });
 
-        return -1;
+        return rtn;
       }
     }
   };

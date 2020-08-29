@@ -542,9 +542,11 @@ describe('tokenize', () => {
   });
 
   test('block', () => {
-    const src = '{ x = 1; y = 2; }';
+    const src = 'z = { x = 1; y = 2 };';
 
     const expected: Token[] = [
+      { kind: 'ident', str: 'z' },
+      { kind: 'reserved', str: '=' },
       { kind: 'reserved', str: '{' },
       { kind: 'ident', str: 'x' },
       { kind: 'reserved', str: '=' },
@@ -553,8 +555,8 @@ describe('tokenize', () => {
       { kind: 'ident', str: 'y' },
       { kind: 'reserved', str: '=' },
       { kind: 'num', val: 2 },
-      { kind: 'reserved', str: ';' },
       { kind: 'reserved', str: '}' },
+      { kind: 'reserved', str: ';' },
       { kind: 'eof' },
     ];
 

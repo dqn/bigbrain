@@ -61,7 +61,7 @@ export type AstNode =
     }
   | {
       kind: 'block';
-      stmts: AstNode[];
+      stmts: (AstNode | { kind: 'rtn'; expr: AstNode })[];
     }
   | {
       kind: 'var';
@@ -96,6 +96,11 @@ export function parse(tokens: Token[]) {
       throw Error('there are no tokens');
     }
     return tokens.shift()!;
+  };
+
+  const isNext = (word: ReservedWord): boolean => {
+    const n = next();
+    return n.kind === 'reserved' && n.str === word;
   };
 
   const consume = (op: ReservedWord): boolean => {
@@ -135,11 +140,43 @@ export function parse(tokens: Token[]) {
     return { kind: 'var', index: globalVariables[name].index };
   };
 
+  const block = (): AstNode => {
+    const stmts: SpecificAstNode<'block'>['stmts'] = [];
+
+    expect('{');
+    while (!consume('}')) {
+      const words: ReservedWord[] = ['putchar', 'print', 'if', 'for', 'while'];
+      const isStmt = words.some(isNext);
+
+      if (isStmt) {
+        stmts.push(stmt());
+        continue;
+      }
+
+      const node = expr();
+      if (consume(';')) {
+        stmts.push(node);
+        continue;
+      }
+
+      expect('}');
+      stmts.push({ kind: 'rtn', expr: node });
+
+      break;
+    }
+
+    return { kind: 'block', stmts };
+  };
+
   const primary = (): AstNode => {
     if (consume('(')) {
       const node = expr();
       consume(')');
       return node;
+    }
+
+    if (isNext('{')) {
+      return block();
     }
 
     if (next().kind === 'ident') {
@@ -371,14 +408,6 @@ export function parse(tokens: Token[]) {
       const whileTrue = stmt();
 
       return { kind: 'while', cond, whileTrue };
-    }
-
-    if (consume('{')) {
-      const stmts: AstNode[] = [];
-      while (!consume('}')) {
-        stmts.push(stmt());
-      }
-      return { kind: 'block', stmts };
     }
 
     const node = expr();
