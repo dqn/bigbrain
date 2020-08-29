@@ -1,8 +1,24 @@
 # Bigbrain
 
 [![build status](https://github.com/dqn/bigbrain/workflows/build/badge.svg)](https://github.com/dqn/bigbrain/actions)
+[![npm version](https://img.shields.io/npm/v/@dqn/bigbrain.svg)](https://www.npmjs.com/package/@dqn/bigbrain)
 
 High-level programming language that can be compiled to Brainfuck.
+
+## Installation
+
+```bash
+$ npm install @dqn/bigbrain
+```
+
+## Usage
+
+```js
+const bigbrain = require('@dqn/bigbrain');
+
+const code = bigbrain.compile('x = input(); putchar(x);');
+console.log(code); // >,<[-]>[<+>>+<-]>[-]<<[>>+<+<-]>[<+>-]>.[-]
+```
 
 ## CLI
 

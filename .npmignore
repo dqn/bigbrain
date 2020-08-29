@@ -1,0 +1,11 @@
+.github/
+coverage/
+node_modules/
+src/
+test/
+.gitignore
+.prettierignore
+.prettierrc
+jest.config.js
+tsconfig.json
+yarn.lock
