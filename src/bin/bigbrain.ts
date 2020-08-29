@@ -7,9 +7,9 @@ import { compile } from '../';
 
 const cli = meow(
   `Usage
-      $ bigbrain <source-file-path>
-    Examples
-      $ bigbrain -c "<source-code>"`,
+  $ bigbrain <source-file-path>
+Examples
+  $ bigbrain -c "<source-code>"`,
   {
     flags: {
       cmd: {
