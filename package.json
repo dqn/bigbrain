@@ -1,9 +1,12 @@
 {
   "name": "bigbrain",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
   "author": "dqn <suyarizzz@gmail.com>",
   "license": "MIT",
+  "bin": {
+    "bigbrain": "dist/src/bin/bigbrain.js"
+  },
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
@@ -16,5 +19,8 @@
     "jest": "^26.4.0",
     "ts-jest": "^26.2.0",
     "typescript": "^3.9.7"
+  },
+  "dependencies": {
+    "meow": "^7.1.1"
   }
 }

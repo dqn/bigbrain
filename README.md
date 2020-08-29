@@ -4,6 +4,14 @@
 
 High-level programming language that can be compiled to Brainfuck.
 
+## CLI
+
+```bash
+$ bigbrain <source-file-path>
+# or
+$ bigbrain -c "<source-code>"
+```
+
 ## Example
 
 ```
