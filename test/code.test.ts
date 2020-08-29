@@ -557,7 +557,7 @@ describe('code', () => {
     ];
 
     const code = generateCode(nodes);
-    expect(code).toEqual('+>+[<->-]+<[>>+.[-]<-<[-]]>[<++.[-]>-]');
+    expect(code).toEqual('+>+[<->-]+<[>>>+.[-]<<-<[-]]>[<++.[-]>-]');
   });
 
   test('for', () => {

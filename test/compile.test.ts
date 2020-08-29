@@ -145,4 +145,31 @@ buzz
 `,
     );
   });
+
+  test('if-else expression', () => {
+    const code = compile(`
+in = input();
+
+x = if (in == 65) {
+  1
+} else if (in == 66) {
+  2
+} else {
+  3
+};
+
+print(x);
+`);
+
+    const tests = [
+      ['A', '1'],
+      ['B', '2'],
+      ['C', '3'],
+    ];
+
+    tests.forEach(([input, expected]) => {
+      const { output } = bf.execute(code, input);
+      expect(output).toBe(expected);
+    });
+  });
 });

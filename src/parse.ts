@@ -145,7 +145,7 @@ export function parse(tokens: Token[]) {
 
     expect('{');
     while (!consume('}')) {
-      const words: ReservedWord[] = ['putchar', 'print', 'if', 'for', 'while'];
+      const words: ReservedWord[] = ['putchar', 'print', 'for', 'while'];
       const isStmt = words.some(isNext);
 
       if (isStmt) {
@@ -177,6 +177,23 @@ export function parse(tokens: Token[]) {
 
     if (isNext('{')) {
       return block();
+    }
+
+    if (consume('if')) {
+      expect('(');
+      const cond = expr();
+      expect(')');
+      const node: AstNode = { kind: 'if', cond, caseTrue: block() };
+
+      if (consume('else')) {
+        if (isNext('if')) {
+          node.caseFalse = primary() as SpecificAstNode<'if'>;
+        } else {
+          node.caseFalse = block();
+        }
+      }
+
+      return node;
     }
 
     if (next().kind === 'ident') {
@@ -365,24 +382,6 @@ export function parse(tokens: Token[]) {
       return { kind: 'print', arg };
     }
 
-    if (consume('if')) {
-      expect('(');
-      const cond = expr();
-      expect(')');
-      const node: AstNode = { kind: 'if', cond, caseTrue: block() };
-
-      if (consume('else')) {
-        if (isNext('if')) {
-          // TODO
-          node.caseFalse = stmt() as SpecificAstNode<'if'>;
-        } else {
-          node.caseFalse = block();
-        }
-      }
-
-      return node;
-    }
-
     if (consume('for')) {
       const node: AstNode = { kind: 'for', whileTrue: null! };
 
@@ -416,7 +415,9 @@ export function parse(tokens: Token[]) {
     }
 
     const node = expr();
-    expect(';');
+    if (node.kind !== 'if') {
+      expect(';');
+    }
     return node;
   };
 

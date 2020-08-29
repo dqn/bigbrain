@@ -660,30 +660,44 @@ export function generateCode(nodes: AstNode[]): string {
         const cond = gen(node.cond);
 
         if (!node.caseFalse) {
+          // if (only)
+          let rtn = -1;
           loop(cond, () => {
-            free(gen(node.caseTrue));
-            free(cond);
-          });
-        } else {
-          const t = memory.pop();
-          operate(t, '+');
-
-          loop(cond, () => {
-            free(gen(node.caseTrue));
-
-            operate(t, '-');
+            rtn = gen(node.caseTrue);
             free(cond);
           });
 
-          loop(t, () => {
-            free(gen(node.caseFalse!));
-            operate(t, '-');
-          });
-
-          memory.push(t);
+          return rtn;
         }
 
-        return -1;
+        // if-else
+        const t0 = memory.pop();
+        const t1 = memory.pop();
+
+        operate(t0, '+');
+
+        loop(cond, () => {
+          const t2 = gen(node.caseTrue);
+          if (t2 !== -1) {
+            move(t2, t1);
+            memory.push(t2);
+          }
+          operate(t0, '-');
+          free(cond);
+        });
+
+        loop(t0, () => {
+          const t2 = gen(node.caseFalse!);
+          if (t2 !== -1) {
+            move(t2, t1);
+            memory.push(t2);
+          }
+          operate(t0, '-');
+        });
+
+        memory.push(t0);
+
+        return t1;
       }
       case 'for': {
         if (node.init) {
