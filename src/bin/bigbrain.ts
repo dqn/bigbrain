@@ -6,12 +6,10 @@ import meow from 'meow';
 import { compile } from '../';
 
 const cli = meow(
-  `
-    Usage
-      $ bigbrain <path>
+  `Usage
+      $ bigbrain <source-file-path>
     Examples
-      $ bigbrain main.c
-`,
+      $ bigbrain -c "<source-code>"`,
   {
     flags: {
       cmd: {
