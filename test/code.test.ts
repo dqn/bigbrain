@@ -496,11 +496,16 @@ describe('code', () => {
           },
         },
         caseTrue: {
-          kind: 'putchar',
-          arg: {
-            kind: 'num',
-            val: 1,
-          },
+          kind: 'block',
+          stmts: [
+            {
+              kind: 'putchar',
+              arg: {
+                kind: 'num',
+                val: 1,
+              },
+            },
+          ],
         },
       },
     ];
@@ -525,18 +530,28 @@ describe('code', () => {
           },
         },
         caseTrue: {
-          kind: 'putchar',
-          arg: {
-            kind: 'num',
-            val: 1,
-          },
+          kind: 'block',
+          stmts: [
+            {
+              kind: 'putchar',
+              arg: {
+                kind: 'num',
+                val: 1,
+              },
+            },
+          ],
         },
         caseFalse: {
-          kind: 'putchar',
-          arg: {
-            kind: 'num',
-            val: 2,
-          },
+          kind: 'block',
+          stmts: [
+            {
+              kind: 'putchar',
+              arg: {
+                kind: 'num',
+                val: 2,
+              },
+            },
+          ],
         },
       },
     ];
@@ -707,6 +722,6 @@ describe('code', () => {
     ];
 
     const code = generateCode(nodes);
-    expect(code).toEqual('>>+<<[-]>>[<<+>>>+<-]>[-]++<<[-]>>[<<+>+>-]<[-]');
+    expect(code).toEqual('>>>+<<[-]>>[<<+>>>+<-]>[-]++<<[-]>>[<<+>+>-]<<<<[-]>>>[<<<+>>>>+<-]');
   });
 });

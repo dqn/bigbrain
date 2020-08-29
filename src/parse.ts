@@ -44,8 +44,8 @@ export type AstNode =
   | {
       kind: 'if';
       cond: AstNode;
-      caseTrue: AstNode;
-      caseFalse?: AstNode;
+      caseTrue: SpecificAstNode<'block'>;
+      caseFalse?: SpecificAstNode<'block' | 'if'>;
     }
   | {
       kind: 'for';
@@ -140,7 +140,7 @@ export function parse(tokens: Token[]) {
     return { kind: 'var', index: globalVariables[name].index };
   };
 
-  const block = (): AstNode => {
+  const block = (): SpecificAstNode<'block'> => {
     const stmts: SpecificAstNode<'block'>['stmts'] = [];
 
     expect('{');
@@ -369,10 +369,15 @@ export function parse(tokens: Token[]) {
       expect('(');
       const cond = expr();
       expect(')');
-      const node: AstNode = { kind: 'if', cond, caseTrue: stmt() };
+      const node: AstNode = { kind: 'if', cond, caseTrue: block() };
 
       if (consume('else')) {
-        node.caseFalse = stmt();
+        if (isNext('if')) {
+          // TODO
+          node.caseFalse = stmt() as SpecificAstNode<'if'>;
+        } else {
+          node.caseFalse = block();
+        }
       }
 
       return node;

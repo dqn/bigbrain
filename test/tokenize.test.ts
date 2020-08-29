@@ -437,7 +437,7 @@ describe('tokenize', () => {
   });
 
   test('if', () => {
-    const src = 'if (1 + 2) putchar(1);';
+    const src = 'if (1 + 2) { putchar(1); }';
 
     const expected: Token[] = [
       { kind: 'reserved', str: 'if' },
@@ -446,11 +446,13 @@ describe('tokenize', () => {
       { kind: 'reserved', str: '+' },
       { kind: 'num', val: 2 },
       { kind: 'reserved', str: ')' },
+      { kind: 'reserved', str: '{' },
       { kind: 'reserved', str: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: ')' },
       { kind: 'reserved', str: ';' },
+      { kind: 'reserved', str: '}' },
       { kind: 'eof' },
     ];
 
@@ -459,7 +461,7 @@ describe('tokenize', () => {
   });
 
   test('if-else', () => {
-    const src = 'if (1 - 1) putchar(1); else putchar(2);';
+    const src = 'if (1 - 1) { putchar(1); } else { putchar(2); }';
 
     const expected: Token[] = [
       { kind: 'reserved', str: 'if' },
@@ -468,17 +470,21 @@ describe('tokenize', () => {
       { kind: 'reserved', str: '-' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: ')' },
+      { kind: 'reserved', str: '{' },
       { kind: 'reserved', str: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: ')' },
       { kind: 'reserved', str: ';' },
+      { kind: 'reserved', str: '}' },
       { kind: 'reserved', str: 'else' },
+      { kind: 'reserved', str: '{' },
       { kind: 'reserved', str: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 2 },
       { kind: 'reserved', str: ')' },
       { kind: 'reserved', str: ';' },
+      { kind: 'reserved', str: '}' },
       { kind: 'eof' },
     ];
 

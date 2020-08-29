@@ -856,11 +856,13 @@ describe('parse', () => {
       { kind: 'reserved', str: '+' },
       { kind: 'num', val: 2 },
       { kind: 'reserved', str: ')' },
+      { kind: 'reserved', str: '{' },
       { kind: 'reserved', str: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: ')' },
       { kind: 'reserved', str: ';' },
+      { kind: 'reserved', str: '}' },
       { kind: 'eof' },
     ];
 
@@ -879,11 +881,16 @@ describe('parse', () => {
           },
         },
         caseTrue: {
-          kind: 'putchar',
-          arg: {
-            kind: 'num',
-            val: 1,
-          },
+          kind: 'block',
+          stmts: [
+            {
+              kind: 'putchar',
+              arg: {
+                kind: 'num',
+                val: 1,
+              },
+            },
+          ],
         },
       },
     ];
@@ -900,17 +907,21 @@ describe('parse', () => {
       { kind: 'reserved', str: '-' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: ')' },
+      { kind: 'reserved', str: '{' },
       { kind: 'reserved', str: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: ')' },
       { kind: 'reserved', str: ';' },
+      { kind: 'reserved', str: '}' },
       { kind: 'reserved', str: 'else' },
+      { kind: 'reserved', str: '{' },
       { kind: 'reserved', str: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'num', val: 2 },
       { kind: 'reserved', str: ')' },
       { kind: 'reserved', str: ';' },
+      { kind: 'reserved', str: '}' },
       { kind: 'eof' },
     ];
 
@@ -929,18 +940,28 @@ describe('parse', () => {
           },
         },
         caseTrue: {
-          kind: 'putchar',
-          arg: {
-            kind: 'num',
-            val: 1,
-          },
+          kind: 'block',
+          stmts: [
+            {
+              kind: 'putchar',
+              arg: {
+                kind: 'num',
+                val: 1,
+              },
+            },
+          ],
         },
         caseFalse: {
-          kind: 'putchar',
-          arg: {
-            kind: 'num',
-            val: 2,
-          },
+          kind: 'block',
+          stmts: [
+            {
+              kind: 'putchar',
+              arg: {
+                kind: 'num',
+                val: 2,
+              },
+            },
+          ],
         },
       },
     ];
