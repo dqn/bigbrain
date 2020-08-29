@@ -1,11 +1,11 @@
 {
   "name": "@dqn/bigbrain",
   "version": "0.1.1",
-  "main": "dist/src/index.js",
+  "main": "dist/index.js",
   "author": "dqn <suyarizzz@gmail.com>",
   "license": "MIT",
   "bin": {
-    "bigbrain": "./dist/src/bin/bigbrain.js"
+    "bigbrain": "dist/bin/bigbrain.js"
   },
   "scripts": {
     "build": "tsc",
