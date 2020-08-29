@@ -986,11 +986,13 @@ describe('parse', () => {
       { kind: 'reserved', str: '-' },
       { kind: 'num', val: 1 },
       { kind: 'reserved', str: ')' },
+      { kind: 'reserved', str: '{' },
       { kind: 'reserved', str: 'putchar' },
       { kind: 'reserved', str: '(' },
       { kind: 'ident', str: 'x' },
       { kind: 'reserved', str: ')' },
       { kind: 'reserved', str: ';' },
+      { kind: 'reserved', str: '}' },
       { kind: 'eof' },
     ];
 
@@ -1031,11 +1033,16 @@ describe('parse', () => {
           },
         },
         whileTrue: {
-          kind: 'putchar',
-          arg: {
-            kind: 'var',
-            index: 0,
-          },
+          kind: 'block',
+          stmts: [
+            {
+              kind: 'putchar',
+              arg: {
+                kind: 'var',
+                index: 0,
+              },
+            },
+          ],
         },
       },
     ];

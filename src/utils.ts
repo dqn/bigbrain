@@ -8,6 +8,10 @@ export function range(start: number, end: number): number[] {
   return [...Array(end)].map((_, i) => i).slice(start);
 }
 
+export function clone<T>(val: T): T {
+  return JSON.parse(JSON.stringify(val));
+}
+
 export type Stack<T> = {
   values: T[];
   pop: () => T;

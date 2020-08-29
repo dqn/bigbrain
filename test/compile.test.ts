@@ -8,7 +8,6 @@ const bf = new Brainfuck({
 
 describe('compile', () => {
   test('fizzbuzz', () => {
-    // TODO: temporary using semi-colon as if-else body
     const code = compile(`
 x = input() * 2;
 for (i = 1; i <= x; ++i) {
@@ -35,9 +34,8 @@ for (i = 1; i <= x; ++i) {
     print(i);
   }
   putchar(10);
-${/* remove semi-colon */ ''}
-};
-    `);
+}
+`);
 
     const result = bf.execute(code, '2');
 

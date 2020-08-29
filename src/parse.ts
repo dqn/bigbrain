@@ -1,5 +1,5 @@
 import { ReservedWord, Token } from './tokenize';
-import { createStack, range } from './utils';
+import { clone, createStack, range } from './utils';
 
 const MAX_VARIABLE_COUNT = 512;
 
@@ -52,7 +52,7 @@ export type AstNode =
       init?: AstNode;
       cond?: AstNode;
       after?: AstNode;
-      whileTrue: AstNode;
+      whileTrue: SpecificAstNode<'block'>;
     }
   | {
       kind: 'while';
@@ -86,7 +86,7 @@ export function parse(tokens: Token[]) {
 
   const next = (): Token => {
     if (!tokens.length) {
-      throw Error('there are no tokens');
+      throw new Error('there are no tokens');
     }
     return tokens[0];
   };
@@ -145,24 +145,28 @@ export function parse(tokens: Token[]) {
 
     expect('{');
     while (!consume('}')) {
-      const words: ReservedWord[] = ['putchar', 'print', 'for', 'while'];
-      const isStmt = words.some(isNext);
+      const snapshot = clone(tokens);
+      const recover = () => {
+        tokens.length = 0;
+        tokens.push(...snapshot);
+      };
 
-      if (isStmt) {
+      try {
         stmts.push(stmt());
         continue;
+      } catch {
+        recover();
       }
 
-      const node = expr();
-      if (consume(';')) {
-        stmts.push(node);
-        continue;
+      try {
+        stmts.push({ kind: 'rtn', expr: expr() });
+        expect('}');
+        break;
+      } catch {
+        recover();
       }
 
-      expect('}');
-      stmts.push({ kind: 'rtn', expr: node });
-
-      break;
+      throw new Error(`unexpected token: ${next().kind}`);
     }
 
     return { kind: 'block', stmts };
@@ -399,7 +403,7 @@ export function parse(tokens: Token[]) {
         expect(')');
       }
 
-      node.whileTrue = stmt();
+      node.whileTrue = block();
 
       return node;
     }

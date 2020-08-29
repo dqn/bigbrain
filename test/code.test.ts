@@ -598,11 +598,16 @@ describe('code', () => {
           },
         },
         whileTrue: {
-          kind: 'putchar',
-          arg: {
-            kind: 'var',
-            index: 0,
-          },
+          kind: 'block',
+          stmts: [
+            {
+              kind: 'putchar',
+              arg: {
+                kind: 'var',
+                index: 0,
+              },
+            },
+          ],
         },
       },
     ];
