@@ -1,16 +1,17 @@
 {
   "name": "@dqn/bigbrain",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "dist/src/index.js",
   "author": "dqn <suyarizzz@gmail.com>",
   "license": "MIT",
   "bin": {
-    "bigbrain": "dist/src/bin/bigbrain.js"
+    "bigbrain": "./dist/src/bin/bigbrain.js"
   },
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "test": "jest"
+    "test": "jest",
+    "prepublishOnly": "yarn build"
   },
   "devDependencies": {
     "@types/jest": "^26.0.10",
