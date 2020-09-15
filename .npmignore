@@ -7,5 +7,6 @@ test/
 .prettierignore
 .prettierrc
 jest.config.js
+renovate.json
 tsconfig.json
 yarn.lock
