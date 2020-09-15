@@ -23,6 +23,12 @@ console.log(code); // >,<[-]>[<+>>+<-]>[-]<<[>>+<+<-]>[<+>-]>.[-]
 ## CLI
 
 ```bash
+$ npm install -g @dqn/bigbrain
+```
+
+and
+
+```bash
 $ bigbrain <source-file-path>
 # or
 $ bigbrain -c "<source-code>"
@@ -58,6 +64,7 @@ for (i = 1; i <= x; ++i) {
     // => buzz
   } else {
     print(i);
+    // => (raw number)
   }
   putchar(10);
   // => \n
@@ -70,7 +77,7 @@ Output:
 >>,>++<[>[>+>+<<-]>>[<<+>>-]<<<-]>[-]>[<<+>>-]<<<<[-]>>[<<+>>>+<-]>...
 ```
 
-## Features
+## Syntax
 
 ### variable
 
