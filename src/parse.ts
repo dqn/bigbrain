@@ -44,20 +44,20 @@ export type AstNode =
   | {
       kind: 'if';
       cond: AstNode;
-      caseTrue: SpecificAstNode<'block'>;
-      caseFalse?: SpecificAstNode<'block' | 'if'>;
+      consequence: SpecificAstNode<'block'>;
+      alternative?: SpecificAstNode<'block' | 'if'>;
     }
   | {
       kind: 'for';
       init?: AstNode;
       cond?: AstNode;
       after?: AstNode;
-      whileTrue: SpecificAstNode<'block'>;
+      body: SpecificAstNode<'block'>;
     }
   | {
       kind: 'while';
       cond: AstNode;
-      whileTrue: AstNode;
+      body: AstNode;
     }
   | {
       kind: 'block';
@@ -187,13 +187,13 @@ export function parse(tokens: Token[]) {
       expect('(');
       const cond = expr();
       expect(')');
-      const node: AstNode = { kind: 'if', cond, caseTrue: block() };
+      const node: AstNode = { kind: 'if', cond, consequence: block() };
 
       if (consume('else')) {
         if (isNext('if')) {
-          node.caseFalse = primary() as SpecificAstNode<'if'>;
+          node.alternative = primary() as SpecificAstNode<'if'>;
         } else {
-          node.caseFalse = block();
+          node.alternative = block();
         }
       }
 
@@ -387,7 +387,7 @@ export function parse(tokens: Token[]) {
     }
 
     if (consume('for')) {
-      const node: AstNode = { kind: 'for', whileTrue: null! };
+      const node: AstNode = { kind: 'for', body: null! };
 
       expect('(');
       if (!consume(';')) {
@@ -403,7 +403,7 @@ export function parse(tokens: Token[]) {
         expect(')');
       }
 
-      node.whileTrue = block();
+      node.body = block();
 
       return node;
     }
@@ -415,7 +415,7 @@ export function parse(tokens: Token[]) {
 
       const whileTrue = stmt();
 
-      return { kind: 'while', cond, whileTrue };
+      return { kind: 'while', cond, body: whileTrue };
     }
 
     const node = expr();

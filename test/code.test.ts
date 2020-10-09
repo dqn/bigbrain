@@ -495,7 +495,7 @@ describe('code', () => {
             val: 2,
           },
         },
-        caseTrue: {
+        consequence: {
           kind: 'block',
           stmts: [
             {
@@ -529,7 +529,7 @@ describe('code', () => {
             val: 1,
           },
         },
-        caseTrue: {
+        consequence: {
           kind: 'block',
           stmts: [
             {
@@ -541,7 +541,7 @@ describe('code', () => {
             },
           ],
         },
-        caseFalse: {
+        alternative: {
           kind: 'block',
           stmts: [
             {
@@ -597,7 +597,7 @@ describe('code', () => {
             },
           },
         },
-        whileTrue: {
+        body: {
           kind: 'block',
           stmts: [
             {
@@ -662,7 +662,7 @@ describe('code', () => {
             val: 3,
           },
         },
-        whileTrue: {
+        body: {
           kind: 'putchar',
           arg: {
             kind: 'add',
