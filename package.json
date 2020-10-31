@@ -22,6 +22,6 @@
     "typescript": "4.0.5"
   },
   "dependencies": {
-    "meow": "^7.1.1"
+    "meow": "^8.0.0"
   }
 }
