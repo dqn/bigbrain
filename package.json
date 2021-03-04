@@ -19,7 +19,7 @@
     "brainfuck-node": "1.0.2",
     "jest": "26.6.3",
     "ts-jest": "26.5.3",
-    "typescript": "4.2.2"
+    "typescript": "4.2.3"
   },
   "dependencies": {
     "meow": "^9.0.0"
