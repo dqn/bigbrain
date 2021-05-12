@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "@types/jest": "26.0.23",
-    "@types/node": "14.14.44",
+    "@types/node": "14.14.45",
     "brainfuck-node": "1.0.2",
     "jest": "26.6.3",
     "ts-jest": "26.5.6",
