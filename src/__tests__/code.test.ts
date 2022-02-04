@@ -712,17 +712,14 @@ describe("code", () => {
               },
             },
             {
-              kind: "rtn",
-              expr: {
-                kind: "assign",
-                lhs: {
-                  kind: "var",
-                  index: 2,
-                },
-                rhs: {
-                  kind: "num",
-                  val: 2,
-                },
+              kind: "assign",
+              lhs: {
+                kind: "var",
+                index: 2,
+              },
+              rhs: {
+                kind: "num",
+                val: 2,
               },
             },
           ],
