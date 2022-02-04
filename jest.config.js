@@ -2,7 +2,7 @@
  * @type {import('@jest/types').Config.InitialOptions}
  * */
 module.exports = {
-  // testEnvironment: "node",
+  testEnvironment: "node",
   collectCoverage: true,
   verbose: true,
   roots: ["<rootDir>/src"],
