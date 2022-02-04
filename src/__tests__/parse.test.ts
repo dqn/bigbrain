@@ -2,7 +2,7 @@ import { AstNode, parse } from "../parse";
 import type { Token } from "../tokenize";
 
 describe("parse", () => {
-  test("add", () => {
+  it("add", () => {
     const tokens: Token[] = [
       { kind: "num", val: 2 },
       { kind: "reserved", str: "+" },
@@ -38,7 +38,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("sub", () => {
+  it("sub", () => {
     const tokens: Token[] = [
       { kind: "num", val: 10 },
       { kind: "reserved", str: "-" },
@@ -74,7 +74,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("mul", () => {
+  it("mul", () => {
     const tokens: Token[] = [
       { kind: "num", val: 5 },
       { kind: "reserved", str: "*" },
@@ -110,7 +110,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("div", () => {
+  it("div", () => {
     const tokens: Token[] = [
       { kind: "num", val: 6 },
       { kind: "reserved", str: "/" },
@@ -137,7 +137,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("mod", () => {
+  it("mod", () => {
     const tokens: Token[] = [
       { kind: "num", val: 5 },
       { kind: "reserved", str: "%" },
@@ -164,7 +164,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("exp", () => {
+  it("exp", () => {
     const tokens: Token[] = [
       { kind: "num", val: 2 },
       { kind: "reserved", str: "**" },
@@ -200,7 +200,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("not", () => {
+  it("not", () => {
     const tokens: Token[] = [
       { kind: "reserved", str: "!" },
       { kind: "num", val: 2 },
@@ -222,7 +222,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("pre-inc", () => {
+  it("pre-inc", () => {
     const tokens: Token[] = [
       { kind: "ident", str: "x" },
       { kind: "reserved", str: "=" },
@@ -259,7 +259,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("pre-dec", () => {
+  it("pre-dec", () => {
     const tokens: Token[] = [
       { kind: "ident", str: "x" },
       { kind: "reserved", str: "=" },
@@ -296,7 +296,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("post-inc", () => {
+  it("post-inc", () => {
     const tokens: Token[] = [
       { kind: "ident", str: "x" },
       { kind: "reserved", str: "=" },
@@ -333,7 +333,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("post-dec", () => {
+  it("post-dec", () => {
     const tokens: Token[] = [
       { kind: "ident", str: "x" },
       { kind: "reserved", str: "=" },
@@ -370,7 +370,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("parences", () => {
+  it("parences", () => {
     const tokens: Token[] = [
       { kind: "num", val: 4 },
       { kind: "reserved", str: "*" },
@@ -408,7 +408,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("equ", () => {
+  it("equ", () => {
     const tokens: Token[] = [
       { kind: "num", val: 1 },
       { kind: "reserved", str: "==" },
@@ -435,7 +435,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("neq", () => {
+  it("neq", () => {
     const tokens: Token[] = [
       { kind: "num", val: 1 },
       { kind: "reserved", str: "!=" },
@@ -462,7 +462,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("lss", () => {
+  it("lss", () => {
     const tokens: Token[] = [
       { kind: "num", val: 1 },
       { kind: "reserved", str: "<" },
@@ -489,7 +489,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("gtr", () => {
+  it("gtr", () => {
     const tokens: Token[] = [
       { kind: "num", val: 1 },
       { kind: "reserved", str: ">" },
@@ -516,7 +516,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("leq", () => {
+  it("leq", () => {
     const tokens: Token[] = [
       { kind: "num", val: 1 },
       { kind: "reserved", str: "<=" },
@@ -543,7 +543,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("geq", () => {
+  it("geq", () => {
     const tokens: Token[] = [
       { kind: "num", val: 1 },
       { kind: "reserved", str: ">=" },
@@ -570,7 +570,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("and", () => {
+  it("and", () => {
     const tokens: Token[] = [
       { kind: "num", val: 1 },
       { kind: "reserved", str: "&&" },
@@ -597,7 +597,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("or", () => {
+  it("or", () => {
     const tokens: Token[] = [
       { kind: "num", val: 1 },
       { kind: "reserved", str: "||" },
@@ -624,7 +624,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("complex operators", () => {
+  it("complex operators", () => {
     const tokens: Token[] = [
       { kind: "reserved", str: "(" },
       { kind: "num", val: 5 },
@@ -671,7 +671,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("assign", () => {
+  it("assign", () => {
     const tokens: Token[] = [
       { kind: "ident", str: "x" },
       { kind: "reserved", str: "=" },
@@ -707,7 +707,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("var", () => {
+  it("var", () => {
     const tokens: Token[] = [
       { kind: "num", val: 2 },
       { kind: "reserved", str: "*" },
@@ -745,7 +745,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("input", () => {
+  it("input", () => {
     const tokens: Token[] = [
       { kind: "ident", str: "x" },
       { kind: "reserved", str: "=" },
@@ -782,7 +782,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("putchar", () => {
+  it("putchar", () => {
     const tokens: Token[] = [
       { kind: "reserved", str: "putchar" },
       { kind: "reserved", str: "(" },
@@ -815,7 +815,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("print", () => {
+  it("print", () => {
     const tokens: Token[] = [
       { kind: "reserved", str: "print" },
       { kind: "reserved", str: "(" },
@@ -848,7 +848,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("if", () => {
+  it("if", () => {
     const tokens: Token[] = [
       { kind: "reserved", str: "if" },
       { kind: "reserved", str: "(" },
@@ -899,7 +899,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("if-else", () => {
+  it("if-else", () => {
     const tokens: Token[] = [
       { kind: "reserved", str: "if" },
       { kind: "reserved", str: "(" },
@@ -970,7 +970,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("for", () => {
+  it("for", () => {
     const tokens: Token[] = [
       { kind: "reserved", str: "for" },
       { kind: "reserved", str: "(" },
@@ -1051,7 +1051,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("while", () => {
+  it("while", () => {
     const tokens: Token[] = [
       { kind: "reserved", str: "while" },
       { kind: "reserved", str: "(" },
@@ -1108,7 +1108,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("block", () => {
+  it("block", () => {
     const tokens: Token[] = [
       { kind: "ident", str: "z" },
       { kind: "reserved", str: "=" },
@@ -1167,7 +1167,7 @@ describe("parse", () => {
     expect(nodes).toEqual(expected);
   });
 
-  test("complex", () => {
+  it("complex", () => {
     const tokens: Token[] = [
       { kind: "ident", str: "foo" },
       { kind: "reserved", str: "=" },

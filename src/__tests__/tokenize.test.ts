@@ -1,7 +1,7 @@
 import { Token, tokenize } from "../tokenize";
 
 describe("tokenize", () => {
-  test("add", () => {
+  it("add", () => {
     const src = "2 + 3 + 42;";
 
     const expected: Token[] = [
@@ -18,7 +18,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("sub", () => {
+  it("sub", () => {
     const src = "10 - 2 - 1;";
 
     const expected: Token[] = [
@@ -35,7 +35,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("mul", () => {
+  it("mul", () => {
     const src = "5 * 8 * 10;";
 
     const expected: Token[] = [
@@ -52,7 +52,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("div", () => {
+  it("div", () => {
     const src = "6 / 2;";
 
     const expected: Token[] = [
@@ -67,7 +67,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("mod", () => {
+  it("mod", () => {
     const src = "5 % 2;";
 
     const expected: Token[] = [
@@ -82,7 +82,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("exp", () => {
+  it("exp", () => {
     const src = "2 ** 1 ** 2;";
 
     const expected: Token[] = [
@@ -99,7 +99,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("not", () => {
+  it("not", () => {
     const src = "!2;";
 
     const expected: Token[] = [
@@ -113,7 +113,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("pre-inc", () => {
+  it("pre-inc", () => {
     const src = "x = 1; ++x;";
 
     const expected: Token[] = [
@@ -131,7 +131,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("pre-dec", () => {
+  it("pre-dec", () => {
     const src = "x = 1; --x;";
 
     const expected: Token[] = [
@@ -149,7 +149,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("post-inc", () => {
+  it("post-inc", () => {
     const src = "x = 1; x++;";
 
     const expected: Token[] = [
@@ -167,7 +167,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("post-dec", () => {
+  it("post-dec", () => {
     const src = "x = 1; x--;";
 
     const expected: Token[] = [
@@ -185,7 +185,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("parences", () => {
+  it("parences", () => {
     const src = "4 * (11 + 6);";
 
     const expected: Token[] = [
@@ -204,7 +204,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("equ", () => {
+  it("equ", () => {
     const src = "1 == 3;";
 
     const expected: Token[] = [
@@ -219,7 +219,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("neq", () => {
+  it("neq", () => {
     const src = "1 != 3;";
 
     const expected: Token[] = [
@@ -234,7 +234,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("lss", () => {
+  it("lss", () => {
     const src = "1 < 3;";
 
     const expected: Token[] = [
@@ -249,7 +249,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("gtr", () => {
+  it("gtr", () => {
     const src = "1 > 3;";
 
     const expected: Token[] = [
@@ -264,7 +264,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("leq", () => {
+  it("leq", () => {
     const src = "1 <= 3;";
 
     const expected: Token[] = [
@@ -279,7 +279,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("geq", () => {
+  it("geq", () => {
     const src = "1 >= 3;";
 
     const expected: Token[] = [
@@ -294,7 +294,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("and", () => {
+  it("and", () => {
     const src = "1 && 2;";
 
     const expected: Token[] = [
@@ -309,7 +309,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("or", () => {
+  it("or", () => {
     const src = "1 || 2;";
 
     const expected: Token[] = [
@@ -324,7 +324,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("complex operators", () => {
+  it("complex operators", () => {
     const src = "(5 + 8) * 15 - 8;";
 
     const expected: Token[] = [
@@ -345,7 +345,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("assign", () => {
+  it("assign", () => {
     const src = "x = 4 + 5;";
 
     const expected: Token[] = [
@@ -362,7 +362,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("var", () => {
+  it("var", () => {
     const src = "2 * (4 + x);";
 
     const expected: Token[] = [
@@ -381,7 +381,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("input", () => {
+  it("input", () => {
     const src = "x = input() + 2;";
 
     const expected: Token[] = [
@@ -400,7 +400,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("putchar", () => {
+  it("putchar", () => {
     const src = "putchar(2 + 3);";
 
     const expected: Token[] = [
@@ -418,7 +418,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("print", () => {
+  it("print", () => {
     const src = "print(2 + 3);";
 
     const expected: Token[] = [
@@ -436,7 +436,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("if", () => {
+  it("if", () => {
     const src = "if (1 + 2) { putchar(1); }";
 
     const expected: Token[] = [
@@ -460,7 +460,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("if-else", () => {
+  it("if-else", () => {
     const src = "if (1 - 1) { putchar(1); } else { putchar(2); }";
 
     const expected: Token[] = [
@@ -492,7 +492,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("for", () => {
+  it("for", () => {
     const src = "for (x = 3; x; x = x - 1) putchar(x);";
 
     const expected: Token[] = [
@@ -522,7 +522,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("while", () => {
+  it("while", () => {
     const src = "while (++x < 3) putchar(48 + x);";
 
     const expected: Token[] = [
@@ -547,7 +547,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("block", () => {
+  it("block", () => {
     const src = "z = { x = 1; y = 2 };";
 
     const expected: Token[] = [
@@ -570,7 +570,7 @@ describe("tokenize", () => {
     expect(tokens).toEqual(expected);
   });
 
-  test("multi statements", () => {
+  it("multi statements", () => {
     const src = `
 foo = 1;
 bar = 2;

@@ -2,7 +2,7 @@ import { generateCode } from "../generateCode";
 import type { AstNode } from "../parse";
 
 describe("code", () => {
-  test("num", () => {
+  it("num", () => {
     const nodes: AstNode[] = [
       {
         kind: "num",
@@ -14,7 +14,7 @@ describe("code", () => {
     expect(code).toEqual("+++++++++++++");
   });
 
-  test("input", () => {
+  it("input", () => {
     const nodes: AstNode[] = [
       {
         kind: "assign",
@@ -39,7 +39,7 @@ describe("code", () => {
     expect(code).toEqual(">,>++[<+>-]<<[-]>[<+>>+<-]");
   });
 
-  test("putchar", () => {
+  it("putchar", () => {
     const nodes: AstNode[] = [
       {
         kind: "putchar",
@@ -54,7 +54,7 @@ describe("code", () => {
     expect(code).toEqual("+++++.[-]");
   });
 
-  test("print", () => {
+  it("print", () => {
     const nodes: AstNode[] = [
       {
         kind: "print",
@@ -78,7 +78,7 @@ describe("code", () => {
     );
   });
 
-  test("add", () => {
+  it("add", () => {
     const nodes: AstNode[] = [
       {
         kind: "add",
@@ -97,7 +97,7 @@ describe("code", () => {
     expect(code).toEqual("+++>++++[<+>-]");
   });
 
-  test("sub", () => {
+  it("sub", () => {
     const nodes: AstNode[] = [
       {
         kind: "sub",
@@ -116,7 +116,7 @@ describe("code", () => {
     expect(code).toEqual("+++++>++[<->-]");
   });
 
-  test("mul", () => {
+  it("mul", () => {
     const nodes: AstNode[] = [
       {
         kind: "mul",
@@ -135,7 +135,7 @@ describe("code", () => {
     expect(code).toEqual("++++>+++<[>[>+>+<<-]>>[<<+>>-]<<<-]>[-]>[<<+>>-]");
   });
 
-  test("div", () => {
+  it("div", () => {
     const nodes: AstNode[] = [
       {
         kind: "div",
@@ -156,7 +156,7 @@ describe("code", () => {
     );
   });
 
-  test("mod", () => {
+  it("mod", () => {
     const nodes: AstNode[] = [
       {
         kind: "mod",
@@ -177,7 +177,7 @@ describe("code", () => {
     );
   });
 
-  test("exp", () => {
+  it("exp", () => {
     const nodes: AstNode[] = [
       {
         kind: "exp",
@@ -205,7 +205,7 @@ describe("code", () => {
     );
   });
 
-  test("not", () => {
+  it("not", () => {
     const nodes: AstNode[] = [
       {
         kind: "not",
@@ -220,7 +220,7 @@ describe("code", () => {
     expect(code).toEqual("++>+<[>-<[-]]");
   });
 
-  test("pre-inc", () => {
+  it("pre-inc", () => {
     const nodes: AstNode[] = [
       {
         kind: "assign",
@@ -246,7 +246,7 @@ describe("code", () => {
     expect(code).toEqual(">+<[-]>[<+>>+<-]>[-]<<+[>>+<+<-]>[<+>-]");
   });
 
-  test("pre-dec", () => {
+  it("pre-dec", () => {
     const nodes: AstNode[] = [
       {
         kind: "assign",
@@ -272,7 +272,7 @@ describe("code", () => {
     expect(code).toEqual(">+<[-]>[<+>>+<-]>[-]<<-[>>+<+<-]>[<+>-]");
   });
 
-  test("post-inc", () => {
+  it("post-inc", () => {
     const nodes: AstNode[] = [
       {
         kind: "assign",
@@ -298,7 +298,7 @@ describe("code", () => {
     expect(code).toEqual(">+<[-]>[<+>>+<-]>[-]<<[>>+<+<-]>[<+>-]<+");
   });
 
-  test("post-dec", () => {
+  it("post-dec", () => {
     const nodes: AstNode[] = [
       {
         kind: "assign",
@@ -324,7 +324,7 @@ describe("code", () => {
     expect(code).toEqual(">+<[-]>[<+>>+<-]>[-]<<[>>+<+<-]>[<+>-]<-");
   });
 
-  test("equ", () => {
+  it("equ", () => {
     const nodes: AstNode[] = [
       {
         kind: "equ",
@@ -343,7 +343,7 @@ describe("code", () => {
     expect(code).toEqual("+>+++<[>-<-]+>[<->[-]]");
   });
 
-  test("neq", () => {
+  it("neq", () => {
     const nodes: AstNode[] = [
       {
         kind: "neq",
@@ -362,7 +362,7 @@ describe("code", () => {
     expect(code).toEqual("+>+++<[>-<-]>[<+>[-]]");
   });
 
-  test("lss", () => {
+  it("lss", () => {
     const nodes: AstNode[] = [
       {
         kind: "lss",
@@ -383,7 +383,7 @@ describe("code", () => {
     );
   });
 
-  test("leq", () => {
+  it("leq", () => {
     const nodes: AstNode[] = [
       {
         kind: "leq",
@@ -404,7 +404,7 @@ describe("code", () => {
     );
   });
 
-  test("and", () => {
+  it("and", () => {
     const nodes: AstNode[] = [
       {
         kind: "and",
@@ -423,7 +423,7 @@ describe("code", () => {
     expect(code).toEqual("+>++<[>>+<<[-]]>[>+<[-]]++>[<->-]+<[>-<[-]]");
   });
 
-  test("or", () => {
+  it("or", () => {
     const nodes: AstNode[] = [
       {
         kind: "or",
@@ -442,7 +442,7 @@ describe("code", () => {
     expect(code).toEqual("+>++<[>>+<<[-]]>[>+<[-]]>[<+>[-]]");
   });
 
-  test("assign", () => {
+  it("assign", () => {
     const nodes: AstNode[] = [
       {
         kind: "assign",
@@ -461,7 +461,7 @@ describe("code", () => {
     expect(code).toEqual(">+++<[-]>[<+>>+<-]");
   });
 
-  test("var", () => {
+  it("var", () => {
     const nodes: AstNode[] = [
       {
         kind: "assign",
@@ -484,7 +484,7 @@ describe("code", () => {
     expect(code).toEqual(">++++<[-]>[<+>>+<-]>[-]<<[>>+<+<-]>[<+>-]");
   });
 
-  test("if", () => {
+  it("if", () => {
     const nodes: AstNode[] = [
       {
         kind: "if",
@@ -518,7 +518,7 @@ describe("code", () => {
     expect(code).toEqual("+>++[<+>-]<[>+.[-]<[-]]");
   });
 
-  test("if-else", () => {
+  it("if-else", () => {
     const nodes: AstNode[] = [
       {
         kind: "if",
@@ -564,7 +564,7 @@ describe("code", () => {
     expect(code).toEqual("+>+[<->-]+<[>>>+.[-]<<-<[-]]>[<++.[-]>-]");
   });
 
-  test("for", () => {
+  it("for", () => {
     const nodes: AstNode[] = [
       {
         kind: "for",
@@ -648,7 +648,7 @@ describe("code", () => {
     );
   });
 
-  test("while", () => {
+  it("while", () => {
     const nodes: AstNode[] = [
       {
         kind: "while",
@@ -689,7 +689,7 @@ describe("code", () => {
     );
   });
 
-  test("block", () => {
+  it("block", () => {
     const nodes: AstNode[] = [
       {
         kind: "assign",

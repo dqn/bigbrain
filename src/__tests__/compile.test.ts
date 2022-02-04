@@ -7,7 +7,7 @@ const bf = new Brainfuck({
 });
 
 describe("compile", () => {
-  test("fizzbuzz", () => {
+  it("fizzbuzz", () => {
     const code = compile(`
 x = input() * 2;
 for (i = 1; i <= x; ++i) {
@@ -144,7 +144,7 @@ buzz
     );
   });
 
-  test("if-else expression", () => {
+  it("if-else expression", () => {
     const code = compile(`
 in = input();
 
@@ -159,13 +159,13 @@ x = if (in == 65) {
 print(x);
 `);
 
-    const tests = [
+    const testCases = [
       ["A", "1"],
       ["B", "2"],
       ["C", "3"],
     ];
 
-    tests.forEach(([input, expected]) => {
+    testCases.forEach(([input, expected]) => {
       const { output } = bf.execute(code, input);
       expect(output).toBe(expected);
     });
