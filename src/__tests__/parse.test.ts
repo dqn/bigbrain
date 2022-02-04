@@ -1,5 +1,5 @@
-import { AstNode, parse } from "../src/parse";
-import { Token } from "../src/tokenize";
+import { AstNode, parse } from "../parse";
+import { Token } from "../tokenize";
 
 describe("parse", () => {
   test("add", () => {

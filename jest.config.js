@@ -1,15 +1,14 @@
+/**
+ * @type {import('@jest/types').Config.InitialOptions}
+ * */
 module.exports = {
-  globals: {
-    "ts-jest": {
-      tsConfig: "<rootDir>/tsconfig.test.json",
-    },
-  },
-  testEnvironment: "node",
+  // testEnvironment: "node",
   collectCoverage: true,
   verbose: true,
-  roots: ["<rootDir>/test"],
-  testMatch: ["**/*.test.ts"],
+  roots: ["<rootDir>/src"],
+  testMatch: ["**/__tests__/**/*.test.ts"],
   transform: {
-    "^.+\\.(ts|tsx)$": "ts-jest",
+    "^.+\\.(t|j)sx?$": "@swc/jest",
   },
+  extensionsToTreatAsEsm: [".ts", ".tsx"],
 };
