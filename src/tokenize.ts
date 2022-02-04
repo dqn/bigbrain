@@ -74,6 +74,13 @@ export function tokenize(src: string): Token[] {
       continue;
     }
 
+    if (next(2) === "//") {
+      while (next(1) !== "\n") {
+        strshift(1);
+      }
+      continue;
+    }
+
     const symbol = symbols.find(consume);
     if (symbol !== undefined) {
       tokens.push({ kind: "reserved", str: symbol });
