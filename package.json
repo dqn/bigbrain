@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "lint": "tsc --noEmit",
-    "fix": "prettier -w ./src"
+    "fix": "prettier -w ./src",
+    "bigbrain": "ts-node --transpile-only ./scripts/bigbrain.ts"
   },
   "devDependencies": {
     "@swc/core": "^1.2.136",
@@ -16,6 +17,7 @@
     "brainfuck-node": "1.0.2",
     "jest": "^27.4.7",
     "prettier": "^2.5.1",
+    "ts-node": "^10.4.0",
     "typescript": "4.2.4"
   }
 }
