@@ -1,4 +1,4 @@
-import { ReservedWord, Token } from "./tokenize";
+import type { ReservedWord, Token } from "./tokenize";
 import { clone, createStack, range } from "./utils";
 
 const MAX_VARIABLE_COUNT = 512;
@@ -85,14 +85,15 @@ export function parse(tokens: Token[]) {
   const indexStack = createStack(range(0, MAX_VARIABLE_COUNT).reverse());
 
   const next = (): Token => {
-    if (!tokens.length) {
+    const token = tokens[0];
+    if (token === undefined) {
       throw new Error("there are no tokens");
     }
-    return tokens[0];
+    return token;
   };
 
   const shift = (): Token => {
-    if (!tokens.length) {
+    if (tokens.length === 0) {
       throw Error("there are no tokens");
     }
     return tokens.shift()!;
@@ -133,11 +134,12 @@ export function parse(tokens: Token[]) {
 
     const { str: name } = token;
 
-    if (!globalVariables[name]) {
-      globalVariables[name] = { index: indexStack.pop() };
-    }
+    const variable = globalVariables[name] ?? {
+      index: indexStack.pop(),
+    };
+    globalVariables[name] = variable;
 
-    return { kind: "var", index: globalVariables[name].index };
+    return { kind: "var", index: variable.index };
   };
 
   const block = (): SpecificAstNode<"block"> => {

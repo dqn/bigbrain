@@ -66,7 +66,7 @@ export function tokenize(src: string): Token[] {
   };
 
   const consume = (str: string): boolean => {
-    if (next(str.length) === str && !/\w/.test(cur[str.length])) {
+    if (next(str.length) === str) {
       strshift(str.length);
       return true;
     }

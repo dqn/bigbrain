@@ -1,5 +1,5 @@
 import { AstNode, parse } from "../parse";
-import { Token } from "../tokenize";
+import type { Token } from "../tokenize";
 
 describe("parse", () => {
   test("add", () => {

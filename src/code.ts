@@ -1,5 +1,6 @@
+import { unwrap } from "./helpers/unwrap";
 import { numFactors } from "./num";
-import { AstNode } from "./parse";
+import type { AstNode } from "./parse";
 import { createStack, range, uniq } from "./utils";
 
 const FREE_CELL_NUM = 64;
@@ -103,9 +104,8 @@ export function generateCode(nodes: AstNode[]): string {
         const t0 = memory.pop();
         const t1 = memory.pop();
 
-        // clamp to 0-255
-        const val = node.val & 0xff;
-        const [a, b, tweaker] = numFactors[val];
+        const val = node.val & 0xff; // clamp number from 0 to 255
+        const [a, b, tweaker] = unwrap(numFactors[val]);
 
         if (a && b) {
           operate(t1, "+".repeat(a));

@@ -1,5 +1,5 @@
 import { generateCode } from "../code";
-import { AstNode } from "../parse";
+import type { AstNode } from "../parse";
 
 describe("code", () => {
   test("num", () => {
