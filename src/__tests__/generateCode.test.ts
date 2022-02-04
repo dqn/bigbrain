@@ -1,4 +1,4 @@
-import { generateCode } from "../code";
+import { generateCode } from "../generateCode";
 import type { AstNode } from "../parse";
 
 describe("code", () => {

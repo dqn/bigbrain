@@ -1,6 +1,6 @@
 import Brainfuck from "brainfuck-node";
 
-import { compile } from "../bigbrain";
+import { compile } from "../compile";
 
 const bf = new Brainfuck({
   maxSteps: Number.MAX_SAFE_INTEGER,

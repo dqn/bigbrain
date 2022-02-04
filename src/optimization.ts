@@ -1,4 +1,9 @@
-export const numFactors = [
+// number optimization
+// e.g. 20 = 4 * 5     = [4, 5, null]
+//      21 = 3 * 7     = [3, 7, null]
+//      22 = 3 * 7 + 1 = [3, 7, "+"]
+//      23 = 4 * 6 - 1 = [4, 6, "-"]
+export const optimization = [
   [null, null, null],
   [null, null, "+"],
   [null, null, "++"],

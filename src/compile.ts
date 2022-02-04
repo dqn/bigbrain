@@ -1,4 +1,4 @@
-import { generateCode } from "./code";
+import { generateCode } from "./generateCode";
 import { parse } from "./parse";
 import { tokenize } from "./tokenize";
 
