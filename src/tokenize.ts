@@ -25,14 +25,13 @@ const symbols = [
   "}",
 ] as const;
 
-const builtInFunctions = ["input", "putchar", "print"] as const;
-
-const controlStructures = ["if", "else", "for", "while"] as const;
+const builtinFunctions = ["input", "putchar", "print"] as const;
+const controlStatements = ["if", "else", "for", "while"] as const;
 
 export type ReservedWord =
   | typeof symbols[number]
-  | typeof builtInFunctions[number]
-  | typeof controlStructures[number];
+  | typeof builtinFunctions[number]
+  | typeof controlStatements[number];
 
 export type Token =
   | {
@@ -52,8 +51,8 @@ export type Token =
     };
 
 export function tokenize(src: string): Token[] {
-  const tokens: Token[] = [];
   let cur = src;
+  const tokens: Token[] = [];
 
   const next = (num: number): string => {
     return cur.slice(0, num);
@@ -66,42 +65,34 @@ export function tokenize(src: string): Token[] {
   };
 
   const consume = (str: string): boolean => {
-    if (next(str.length) === str) {
-      strshift(str.length);
-      return true;
-    }
-
-    return false;
+    return next(str.length) === str && (strshift(str.length), true);
   };
 
-  while (cur) {
+  while (cur !== "") {
     if (/\s/.test(next(1))) {
       strshift(1);
       continue;
     }
 
-    const symbol = symbols.find((sym) => next(sym.length) === sym);
-    if (symbol) {
-      strshift(symbol.length);
+    const symbol = symbols.find(consume);
+    if (symbol !== undefined) {
       tokens.push({ kind: "reserved", str: symbol });
       continue;
     }
 
-    const builtInFunction = builtInFunctions.find((func) => consume(func));
-    if (builtInFunction) {
-      tokens.push({ kind: "reserved", str: builtInFunction });
+    const builtinFunction = builtinFunctions.find(consume);
+    if (builtinFunction !== undefined) {
+      tokens.push({ kind: "reserved", str: builtinFunction });
       continue;
     }
 
-    const controlStructure = controlStructures.find((struct) =>
-      consume(struct),
-    );
-    if (controlStructure) {
-      tokens.push({ kind: "reserved", str: controlStructure });
+    const controlStatement = controlStatements.find(consume);
+    if (controlStatement !== undefined) {
+      tokens.push({ kind: "reserved", str: controlStatement });
       continue;
     }
 
-    if (/[a-z_]/.test(next(1))) {
+    if (/[a-z_]/i.test(next(1))) {
       let str = "";
 
       while (/\w/.test(next(1))) {
@@ -113,7 +104,7 @@ export function tokenize(src: string): Token[] {
     }
 
     const val = parseInt(cur);
-    if (!isNaN(val)) {
+    if (!Number.isNaN(val)) {
       strshift(val.toString().length);
       tokens.push({ kind: "num", val });
       continue;
