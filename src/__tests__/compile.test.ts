@@ -3,7 +3,7 @@ import Brainfuck from "brainfuck-node";
 import { compile } from "../bigbrain";
 
 const bf = new Brainfuck({
-  maxSteps: 1_000_000_000,
+  maxSteps: Number.MAX_SAFE_INTEGER,
 });
 
 describe("compile", () => {
@@ -149,11 +149,11 @@ buzz
 in = input();
 
 x = if (in == 65) {
-  1
+  1;
 } else if (in == 66) {
-  2
+  2;
 } else {
-  3
+  3;
 };
 
 print(x);

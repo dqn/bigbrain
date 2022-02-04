@@ -1,88 +1,127 @@
+import { unwrap } from "./helpers/unwrap";
 import type { ReservedWord, Token } from "./tokenize";
-import { clone, createStack, range } from "./utils";
 
-const MAX_VARIABLE_COUNT = 512;
+type BinaryOperator = {
+  kind:
+    | "add"
+    | "sub"
+    | "mul"
+    | "div"
+    | "mod"
+    | "exp"
+    | "equ"
+    | "neq"
+    | "lss"
+    | "leq"
+    | "and"
+    | "or";
+  lhs: AstNode;
+  rhs: AstNode;
+};
+
+type Not = {
+  kind: "not";
+  operand: AstNode;
+};
+
+type PreInc = {
+  kind: "pre-inc";
+  operand: Var;
+};
+
+type PreDec = {
+  kind: "pre-dec";
+  operand: Var;
+};
+
+type PostInc = {
+  kind: "post-inc";
+  operand: Var;
+};
+
+type PostDec = {
+  kind: "post-dec";
+  operand: Var;
+};
+
+type Assign = {
+  kind: "assign";
+  lhs: Var;
+  rhs: AstNode;
+};
+
+type Input = {
+  kind: "input";
+};
+
+type Print = {
+  kind: "print";
+  arg: AstNode;
+};
+
+type Putchar = {
+  kind: "putchar";
+  arg: AstNode;
+};
+
+type If = {
+  kind: "if";
+  cond: AstNode;
+  consequence: Block;
+  alternative?: Block | If;
+};
+
+type For = {
+  kind: "for";
+  init?: AstNode;
+  cond?: AstNode;
+  after?: AstNode;
+  body: Block;
+};
+
+type While = {
+  kind: "while";
+  cond: AstNode;
+  body: AstNode;
+};
+
+type Block = {
+  kind: "block";
+  stmts: AstNode[];
+};
+
+type Var = {
+  kind: "var";
+  index: number;
+};
+
+type Num = {
+  kind: "num";
+  val: number;
+};
 
 export type AstNode =
-  | {
-      kind:
-        | "add"
-        | "sub"
-        | "mul"
-        | "div"
-        | "mod"
-        | "exp"
-        | "equ"
-        | "neq"
-        | "lss"
-        | "leq"
-        | "and"
-        | "or";
-      lhs: AstNode;
-      rhs: AstNode;
-    }
-  | {
-      kind: "not";
-      operand: AstNode;
-    }
-  | {
-      kind: "pre-inc" | "pre-dec" | "post-inc" | "post-dec";
-      operand: SpecificAstNode<"var">;
-    }
-  | {
-      kind: "assign";
-      lhs: SpecificAstNode<"var">;
-      rhs: AstNode;
-    }
-  | {
-      kind: "input";
-    }
-  | {
-      kind: "print" | "putchar";
-      arg: AstNode;
-    }
-  | {
-      kind: "if";
-      cond: AstNode;
-      consequence: SpecificAstNode<"block">;
-      alternative?: SpecificAstNode<"block" | "if">;
-    }
-  | {
-      kind: "for";
-      init?: AstNode;
-      cond?: AstNode;
-      after?: AstNode;
-      body: SpecificAstNode<"block">;
-    }
-  | {
-      kind: "while";
-      cond: AstNode;
-      body: AstNode;
-    }
-  | {
-      kind: "block";
-      stmts: (AstNode | { kind: "rtn"; expr: AstNode })[];
-    }
-  | {
-      kind: "var";
-      index: number;
-    }
-  | {
-      kind: "num";
-      val: number;
-    };
-
-type VariableMap = {
-  [name: string]: { index: number };
-};
+  | BinaryOperator
+  | Not
+  | PreInc
+  | PreDec
+  | PostInc
+  | PostDec
+  | Assign
+  | Input
+  | Print
+  | Putchar
+  | If
+  | For
+  | While
+  | Block
+  | Var
+  | Num;
 
 type SpecificToken<T extends Token["kind"]> = Extract<Token, { kind: T }>;
 
-type SpecificAstNode<T extends AstNode["kind"]> = Extract<AstNode, { kind: T }>;
-
-export function parse(tokens: Token[]) {
-  const globalVariables: VariableMap = {};
-  const indexStack = createStack(range(0, MAX_VARIABLE_COUNT).reverse());
+export function parse(tokens: Token[]): AstNode[] {
+  const globalVariables = new Map<string, { index: number }>();
 
   const next = (): Token => {
     const token = tokens[0];
@@ -93,95 +132,61 @@ export function parse(tokens: Token[]) {
   };
 
   const shift = (): Token => {
-    if (tokens.length === 0) {
-      throw Error("there are no tokens");
-    }
-    return tokens.shift()!;
-  };
-
-  const isNext = (word: ReservedWord): boolean => {
-    const n = next();
-    return n.kind === "reserved" && n.str === word;
-  };
-
-  const consume = (op: ReservedWord): boolean => {
     const token = next();
-    if (token.kind !== "reserved" || token.str !== op) {
-      return false;
-    }
     tokens.shift();
-    return true;
+    return token;
   };
 
-  const expect = (op: ReservedWord): Token => {
-    const token = shift();
-    if (token.kind !== "reserved" || token.str !== op) {
-      throw new Error(`could not find ${op}`);
+  const isNextWord = (word: ReservedWord): boolean => {
+    const token = next();
+    return token.kind === "reserved" && token.str === word;
+  };
+
+  const isNextKind = (kind: Token["kind"]): boolean => {
+    return next().kind === kind;
+  };
+
+  const consume = (word: ReservedWord): boolean => {
+    return isNextWord(word) && (shift(), true);
+  };
+
+  const expect = (word: ReservedWord): Token => {
+    if (!isNextWord(word)) {
+      throw new Error(`could not find '${word}'`);
     }
-    return token;
+    return shift();
   };
 
   const expectKind = <T extends Token["kind"]>(kind: T): SpecificToken<T> => {
     const token = shift();
     if (token.kind !== kind) {
-      throw new Error(`expected ${kind}`);
+      throw new Error(`expected '${kind}', but got '${token.kind}'`);
     }
     return token as SpecificToken<T>;
   };
 
-  const variable = (): SpecificAstNode<"var"> => {
-    const token = expectKind("ident");
+  const variable = (): Var => {
+    const { str } = expectKind("ident");
 
-    const { str: name } = token;
-
-    const variable = globalVariables[name] ?? {
-      index: indexStack.pop(),
+    const variable = globalVariables.get(str) ?? {
+      index: globalVariables.size,
     };
-    globalVariables[name] = variable;
+    globalVariables.set(str, variable);
 
-    return { kind: "var", index: variable.index };
-  };
-
-  const block = (): SpecificAstNode<"block"> => {
-    const stmts: SpecificAstNode<"block">["stmts"] = [];
-
-    expect("{");
-    while (!consume("}")) {
-      const snapshot = clone(tokens);
-      const recover = () => {
-        tokens.length = 0;
-        tokens.push(...snapshot);
-      };
-
-      try {
-        stmts.push(stmt());
-        continue;
-      } catch {
-        recover();
-      }
-
-      try {
-        stmts.push({ kind: "rtn", expr: expr() });
-        expect("}");
-        break;
-      } catch {
-        recover();
-      }
-
-      throw new Error(`unexpected token: ${next().kind}`);
-    }
-
-    return { kind: "block", stmts };
+    return {
+      kind: "var",
+      index: variable.index,
+    };
   };
 
   const primary = (): AstNode => {
     if (consume("(")) {
       const node = expr();
-      consume(")");
+      expect(")");
       return node;
     }
 
-    if (isNext("{")) {
+    if (isNextWord("{")) {
       return block();
     }
 
@@ -189,11 +194,20 @@ export function parse(tokens: Token[]) {
       expect("(");
       const cond = expr();
       expect(")");
-      const node: AstNode = { kind: "if", cond, consequence: block() };
+
+      const node: If = {
+        kind: "if",
+        cond,
+        consequence: block(),
+      };
 
       if (consume("else")) {
-        if (isNext("if")) {
-          node.alternative = primary() as SpecificAstNode<"if">;
+        if (isNextWord("if")) {
+          const next = primary();
+          if (next.kind !== "if") {
+            throw new Error("expected 'if");
+          }
+          node.alternative = next;
         } else {
           node.alternative = block();
         }
@@ -202,23 +216,27 @@ export function parse(tokens: Token[]) {
       return node;
     }
 
-    if (next().kind === "ident") {
+    if (isNextKind("ident")) {
       return variable();
     }
 
     if (consume("input")) {
       expect("(");
       expect(")");
-      return { kind: "input" };
+      return {
+        kind: "input",
+      };
     }
 
     const token = shift();
-
     if (token.kind === "num") {
-      return { kind: "num", val: token.val };
+      return {
+        kind: "num",
+        val: token.val,
+      };
     }
 
-    throw new Error(`invalid token ${token.kind}`);
+    throw new Error(`invalid token '${token.kind}'`);
   };
 
   const unary = (): AstNode => {
@@ -229,7 +247,11 @@ export function parse(tokens: Token[]) {
       return primary();
     }
     if (consume("-")) {
-      return { kind: "sub", lhs: { kind: "num", val: 0 }, rhs: primary() };
+      return {
+        kind: "sub",
+        lhs: { kind: "num", val: 0 },
+        rhs: primary(),
+      };
     }
     if (consume("++")) {
       return { kind: "pre-inc", operand: variable() };
@@ -237,8 +259,7 @@ export function parse(tokens: Token[]) {
     if (consume("--")) {
       return { kind: "pre-dec", operand: variable() };
     }
-
-    if (next().kind === "ident") {
+    if (isNextKind("ident")) {
       const v = variable();
 
       if (consume("++")) {
@@ -251,9 +272,7 @@ export function parse(tokens: Token[]) {
       return v;
     }
 
-    const node = primary();
-
-    return node;
+    return primary();
   };
 
   const exp = (): AstNode => {
@@ -263,16 +282,16 @@ export function parse(tokens: Token[]) {
       nodes.push(unary());
     }
 
-    let node = nodes.pop()!;
+    let node = unwrap(nodes.pop());
 
-    while (nodes.length) {
-      node = { kind: "exp", lhs: nodes.pop()!, rhs: node };
+    while (nodes.length !== 0) {
+      node = { kind: "exp", lhs: unwrap(nodes.pop()), rhs: node };
     }
 
     return node;
   };
 
-  const mulDivMod = (): AstNode => {
+  const term = (): AstNode => {
     let node = exp();
 
     while (true) {
@@ -289,13 +308,13 @@ export function parse(tokens: Token[]) {
   };
 
   const addSub = (): AstNode => {
-    let node = mulDivMod();
+    let node = term();
 
     while (true) {
       if (consume("+")) {
-        node = { kind: "add", lhs: node, rhs: mulDivMod() };
+        node = { kind: "add", lhs: node, rhs: term() };
       } else if (consume("-")) {
-        node = { kind: "sub", lhs: node, rhs: mulDivMod() };
+        node = { kind: "sub", lhs: node, rhs: term() };
       } else {
         return node;
       }
@@ -337,25 +356,19 @@ export function parse(tokens: Token[]) {
   const and = (): AstNode => {
     let node = equality();
 
-    while (true) {
-      if (consume("&&")) {
-        node = { kind: "and", lhs: node, rhs: equality() };
-      } else {
-        return node;
-      }
+    while (consume("&&")) {
+      node = { kind: "and", lhs: node, rhs: equality() };
     }
+    return node;
   };
 
   const or = (): AstNode => {
     let node = and();
 
-    while (true) {
-      if (consume("||")) {
-        node = { kind: "or", lhs: node, rhs: and() };
-      } else {
-        return node;
-      }
+    while (consume("||")) {
+      node = { kind: "or", lhs: node, rhs: and() };
     }
+    return node;
   };
 
   const assign = (): AstNode => {
@@ -365,10 +378,14 @@ export function parse(tokens: Token[]) {
       if (node.kind !== "var") {
         throw new Error("cannot assign to a value that is not a variable");
       }
-      return { kind: "assign", lhs: node, rhs: assign() };
-    } else {
-      return node;
+      return {
+        kind: "assign",
+        lhs: node,
+        rhs: assign(),
+      };
     }
+
+    return node;
   };
 
   const expr = (): AstNode => {
@@ -389,7 +406,7 @@ export function parse(tokens: Token[]) {
     }
 
     if (consume("for")) {
-      const node: AstNode = { kind: "for", body: null! };
+      const node: Omit<For, "body"> = { kind: "for" };
 
       expect("(");
       if (!consume(";")) {
@@ -405,9 +422,10 @@ export function parse(tokens: Token[]) {
         expect(")");
       }
 
-      node.body = block();
-
-      return node;
+      return {
+        ...node,
+        body: block(),
+      };
     }
 
     if (consume("while")) {
@@ -415,21 +433,40 @@ export function parse(tokens: Token[]) {
       const cond = expr();
       expect(")");
 
-      const whileTrue = stmt();
+      return {
+        kind: "while",
+        cond,
+        body: stmt(),
+      };
+    }
 
-      return { kind: "while", cond, body: whileTrue };
+    if (isNextWord("if")) {
+      return expr();
     }
 
     const node = expr();
-    if (node.kind !== "if") {
-      expect(";");
-    }
+    expect(";");
+
     return node;
+  };
+
+  const block = (): Block => {
+    const stmts: Block["stmts"] = [];
+
+    expect("{");
+    while (!consume("}")) {
+      stmts.push(stmt());
+    }
+
+    return {
+      kind: "block",
+      stmts,
+    };
   };
 
   const program = (): AstNode[] => {
     const nodes: AstNode[] = [];
-    while (next().kind !== "eof") {
+    while (!isNextKind("eof")) {
       nodes.push(stmt());
     }
     return nodes;

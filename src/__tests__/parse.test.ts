@@ -1120,6 +1120,7 @@ describe("parse", () => {
       { kind: "ident", str: "y" },
       { kind: "reserved", str: "=" },
       { kind: "num", val: 2 },
+      { kind: "reserved", str: ";" },
       { kind: "reserved", str: "}" },
       { kind: "reserved", str: ";" },
       { kind: "eof" },
@@ -1147,17 +1148,14 @@ describe("parse", () => {
               },
             },
             {
-              kind: "rtn",
-              expr: {
-                kind: "assign",
-                lhs: {
-                  kind: "var",
-                  index: 2,
-                },
-                rhs: {
-                  kind: "num",
-                  val: 2,
-                },
+              kind: "assign",
+              lhs: {
+                kind: "var",
+                index: 2,
+              },
+              rhs: {
+                kind: "num",
+                val: 2,
               },
             },
           ],
