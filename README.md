@@ -14,9 +14,9 @@ $ npm install @dqn/bigbrain
 ## Usage
 
 ```js
-const bigbrain = require('@dqn/bigbrain');
+const bigbrain = require("@dqn/bigbrain");
 
-const code = bigbrain.compile('x = input(); putchar(x);');
+const code = bigbrain.compile("x = input(); putchar(x);");
 console.log(code); // >,<[-]>[<+>>+<-]>[-]<<[>>+<+<-]>[<+>-]>.[-]
 ```
 
