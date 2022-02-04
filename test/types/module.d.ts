@@ -1,4 +1,4 @@
-declare module 'brainfuck-node' {
+declare module "brainfuck-node" {
   class Result {
     public output: string;
   }
@@ -7,6 +7,6 @@ declare module 'brainfuck-node' {
 
   export default class Brainfuck {
     constructor(options: BrainfuckOptions = {});
-    execute(code: string, input: string = ''): Result;
+    execute(code: string, input: string = ""): Result;
   }
 }

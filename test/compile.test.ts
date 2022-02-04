@@ -1,13 +1,13 @@
-import Brainfuck from 'brainfuck-node';
+import Brainfuck from "brainfuck-node";
 
-import { compile } from '../src/bigbrain';
+import { compile } from "../src/bigbrain";
 
 const bf = new Brainfuck({
   maxSteps: 1_000_000_000,
 });
 
-describe('compile', () => {
-  test('fizzbuzz', () => {
+describe("compile", () => {
+  test("fizzbuzz", () => {
     const code = compile(`
 x = input() * 2;
 for (i = 1; i <= x; ++i) {
@@ -37,7 +37,7 @@ for (i = 1; i <= x; ++i) {
 }
 `);
 
-    const result = bf.execute(code, '2');
+    const result = bf.execute(code, "2");
 
     expect(result.output).toBe(
       `1
@@ -144,7 +144,7 @@ buzz
     );
   });
 
-  test('if-else expression', () => {
+  test("if-else expression", () => {
     const code = compile(`
 in = input();
 
@@ -160,9 +160,9 @@ print(x);
 `);
 
     const tests = [
-      ['A', '1'],
-      ['B', '2'],
-      ['C', '3'],
+      ["A", "1"],
+      ["B", "2"],
+      ["C", "3"],
     ];
 
     tests.forEach(([input, expected]) => {

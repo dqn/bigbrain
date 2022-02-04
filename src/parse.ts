@@ -1,74 +1,74 @@
-import { ReservedWord, Token } from './tokenize';
-import { clone, createStack, range } from './utils';
+import { ReservedWord, Token } from "./tokenize";
+import { clone, createStack, range } from "./utils";
 
 const MAX_VARIABLE_COUNT = 512;
 
 export type AstNode =
   | {
       kind:
-        | 'add'
-        | 'sub'
-        | 'mul'
-        | 'div'
-        | 'mod'
-        | 'exp'
-        | 'equ'
-        | 'neq'
-        | 'lss'
-        | 'leq'
-        | 'and'
-        | 'or';
+        | "add"
+        | "sub"
+        | "mul"
+        | "div"
+        | "mod"
+        | "exp"
+        | "equ"
+        | "neq"
+        | "lss"
+        | "leq"
+        | "and"
+        | "or";
       lhs: AstNode;
       rhs: AstNode;
     }
   | {
-      kind: 'not';
+      kind: "not";
       operand: AstNode;
     }
   | {
-      kind: 'pre-inc' | 'pre-dec' | 'post-inc' | 'post-dec';
-      operand: SpecificAstNode<'var'>;
+      kind: "pre-inc" | "pre-dec" | "post-inc" | "post-dec";
+      operand: SpecificAstNode<"var">;
     }
   | {
-      kind: 'assign';
-      lhs: SpecificAstNode<'var'>;
+      kind: "assign";
+      lhs: SpecificAstNode<"var">;
       rhs: AstNode;
     }
   | {
-      kind: 'input';
+      kind: "input";
     }
   | {
-      kind: 'print' | 'putchar';
+      kind: "print" | "putchar";
       arg: AstNode;
     }
   | {
-      kind: 'if';
+      kind: "if";
       cond: AstNode;
-      consequence: SpecificAstNode<'block'>;
-      alternative?: SpecificAstNode<'block' | 'if'>;
+      consequence: SpecificAstNode<"block">;
+      alternative?: SpecificAstNode<"block" | "if">;
     }
   | {
-      kind: 'for';
+      kind: "for";
       init?: AstNode;
       cond?: AstNode;
       after?: AstNode;
-      body: SpecificAstNode<'block'>;
+      body: SpecificAstNode<"block">;
     }
   | {
-      kind: 'while';
+      kind: "while";
       cond: AstNode;
       body: AstNode;
     }
   | {
-      kind: 'block';
-      stmts: (AstNode | { kind: 'rtn'; expr: AstNode })[];
+      kind: "block";
+      stmts: (AstNode | { kind: "rtn"; expr: AstNode })[];
     }
   | {
-      kind: 'var';
+      kind: "var";
       index: number;
     }
   | {
-      kind: 'num';
+      kind: "num";
       val: number;
     };
 
@@ -76,9 +76,9 @@ type VariableMap = {
   [name: string]: { index: number };
 };
 
-type SpecificToken<T extends Token['kind']> = Extract<Token, { kind: T }>;
+type SpecificToken<T extends Token["kind"]> = Extract<Token, { kind: T }>;
 
-type SpecificAstNode<T extends AstNode['kind']> = Extract<AstNode, { kind: T }>;
+type SpecificAstNode<T extends AstNode["kind"]> = Extract<AstNode, { kind: T }>;
 
 export function parse(tokens: Token[]) {
   const globalVariables: VariableMap = {};
@@ -86,26 +86,26 @@ export function parse(tokens: Token[]) {
 
   const next = (): Token => {
     if (!tokens.length) {
-      throw new Error('there are no tokens');
+      throw new Error("there are no tokens");
     }
     return tokens[0];
   };
 
   const shift = (): Token => {
     if (!tokens.length) {
-      throw Error('there are no tokens');
+      throw Error("there are no tokens");
     }
     return tokens.shift()!;
   };
 
   const isNext = (word: ReservedWord): boolean => {
     const n = next();
-    return n.kind === 'reserved' && n.str === word;
+    return n.kind === "reserved" && n.str === word;
   };
 
   const consume = (op: ReservedWord): boolean => {
     const token = next();
-    if (token.kind !== 'reserved' || token.str !== op) {
+    if (token.kind !== "reserved" || token.str !== op) {
       return false;
     }
     tokens.shift();
@@ -114,13 +114,13 @@ export function parse(tokens: Token[]) {
 
   const expect = (op: ReservedWord): Token => {
     const token = shift();
-    if (token.kind !== 'reserved' || token.str !== op) {
+    if (token.kind !== "reserved" || token.str !== op) {
       throw new Error(`could not find ${op}`);
     }
     return token;
   };
 
-  const expectKind = <T extends Token['kind']>(kind: T): SpecificToken<T> => {
+  const expectKind = <T extends Token["kind"]>(kind: T): SpecificToken<T> => {
     const token = shift();
     if (token.kind !== kind) {
       throw new Error(`expected ${kind}`);
@@ -128,8 +128,8 @@ export function parse(tokens: Token[]) {
     return token as SpecificToken<T>;
   };
 
-  const variable = (): SpecificAstNode<'var'> => {
-    const token = expectKind('ident');
+  const variable = (): SpecificAstNode<"var"> => {
+    const token = expectKind("ident");
 
     const { str: name } = token;
 
@@ -137,14 +137,14 @@ export function parse(tokens: Token[]) {
       globalVariables[name] = { index: indexStack.pop() };
     }
 
-    return { kind: 'var', index: globalVariables[name].index };
+    return { kind: "var", index: globalVariables[name].index };
   };
 
-  const block = (): SpecificAstNode<'block'> => {
-    const stmts: SpecificAstNode<'block'>['stmts'] = [];
+  const block = (): SpecificAstNode<"block"> => {
+    const stmts: SpecificAstNode<"block">["stmts"] = [];
 
-    expect('{');
-    while (!consume('}')) {
+    expect("{");
+    while (!consume("}")) {
       const snapshot = clone(tokens);
       const recover = () => {
         tokens.length = 0;
@@ -159,8 +159,8 @@ export function parse(tokens: Token[]) {
       }
 
       try {
-        stmts.push({ kind: 'rtn', expr: expr() });
-        expect('}');
+        stmts.push({ kind: "rtn", expr: expr() });
+        expect("}");
         break;
       } catch {
         recover();
@@ -169,29 +169,29 @@ export function parse(tokens: Token[]) {
       throw new Error(`unexpected token: ${next().kind}`);
     }
 
-    return { kind: 'block', stmts };
+    return { kind: "block", stmts };
   };
 
   const primary = (): AstNode => {
-    if (consume('(')) {
+    if (consume("(")) {
       const node = expr();
-      consume(')');
+      consume(")");
       return node;
     }
 
-    if (isNext('{')) {
+    if (isNext("{")) {
       return block();
     }
 
-    if (consume('if')) {
-      expect('(');
+    if (consume("if")) {
+      expect("(");
       const cond = expr();
-      expect(')');
-      const node: AstNode = { kind: 'if', cond, consequence: block() };
+      expect(")");
+      const node: AstNode = { kind: "if", cond, consequence: block() };
 
-      if (consume('else')) {
-        if (isNext('if')) {
-          node.alternative = primary() as SpecificAstNode<'if'>;
+      if (consume("else")) {
+        if (isNext("if")) {
+          node.alternative = primary() as SpecificAstNode<"if">;
         } else {
           node.alternative = block();
         }
@@ -200,50 +200,50 @@ export function parse(tokens: Token[]) {
       return node;
     }
 
-    if (next().kind === 'ident') {
+    if (next().kind === "ident") {
       return variable();
     }
 
-    if (consume('input')) {
-      expect('(');
-      expect(')');
-      return { kind: 'input' };
+    if (consume("input")) {
+      expect("(");
+      expect(")");
+      return { kind: "input" };
     }
 
     const token = shift();
 
-    if (token.kind === 'num') {
-      return { kind: 'num', val: token.val };
+    if (token.kind === "num") {
+      return { kind: "num", val: token.val };
     }
 
     throw new Error(`invalid token ${token.kind}`);
   };
 
   const unary = (): AstNode => {
-    if (consume('!')) {
-      return { kind: 'not', operand: primary() };
+    if (consume("!")) {
+      return { kind: "not", operand: primary() };
     }
-    if (consume('+')) {
+    if (consume("+")) {
       return primary();
     }
-    if (consume('-')) {
-      return { kind: 'sub', lhs: { kind: 'num', val: 0 }, rhs: primary() };
+    if (consume("-")) {
+      return { kind: "sub", lhs: { kind: "num", val: 0 }, rhs: primary() };
     }
-    if (consume('++')) {
-      return { kind: 'pre-inc', operand: variable() };
+    if (consume("++")) {
+      return { kind: "pre-inc", operand: variable() };
     }
-    if (consume('--')) {
-      return { kind: 'pre-dec', operand: variable() };
+    if (consume("--")) {
+      return { kind: "pre-dec", operand: variable() };
     }
 
-    if (next().kind === 'ident') {
+    if (next().kind === "ident") {
       const v = variable();
 
-      if (consume('++')) {
-        return { kind: 'post-inc', operand: v };
+      if (consume("++")) {
+        return { kind: "post-inc", operand: v };
       }
-      if (consume('--')) {
-        return { kind: 'post-dec', operand: v };
+      if (consume("--")) {
+        return { kind: "post-dec", operand: v };
       }
 
       return v;
@@ -257,14 +257,14 @@ export function parse(tokens: Token[]) {
   const exp = (): AstNode => {
     const nodes = [unary()];
 
-    while (consume('**')) {
+    while (consume("**")) {
       nodes.push(unary());
     }
 
     let node = nodes.pop()!;
 
     while (nodes.length) {
-      node = { kind: 'exp', lhs: nodes.pop()!, rhs: node };
+      node = { kind: "exp", lhs: nodes.pop()!, rhs: node };
     }
 
     return node;
@@ -274,12 +274,12 @@ export function parse(tokens: Token[]) {
     let node = exp();
 
     while (true) {
-      if (consume('*')) {
-        node = { kind: 'mul', lhs: node, rhs: exp() };
-      } else if (consume('/')) {
-        node = { kind: 'div', lhs: node, rhs: exp() };
-      } else if (consume('%')) {
-        node = { kind: 'mod', lhs: node, rhs: exp() };
+      if (consume("*")) {
+        node = { kind: "mul", lhs: node, rhs: exp() };
+      } else if (consume("/")) {
+        node = { kind: "div", lhs: node, rhs: exp() };
+      } else if (consume("%")) {
+        node = { kind: "mod", lhs: node, rhs: exp() };
       } else {
         return node;
       }
@@ -290,10 +290,10 @@ export function parse(tokens: Token[]) {
     let node = mulDivMod();
 
     while (true) {
-      if (consume('+')) {
-        node = { kind: 'add', lhs: node, rhs: mulDivMod() };
-      } else if (consume('-')) {
-        node = { kind: 'sub', lhs: node, rhs: mulDivMod() };
+      if (consume("+")) {
+        node = { kind: "add", lhs: node, rhs: mulDivMod() };
+      } else if (consume("-")) {
+        node = { kind: "sub", lhs: node, rhs: mulDivMod() };
       } else {
         return node;
       }
@@ -304,14 +304,14 @@ export function parse(tokens: Token[]) {
     let node = addSub();
 
     while (true) {
-      if (consume('<')) {
-        node = { kind: 'lss', lhs: node, rhs: addSub() };
-      } else if (consume('<=')) {
-        node = { kind: 'leq', lhs: node, rhs: addSub() };
-      } else if (consume('>')) {
-        node = { kind: 'lss', lhs: addSub(), rhs: node };
-      } else if (consume('>=')) {
-        node = { kind: 'leq', lhs: addSub(), rhs: node };
+      if (consume("<")) {
+        node = { kind: "lss", lhs: node, rhs: addSub() };
+      } else if (consume("<=")) {
+        node = { kind: "leq", lhs: node, rhs: addSub() };
+      } else if (consume(">")) {
+        node = { kind: "lss", lhs: addSub(), rhs: node };
+      } else if (consume(">=")) {
+        node = { kind: "leq", lhs: addSub(), rhs: node };
       } else {
         return node;
       }
@@ -322,10 +322,10 @@ export function parse(tokens: Token[]) {
     let node = relational();
 
     while (true) {
-      if (consume('==')) {
-        node = { kind: 'equ', lhs: node, rhs: relational() };
-      } else if (consume('!=')) {
-        node = { kind: 'neq', lhs: node, rhs: relational() };
+      if (consume("==")) {
+        node = { kind: "equ", lhs: node, rhs: relational() };
+      } else if (consume("!=")) {
+        node = { kind: "neq", lhs: node, rhs: relational() };
       } else {
         return node;
       }
@@ -336,8 +336,8 @@ export function parse(tokens: Token[]) {
     let node = equality();
 
     while (true) {
-      if (consume('&&')) {
-        node = { kind: 'and', lhs: node, rhs: equality() };
+      if (consume("&&")) {
+        node = { kind: "and", lhs: node, rhs: equality() };
       } else {
         return node;
       }
@@ -348,8 +348,8 @@ export function parse(tokens: Token[]) {
     let node = and();
 
     while (true) {
-      if (consume('||')) {
-        node = { kind: 'or', lhs: node, rhs: and() };
+      if (consume("||")) {
+        node = { kind: "or", lhs: node, rhs: and() };
       } else {
         return node;
       }
@@ -359,11 +359,11 @@ export function parse(tokens: Token[]) {
   const assign = (): AstNode => {
     const node = or();
 
-    if (consume('=')) {
-      if (node.kind !== 'var') {
-        throw new Error('cannot assign to a value that is not a variable');
+    if (consume("=")) {
+      if (node.kind !== "var") {
+        throw new Error("cannot assign to a value that is not a variable");
       }
-      return { kind: 'assign', lhs: node, rhs: assign() };
+      return { kind: "assign", lhs: node, rhs: assign() };
     } else {
       return node;
     }
@@ -374,33 +374,33 @@ export function parse(tokens: Token[]) {
   };
 
   const stmt = (): AstNode => {
-    if (consume('putchar')) {
+    if (consume("putchar")) {
       const arg = expr();
-      expect(';');
-      return { kind: 'putchar', arg };
+      expect(";");
+      return { kind: "putchar", arg };
     }
 
-    if (consume('print')) {
+    if (consume("print")) {
       const arg = expr();
-      expect(';');
-      return { kind: 'print', arg };
+      expect(";");
+      return { kind: "print", arg };
     }
 
-    if (consume('for')) {
-      const node: AstNode = { kind: 'for', body: null! };
+    if (consume("for")) {
+      const node: AstNode = { kind: "for", body: null! };
 
-      expect('(');
-      if (!consume(';')) {
+      expect("(");
+      if (!consume(";")) {
         node.init = expr();
-        expect(';');
+        expect(";");
       }
-      if (!consume(';')) {
+      if (!consume(";")) {
         node.cond = expr();
-        expect(';');
+        expect(";");
       }
-      if (!consume(')')) {
+      if (!consume(")")) {
         node.after = expr();
-        expect(')');
+        expect(")");
       }
 
       node.body = block();
@@ -408,26 +408,26 @@ export function parse(tokens: Token[]) {
       return node;
     }
 
-    if (consume('while')) {
-      expect('(');
+    if (consume("while")) {
+      expect("(");
       const cond = expr();
-      expect(')');
+      expect(")");
 
       const whileTrue = stmt();
 
-      return { kind: 'while', cond, body: whileTrue };
+      return { kind: "while", cond, body: whileTrue };
     }
 
     const node = expr();
-    if (node.kind !== 'if') {
-      expect(';');
+    if (node.kind !== "if") {
+      expect(";");
     }
     return node;
   };
 
   const program = (): AstNode[] => {
     const nodes: AstNode[] = [];
-    while (next().kind !== 'eof') {
+    while (next().kind !== "eof") {
       nodes.push(stmt());
     }
     return nodes;

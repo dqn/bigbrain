@@ -1,1 +1,1 @@
-export * from './bigbrain';
+export * from "./bigbrain";

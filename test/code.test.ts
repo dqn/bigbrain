@@ -1,34 +1,34 @@
-import { generateCode } from '../src/code';
-import { AstNode } from '../src/parse';
+import { generateCode } from "../src/code";
+import { AstNode } from "../src/parse";
 
-describe('code', () => {
-  test('num', () => {
+describe("code", () => {
+  test("num", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'num',
+        kind: "num",
         val: 13,
       },
     ];
 
     const code = generateCode(nodes);
-    expect(code).toEqual('+++++++++++++');
+    expect(code).toEqual("+++++++++++++");
   });
 
-  test('input', () => {
+  test("input", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'assign',
+        kind: "assign",
         lhs: {
-          kind: 'var',
+          kind: "var",
           index: 0,
         },
         rhs: {
-          kind: 'add',
+          kind: "add",
           lhs: {
-            kind: 'input',
+            kind: "input",
           },
           rhs: {
-            kind: 'num',
+            kind: "num",
             val: 2,
           },
         },
@@ -36,36 +36,36 @@ describe('code', () => {
     ];
 
     const code = generateCode(nodes);
-    expect(code).toEqual('>,>++[<+>-]<<[-]>[<+>>+<-]');
+    expect(code).toEqual(">,>++[<+>-]<<[-]>[<+>>+<-]");
   });
 
-  test('putchar', () => {
+  test("putchar", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'putchar',
+        kind: "putchar",
         arg: {
-          kind: 'num',
+          kind: "num",
           val: 5,
         },
       },
     ];
 
     const code = generateCode(nodes);
-    expect(code).toEqual('+++++.[-]');
+    expect(code).toEqual("+++++.[-]");
   });
 
-  test('print', () => {
+  test("print", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'print',
+        kind: "print",
         arg: {
-          kind: 'add',
+          kind: "add",
           lhs: {
-            kind: 'num',
+            kind: "num",
             val: 2,
           },
           rhs: {
-            kind: 'num',
+            kind: "num",
             val: 3,
           },
         },
@@ -74,77 +74,77 @@ describe('code', () => {
 
     const code = generateCode(nodes);
     expect(code).toEqual(
-      '++>+++[<+>-]++++++++++<[->->+<[>>+>+<<<-]>>>[<<<+>>>-]+<[>-<[-]]>[<<[<+>-]>>>+<-]<<<<]>>[>>>>>+<<<<<-]>>>[<<<<<+>>>>>-]<<<<[-]++++++++++<[->->+<[>>+>+<<<-]>>>[<<<+>>>-]+<[>-<[-]]>[<<[<+>-]>>>+<-]<<<<]>>[>>>>+<<<<-]>>>[++++++++++++++++++++++++++++++++++++++++++++++++.<+>>+<[-]]>[<<[>>-<<-]>>++++++++++++++++++++++++++++++++++++++++++++++++.[-]]>++++++++++++++++++++++++++++++++++++++++++++++++.[-]<<<<<<[-]',
+      "++>+++[<+>-]++++++++++<[->->+<[>>+>+<<<-]>>>[<<<+>>>-]+<[>-<[-]]>[<<[<+>-]>>>+<-]<<<<]>>[>>>>>+<<<<<-]>>>[<<<<<+>>>>>-]<<<<[-]++++++++++<[->->+<[>>+>+<<<-]>>>[<<<+>>>-]+<[>-<[-]]>[<<[<+>-]>>>+<-]<<<<]>>[>>>>+<<<<-]>>>[++++++++++++++++++++++++++++++++++++++++++++++++.<+>>+<[-]]>[<<[>>-<<-]>>++++++++++++++++++++++++++++++++++++++++++++++++.[-]]>++++++++++++++++++++++++++++++++++++++++++++++++.[-]<<<<<<[-]",
     );
   });
 
-  test('add', () => {
+  test("add", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'add',
+        kind: "add",
         lhs: {
-          kind: 'num',
+          kind: "num",
           val: 3,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 4,
         },
       },
     ];
 
     const code = generateCode(nodes);
-    expect(code).toEqual('+++>++++[<+>-]');
+    expect(code).toEqual("+++>++++[<+>-]");
   });
 
-  test('sub', () => {
+  test("sub", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'sub',
+        kind: "sub",
         lhs: {
-          kind: 'num',
+          kind: "num",
           val: 5,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 2,
         },
       },
     ];
 
     const code = generateCode(nodes);
-    expect(code).toEqual('+++++>++[<->-]');
+    expect(code).toEqual("+++++>++[<->-]");
   });
 
-  test('mul', () => {
+  test("mul", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'mul',
+        kind: "mul",
         lhs: {
-          kind: 'num',
+          kind: "num",
           val: 4,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 3,
         },
       },
     ];
 
     const code = generateCode(nodes);
-    expect(code).toEqual('++++>+++<[>[>+>+<<-]>>[<<+>>-]<<<-]>[-]>[<<+>>-]');
+    expect(code).toEqual("++++>+++<[>[>+>+<<-]>>[<<+>>-]<<<-]>[-]>[<<+>>-]");
   });
 
-  test('div', () => {
+  test("div", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'div',
+        kind: "div",
         lhs: {
-          kind: 'num',
+          kind: "num",
           val: 6,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 2,
         },
       },
@@ -152,20 +152,20 @@ describe('code', () => {
 
     const code = generateCode(nodes);
     expect(code).toEqual(
-      '++++++>++<[>>+<<-]>>[<[>>+>+<<<-]>>>[<<<+>>>-]<[>+<<-[>>[-]>+<<<-]>>>[<<<+>>>-]<[<-[<<<->>>[-]]+>-]<-]<<<+>>]<[-]',
+      "++++++>++<[>>+<<-]>>[<[>>+>+<<<-]>>>[<<<+>>>-]<[>+<<-[>>[-]>+<<<-]>>>[<<<+>>>-]<[<-[<<<->>>[-]]+>-]<-]<<<+>>]<[-]",
     );
   });
 
-  test('mod', () => {
+  test("mod", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'mod',
+        kind: "mod",
         lhs: {
-          kind: 'num',
+          kind: "num",
           val: 5,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 2,
         },
       },
@@ -173,26 +173,26 @@ describe('code', () => {
 
     const code = generateCode(nodes);
     expect(code).toEqual(
-      '+++++>++<[>->+<[>>+>+<<<-]>>>[<<<+>>>-]+<[>-<[-]]>[<<[<+>-]>>-]<<<<-]>[-]',
+      "+++++>++<[>->+<[>>+>+<<<-]>>>[<<<+>>>-]+<[>-<[-]]>[<<[<+>-]>>-]<<<<-]>[-]",
     );
   });
 
-  test('exp', () => {
+  test("exp", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'exp',
+        kind: "exp",
         lhs: {
-          kind: 'num',
+          kind: "num",
           val: 2,
         },
         rhs: {
-          kind: 'exp',
+          kind: "exp",
           lhs: {
-            kind: 'num',
+            kind: "num",
             val: 1,
           },
           rhs: {
-            kind: 'num',
+            kind: "num",
             val: 2,
           },
         },
@@ -201,307 +201,311 @@ describe('code', () => {
 
     const code = generateCode(nodes);
     expect(code).toEqual(
-      '++>+>++<[>>+<<-]+>[>>[-]>[-]<<<<[>>>>+<<<<-]>>>>[<<[<<+>>>+<-]>[<+>-]>-]<<<-]>[-]<<<[>>+<<-]+>[>>[-]>[-]<<<<[>>>>+<<<<-]>>>>[<<[<<+>>>+<-]>[<+>-]>-]<<<-]>[-]',
+      "++>+>++<[>>+<<-]+>[>>[-]>[-]<<<<[>>>>+<<<<-]>>>>[<<[<<+>>>+<-]>[<+>-]>-]<<<-]>[-]<<<[>>+<<-]+>[>>[-]>[-]<<<<[>>>>+<<<<-]>>>>[<<[<<+>>>+<-]>[<+>-]>-]<<<-]>[-]",
     );
   });
 
-  test('not', () => {
+  test("not", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'not',
+        kind: "not",
         operand: {
-          kind: 'num',
+          kind: "num",
           val: 2,
         },
       },
     ];
 
     const code = generateCode(nodes);
-    expect(code).toEqual('++>+<[>-<[-]]');
+    expect(code).toEqual("++>+<[>-<[-]]");
   });
 
-  test('pre-inc', () => {
+  test("pre-inc", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'assign',
+        kind: "assign",
         lhs: {
-          kind: 'var',
+          kind: "var",
           index: 0,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 1,
         },
       },
       {
-        kind: 'pre-inc',
+        kind: "pre-inc",
         operand: {
-          kind: 'var',
+          kind: "var",
           index: 0,
         },
       },
     ];
 
     const code = generateCode(nodes);
-    expect(code).toEqual('>+<[-]>[<+>>+<-]>[-]<<+[>>+<+<-]>[<+>-]');
+    expect(code).toEqual(">+<[-]>[<+>>+<-]>[-]<<+[>>+<+<-]>[<+>-]");
   });
 
-  test('pre-dec', () => {
+  test("pre-dec", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'assign',
+        kind: "assign",
         lhs: {
-          kind: 'var',
+          kind: "var",
           index: 0,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 1,
         },
       },
       {
-        kind: 'pre-dec',
+        kind: "pre-dec",
         operand: {
-          kind: 'var',
+          kind: "var",
           index: 0,
         },
       },
     ];
 
     const code = generateCode(nodes);
-    expect(code).toEqual('>+<[-]>[<+>>+<-]>[-]<<-[>>+<+<-]>[<+>-]');
+    expect(code).toEqual(">+<[-]>[<+>>+<-]>[-]<<-[>>+<+<-]>[<+>-]");
   });
 
-  test('post-inc', () => {
+  test("post-inc", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'assign',
+        kind: "assign",
         lhs: {
-          kind: 'var',
+          kind: "var",
           index: 0,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 1,
         },
       },
       {
-        kind: 'post-inc',
+        kind: "post-inc",
         operand: {
-          kind: 'var',
+          kind: "var",
           index: 0,
         },
       },
     ];
 
     const code = generateCode(nodes);
-    expect(code).toEqual('>+<[-]>[<+>>+<-]>[-]<<[>>+<+<-]>[<+>-]<+');
+    expect(code).toEqual(">+<[-]>[<+>>+<-]>[-]<<[>>+<+<-]>[<+>-]<+");
   });
 
-  test('post-dec', () => {
+  test("post-dec", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'assign',
+        kind: "assign",
         lhs: {
-          kind: 'var',
+          kind: "var",
           index: 0,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 1,
         },
       },
       {
-        kind: 'post-dec',
+        kind: "post-dec",
         operand: {
-          kind: 'var',
+          kind: "var",
           index: 0,
         },
       },
     ];
 
     const code = generateCode(nodes);
-    expect(code).toEqual('>+<[-]>[<+>>+<-]>[-]<<[>>+<+<-]>[<+>-]<-');
+    expect(code).toEqual(">+<[-]>[<+>>+<-]>[-]<<[>>+<+<-]>[<+>-]<-");
   });
 
-  test('equ', () => {
+  test("equ", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'equ',
+        kind: "equ",
         lhs: {
-          kind: 'num',
+          kind: "num",
           val: 1,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 3,
         },
       },
     ];
 
     const code = generateCode(nodes);
-    expect(code).toEqual('+>+++<[>-<-]+>[<->[-]]');
+    expect(code).toEqual("+>+++<[>-<-]+>[<->[-]]");
   });
 
-  test('neq', () => {
+  test("neq", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'neq',
+        kind: "neq",
         lhs: {
-          kind: 'num',
+          kind: "num",
           val: 1,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 3,
         },
       },
     ];
 
     const code = generateCode(nodes);
-    expect(code).toEqual('+>+++<[>-<-]>[<+>[-]]');
+    expect(code).toEqual("+>+++<[>-<-]>[<+>[-]]");
   });
 
-  test('lss', () => {
+  test("lss", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'lss',
+        kind: "lss",
         lhs: {
-          kind: 'num',
+          kind: "num",
           val: 1,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 3,
         },
       },
     ];
 
     const code = generateCode(nodes);
-    expect(code).toEqual('+>+++<[->[>+>+<<-]>>[<<+>>-]+<[<->>-<[-]]>[<<<[-]>>>-]<<<]>[<+>[-]]');
+    expect(code).toEqual(
+      "+>+++<[->[>+>+<<-]>>[<<+>>-]+<[<->>-<[-]]>[<<<[-]>>>-]<<<]>[<+>[-]]",
+    );
   });
 
-  test('leq', () => {
+  test("leq", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'leq',
+        kind: "leq",
         lhs: {
-          kind: 'num',
+          kind: "num",
           val: 1,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 3,
         },
       },
     ];
 
     const code = generateCode(nodes);
-    expect(code).toEqual('+>+++[-<[>>+>+<<<-]>>>[<<<+>>>-]+<[<<->>>-<[-]]>[<<[-]>>-]<<]+<[>-<[-]]');
+    expect(code).toEqual(
+      "+>+++[-<[>>+>+<<<-]>>>[<<<+>>>-]+<[<<->>>-<[-]]>[<<[-]>>-]<<]+<[>-<[-]]",
+    );
   });
 
-  test('and', () => {
+  test("and", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'and',
+        kind: "and",
         lhs: {
-          kind: 'num',
+          kind: "num",
           val: 1,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 2,
         },
       },
     ];
 
     const code = generateCode(nodes);
-    expect(code).toEqual('+>++<[>>+<<[-]]>[>+<[-]]++>[<->-]+<[>-<[-]]');
+    expect(code).toEqual("+>++<[>>+<<[-]]>[>+<[-]]++>[<->-]+<[>-<[-]]");
   });
 
-  test('or', () => {
+  test("or", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'or',
+        kind: "or",
         lhs: {
-          kind: 'num',
+          kind: "num",
           val: 1,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 2,
         },
       },
     ];
 
     const code = generateCode(nodes);
-    expect(code).toEqual('+>++<[>>+<<[-]]>[>+<[-]]>[<+>[-]]');
+    expect(code).toEqual("+>++<[>>+<<[-]]>[>+<[-]]>[<+>[-]]");
   });
 
-  test('assign', () => {
+  test("assign", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'assign',
+        kind: "assign",
         lhs: {
-          kind: 'var',
+          kind: "var",
           index: 0,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 3,
         },
       },
     ];
 
     const code = generateCode(nodes);
-    expect(code).toEqual('>+++<[-]>[<+>>+<-]');
+    expect(code).toEqual(">+++<[-]>[<+>>+<-]");
   });
 
-  test('var', () => {
+  test("var", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'assign',
+        kind: "assign",
         lhs: {
-          kind: 'var',
+          kind: "var",
           index: 0,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 4,
         },
       },
       {
-        kind: 'var',
+        kind: "var",
         index: 0,
       },
     ];
 
     const code = generateCode(nodes);
-    expect(code).toEqual('>++++<[-]>[<+>>+<-]>[-]<<[>>+<+<-]>[<+>-]');
+    expect(code).toEqual(">++++<[-]>[<+>>+<-]>[-]<<[>>+<+<-]>[<+>-]");
   });
 
-  test('if', () => {
+  test("if", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'if',
+        kind: "if",
         cond: {
-          kind: 'add',
+          kind: "add",
           lhs: {
-            kind: 'num',
+            kind: "num",
             val: 1,
           },
           rhs: {
-            kind: 'num',
+            kind: "num",
             val: 2,
           },
         },
         consequence: {
-          kind: 'block',
+          kind: "block",
           stmts: [
             {
-              kind: 'putchar',
+              kind: "putchar",
               arg: {
-                kind: 'num',
+                kind: "num",
                 val: 1,
               },
             },
@@ -511,43 +515,43 @@ describe('code', () => {
     ];
 
     const code = generateCode(nodes);
-    expect(code).toEqual('+>++[<+>-]<[>+.[-]<[-]]');
+    expect(code).toEqual("+>++[<+>-]<[>+.[-]<[-]]");
   });
 
-  test('if-else', () => {
+  test("if-else", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'if',
+        kind: "if",
         cond: {
-          kind: 'sub',
+          kind: "sub",
           lhs: {
-            kind: 'num',
+            kind: "num",
             val: 1,
           },
           rhs: {
-            kind: 'num',
+            kind: "num",
             val: 1,
           },
         },
         consequence: {
-          kind: 'block',
+          kind: "block",
           stmts: [
             {
-              kind: 'putchar',
+              kind: "putchar",
               arg: {
-                kind: 'num',
+                kind: "num",
                 val: 1,
               },
             },
           ],
         },
         alternative: {
-          kind: 'block',
+          kind: "block",
           stmts: [
             {
-              kind: 'putchar',
+              kind: "putchar",
               arg: {
-                kind: 'num',
+                kind: "num",
                 val: 2,
               },
             },
@@ -557,53 +561,53 @@ describe('code', () => {
     ];
 
     const code = generateCode(nodes);
-    expect(code).toEqual('+>+[<->-]+<[>>>+.[-]<<-<[-]]>[<++.[-]>-]');
+    expect(code).toEqual("+>+[<->-]+<[>>>+.[-]<<-<[-]]>[<++.[-]>-]");
   });
 
-  test('for', () => {
+  test("for", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'for',
+        kind: "for",
         init: {
-          kind: 'assign',
+          kind: "assign",
           lhs: {
-            kind: 'var',
+            kind: "var",
             index: 0,
           },
           rhs: {
-            kind: 'num',
+            kind: "num",
             val: 3,
           },
         },
         cond: {
-          kind: 'var',
+          kind: "var",
           index: 0,
         },
         after: {
-          kind: 'assign',
+          kind: "assign",
           lhs: {
-            kind: 'var',
+            kind: "var",
             index: 0,
           },
           rhs: {
-            kind: 'sub',
+            kind: "sub",
             lhs: {
-              kind: 'var',
+              kind: "var",
               index: 0,
             },
             rhs: {
-              kind: 'num',
+              kind: "num",
               val: 1,
             },
           },
         },
         body: {
-          kind: 'block',
+          kind: "block",
           stmts: [
             {
-              kind: 'putchar',
+              kind: "putchar",
               arg: {
-                kind: 'var',
+                kind: "var",
                 index: 0,
               },
             },
@@ -640,38 +644,38 @@ describe('code', () => {
 
     const code = generateCode(nodes);
     expect(code).toEqual(
-      '>+++<[-]>[<+>>+<-]>[-]<<[>>+<+<-]>[<+>-]>[<<[>+>>+<<<-]>>>[<<<+>>>-]<<.[-]<[>+>>+<<<-]>>>[<<<+>>>-]+[<<->>-]<<<[-]>[<+>>>+<<-]>>[-]<[-]<<[>>>+<<+<-]>[<+>-]>>[<+>-]<]',
+      ">+++<[-]>[<+>>+<-]>[-]<<[>>+<+<-]>[<+>-]>[<<[>+>>+<<<-]>>>[<<<+>>>-]<<.[-]<[>+>>+<<<-]>>>[<<<+>>>-]+[<<->>-]<<<[-]>[<+>>>+<<-]>>[-]<[-]<<[>>>+<<+<-]>[<+>-]>>[<+>-]<]",
     );
   });
 
-  test('while', () => {
+  test("while", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'while',
+        kind: "while",
         cond: {
-          kind: 'lss',
+          kind: "lss",
           lhs: {
-            kind: 'pre-inc',
+            kind: "pre-inc",
             operand: {
-              kind: 'var',
+              kind: "var",
               index: 0,
             },
           },
           rhs: {
-            kind: 'num',
+            kind: "num",
             val: 3,
           },
         },
         body: {
-          kind: 'putchar',
+          kind: "putchar",
           arg: {
-            kind: 'add',
+            kind: "add",
             lhs: {
-              kind: 'num',
+              kind: "num",
               val: 48,
             },
             rhs: {
-              kind: 'var',
+              kind: "var",
               index: 0,
             },
           },
@@ -681,42 +685,42 @@ describe('code', () => {
 
     const code = generateCode(nodes);
     expect(code).toEqual(
-      '+[>+>+<<-]>>[<<+>>-]+++<[->[>+>+<<-]>>[<<+>>-]+<[<->>-<[-]]>[<<<[-]>>>-]<<<]>[<+>[-]]<[>>++++++[<++++++++>-]<<<[>>>+>+<<<<-]>>>>[<<<<+>>>>-]<[<+>-]<.[-]<[-]<+[>>+>+<<<-]>>>[<<<+>>>-]+++<[->[>+>+<<-]>>[<<+>>-]+<[<->>-<[-]]>[<<<[-]>>>-]<<<]>[<+>[-]]<[<+>-]<]',
+      "+[>+>+<<-]>>[<<+>>-]+++<[->[>+>+<<-]>>[<<+>>-]+<[<->>-<[-]]>[<<<[-]>>>-]<<<]>[<+>[-]]<[>>++++++[<++++++++>-]<<<[>>>+>+<<<<-]>>>>[<<<<+>>>>-]<[<+>-]<.[-]<[-]<+[>>+>+<<<-]>>>[<<<+>>>-]+++<[->[>+>+<<-]>>[<<+>>-]+<[<->>-<[-]]>[<<<[-]>>>-]<<<]>[<+>[-]]<[<+>-]<]",
     );
   });
 
-  test('block', () => {
+  test("block", () => {
     const nodes: AstNode[] = [
       {
-        kind: 'assign',
+        kind: "assign",
         lhs: {
-          kind: 'var',
+          kind: "var",
           index: 0,
         },
         rhs: {
-          kind: 'block',
+          kind: "block",
           stmts: [
             {
-              kind: 'assign',
+              kind: "assign",
               lhs: {
-                kind: 'var',
+                kind: "var",
                 index: 1,
               },
               rhs: {
-                kind: 'num',
+                kind: "num",
                 val: 1,
               },
             },
             {
-              kind: 'rtn',
+              kind: "rtn",
               expr: {
-                kind: 'assign',
+                kind: "assign",
                 lhs: {
-                  kind: 'var',
+                  kind: "var",
                   index: 2,
                 },
                 rhs: {
-                  kind: 'num',
+                  kind: "num",
                   val: 2,
                 },
               },
@@ -727,6 +731,8 @@ describe('code', () => {
     ];
 
     const code = generateCode(nodes);
-    expect(code).toEqual('>>>+<<[-]>>[<<+>>>+<-]>[-]++<<[-]>>[<<+>+>-]<<<<[-]>>>[<<<+>>>>+<-]');
+    expect(code).toEqual(
+      ">>>+<<[-]>>[<<+>>>+<-]>[-]++<<[-]>>[<<+>+>-]<<<<[-]>>>[<<<+>>>>+<-]",
+    );
   });
 });

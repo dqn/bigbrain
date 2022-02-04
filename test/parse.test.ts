@@ -1,34 +1,34 @@
-import { AstNode, parse } from '../src/parse';
-import { Token } from '../src/tokenize';
+import { AstNode, parse } from "../src/parse";
+import { Token } from "../src/tokenize";
 
-describe('parse', () => {
-  test('add', () => {
+describe("parse", () => {
+  test("add", () => {
     const tokens: Token[] = [
-      { kind: 'num', val: 2 },
-      { kind: 'reserved', str: '+' },
-      { kind: 'num', val: 3 },
-      { kind: 'reserved', str: '+' },
-      { kind: 'num', val: 42 },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "num", val: 2 },
+      { kind: "reserved", str: "+" },
+      { kind: "num", val: 3 },
+      { kind: "reserved", str: "+" },
+      { kind: "num", val: 42 },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'add',
+        kind: "add",
         lhs: {
-          kind: 'add',
+          kind: "add",
           lhs: {
-            kind: 'num',
+            kind: "num",
             val: 2,
           },
           rhs: {
-            kind: 'num',
+            kind: "num",
             val: 3,
           },
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 42,
         },
       },
@@ -38,33 +38,33 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('sub', () => {
+  test("sub", () => {
     const tokens: Token[] = [
-      { kind: 'num', val: 10 },
-      { kind: 'reserved', str: '-' },
-      { kind: 'num', val: 2 },
-      { kind: 'reserved', str: '-' },
-      { kind: 'num', val: 1 },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "num", val: 10 },
+      { kind: "reserved", str: "-" },
+      { kind: "num", val: 2 },
+      { kind: "reserved", str: "-" },
+      { kind: "num", val: 1 },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'sub',
+        kind: "sub",
         lhs: {
-          kind: 'sub',
+          kind: "sub",
           lhs: {
-            kind: 'num',
+            kind: "num",
             val: 10,
           },
           rhs: {
-            kind: 'num',
+            kind: "num",
             val: 2,
           },
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 1,
         },
       },
@@ -74,33 +74,33 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('mul', () => {
+  test("mul", () => {
     const tokens: Token[] = [
-      { kind: 'num', val: 5 },
-      { kind: 'reserved', str: '*' },
-      { kind: 'num', val: 8 },
-      { kind: 'reserved', str: '*' },
-      { kind: 'num', val: 10 },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "num", val: 5 },
+      { kind: "reserved", str: "*" },
+      { kind: "num", val: 8 },
+      { kind: "reserved", str: "*" },
+      { kind: "num", val: 10 },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'mul',
+        kind: "mul",
         lhs: {
-          kind: 'mul',
+          kind: "mul",
           lhs: {
-            kind: 'num',
+            kind: "num",
             val: 5,
           },
           rhs: {
-            kind: 'num',
+            kind: "num",
             val: 8,
           },
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 10,
         },
       },
@@ -110,24 +110,24 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('div', () => {
+  test("div", () => {
     const tokens: Token[] = [
-      { kind: 'num', val: 6 },
-      { kind: 'reserved', str: '/' },
-      { kind: 'num', val: 2 },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "num", val: 6 },
+      { kind: "reserved", str: "/" },
+      { kind: "num", val: 2 },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'div',
+        kind: "div",
         lhs: {
-          kind: 'num',
+          kind: "num",
           val: 6,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 2,
         },
       },
@@ -137,24 +137,24 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('mod', () => {
+  test("mod", () => {
     const tokens: Token[] = [
-      { kind: 'num', val: 5 },
-      { kind: 'reserved', str: '%' },
-      { kind: 'num', val: 2 },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "num", val: 5 },
+      { kind: "reserved", str: "%" },
+      { kind: "num", val: 2 },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'mod',
+        kind: "mod",
         lhs: {
-          kind: 'num',
+          kind: "num",
           val: 5,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 2,
         },
       },
@@ -164,32 +164,32 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('exp', () => {
+  test("exp", () => {
     const tokens: Token[] = [
-      { kind: 'num', val: 2 },
-      { kind: 'reserved', str: '**' },
-      { kind: 'num', val: 1 },
-      { kind: 'reserved', str: '**' },
-      { kind: 'num', val: 2 },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "num", val: 2 },
+      { kind: "reserved", str: "**" },
+      { kind: "num", val: 1 },
+      { kind: "reserved", str: "**" },
+      { kind: "num", val: 2 },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'exp',
+        kind: "exp",
         lhs: {
-          kind: 'num',
+          kind: "num",
           val: 2,
         },
         rhs: {
-          kind: 'exp',
+          kind: "exp",
           lhs: {
-            kind: 'num',
+            kind: "num",
             val: 1,
           },
           rhs: {
-            kind: 'num',
+            kind: "num",
             val: 2,
           },
         },
@@ -200,19 +200,19 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('not', () => {
+  test("not", () => {
     const tokens: Token[] = [
-      { kind: 'reserved', str: '!' },
-      { kind: 'num', val: 2 },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "reserved", str: "!" },
+      { kind: "num", val: 2 },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'not',
+        kind: "not",
         operand: {
-          kind: 'num',
+          kind: "num",
           val: 2,
         },
       },
@@ -222,34 +222,34 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('pre-inc', () => {
+  test("pre-inc", () => {
     const tokens: Token[] = [
-      { kind: 'ident', str: 'x' },
-      { kind: 'reserved', str: '=' },
-      { kind: 'num', val: 1 },
-      { kind: 'reserved', str: ';' },
-      { kind: 'reserved', str: '++' },
-      { kind: 'ident', str: 'x' },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "ident", str: "x" },
+      { kind: "reserved", str: "=" },
+      { kind: "num", val: 1 },
+      { kind: "reserved", str: ";" },
+      { kind: "reserved", str: "++" },
+      { kind: "ident", str: "x" },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'assign',
+        kind: "assign",
         lhs: {
-          kind: 'var',
+          kind: "var",
           index: 0,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 1,
         },
       },
       {
-        kind: 'pre-inc',
+        kind: "pre-inc",
         operand: {
-          kind: 'var',
+          kind: "var",
           index: 0,
         },
       },
@@ -259,34 +259,34 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('pre-dec', () => {
+  test("pre-dec", () => {
     const tokens: Token[] = [
-      { kind: 'ident', str: 'x' },
-      { kind: 'reserved', str: '=' },
-      { kind: 'num', val: 1 },
-      { kind: 'reserved', str: ';' },
-      { kind: 'reserved', str: '--' },
-      { kind: 'ident', str: 'x' },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "ident", str: "x" },
+      { kind: "reserved", str: "=" },
+      { kind: "num", val: 1 },
+      { kind: "reserved", str: ";" },
+      { kind: "reserved", str: "--" },
+      { kind: "ident", str: "x" },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'assign',
+        kind: "assign",
         lhs: {
-          kind: 'var',
+          kind: "var",
           index: 0,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 1,
         },
       },
       {
-        kind: 'pre-dec',
+        kind: "pre-dec",
         operand: {
-          kind: 'var',
+          kind: "var",
           index: 0,
         },
       },
@@ -296,34 +296,34 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('post-inc', () => {
+  test("post-inc", () => {
     const tokens: Token[] = [
-      { kind: 'ident', str: 'x' },
-      { kind: 'reserved', str: '=' },
-      { kind: 'num', val: 1 },
-      { kind: 'reserved', str: ';' },
-      { kind: 'ident', str: 'x' },
-      { kind: 'reserved', str: '++' },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "ident", str: "x" },
+      { kind: "reserved", str: "=" },
+      { kind: "num", val: 1 },
+      { kind: "reserved", str: ";" },
+      { kind: "ident", str: "x" },
+      { kind: "reserved", str: "++" },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'assign',
+        kind: "assign",
         lhs: {
-          kind: 'var',
+          kind: "var",
           index: 0,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 1,
         },
       },
       {
-        kind: 'post-inc',
+        kind: "post-inc",
         operand: {
-          kind: 'var',
+          kind: "var",
           index: 0,
         },
       },
@@ -333,34 +333,34 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('post-dec', () => {
+  test("post-dec", () => {
     const tokens: Token[] = [
-      { kind: 'ident', str: 'x' },
-      { kind: 'reserved', str: '=' },
-      { kind: 'num', val: 1 },
-      { kind: 'reserved', str: ';' },
-      { kind: 'ident', str: 'x' },
-      { kind: 'reserved', str: '--' },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "ident", str: "x" },
+      { kind: "reserved", str: "=" },
+      { kind: "num", val: 1 },
+      { kind: "reserved", str: ";" },
+      { kind: "ident", str: "x" },
+      { kind: "reserved", str: "--" },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'assign',
+        kind: "assign",
         lhs: {
-          kind: 'var',
+          kind: "var",
           index: 0,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 1,
         },
       },
       {
-        kind: 'post-dec',
+        kind: "post-dec",
         operand: {
-          kind: 'var',
+          kind: "var",
           index: 0,
         },
       },
@@ -370,34 +370,34 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('parences', () => {
+  test("parences", () => {
     const tokens: Token[] = [
-      { kind: 'num', val: 4 },
-      { kind: 'reserved', str: '*' },
-      { kind: 'reserved', str: '(' },
-      { kind: 'num', val: 11 },
-      { kind: 'reserved', str: '+' },
-      { kind: 'num', val: 6 },
-      { kind: 'reserved', str: ')' },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "num", val: 4 },
+      { kind: "reserved", str: "*" },
+      { kind: "reserved", str: "(" },
+      { kind: "num", val: 11 },
+      { kind: "reserved", str: "+" },
+      { kind: "num", val: 6 },
+      { kind: "reserved", str: ")" },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'mul',
+        kind: "mul",
         lhs: {
-          kind: 'num',
+          kind: "num",
           val: 4,
         },
         rhs: {
-          kind: 'add',
+          kind: "add",
           lhs: {
-            kind: 'num',
+            kind: "num",
             val: 11,
           },
           rhs: {
-            kind: 'num',
+            kind: "num",
             val: 6,
           },
         },
@@ -408,24 +408,24 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('equ', () => {
+  test("equ", () => {
     const tokens: Token[] = [
-      { kind: 'num', val: 1 },
-      { kind: 'reserved', str: '==' },
-      { kind: 'num', val: 3 },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "num", val: 1 },
+      { kind: "reserved", str: "==" },
+      { kind: "num", val: 3 },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'equ',
+        kind: "equ",
         lhs: {
-          kind: 'num',
+          kind: "num",
           val: 1,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 3,
         },
       },
@@ -435,24 +435,24 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('neq', () => {
+  test("neq", () => {
     const tokens: Token[] = [
-      { kind: 'num', val: 1 },
-      { kind: 'reserved', str: '!=' },
-      { kind: 'num', val: 3 },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "num", val: 1 },
+      { kind: "reserved", str: "!=" },
+      { kind: "num", val: 3 },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'neq',
+        kind: "neq",
         lhs: {
-          kind: 'num',
+          kind: "num",
           val: 1,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 3,
         },
       },
@@ -462,24 +462,24 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('lss', () => {
+  test("lss", () => {
     const tokens: Token[] = [
-      { kind: 'num', val: 1 },
-      { kind: 'reserved', str: '<' },
-      { kind: 'num', val: 3 },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "num", val: 1 },
+      { kind: "reserved", str: "<" },
+      { kind: "num", val: 3 },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'lss',
+        kind: "lss",
         lhs: {
-          kind: 'num',
+          kind: "num",
           val: 1,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 3,
         },
       },
@@ -489,24 +489,24 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('gtr', () => {
+  test("gtr", () => {
     const tokens: Token[] = [
-      { kind: 'num', val: 1 },
-      { kind: 'reserved', str: '>' },
-      { kind: 'num', val: 3 },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "num", val: 1 },
+      { kind: "reserved", str: ">" },
+      { kind: "num", val: 3 },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'lss',
+        kind: "lss",
         lhs: {
-          kind: 'num',
+          kind: "num",
           val: 3,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 1,
         },
       },
@@ -516,24 +516,24 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('leq', () => {
+  test("leq", () => {
     const tokens: Token[] = [
-      { kind: 'num', val: 1 },
-      { kind: 'reserved', str: '<=' },
-      { kind: 'num', val: 3 },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "num", val: 1 },
+      { kind: "reserved", str: "<=" },
+      { kind: "num", val: 3 },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'leq',
+        kind: "leq",
         lhs: {
-          kind: 'num',
+          kind: "num",
           val: 1,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 3,
         },
       },
@@ -543,24 +543,24 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('geq', () => {
+  test("geq", () => {
     const tokens: Token[] = [
-      { kind: 'num', val: 1 },
-      { kind: 'reserved', str: '>=' },
-      { kind: 'num', val: 3 },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "num", val: 1 },
+      { kind: "reserved", str: ">=" },
+      { kind: "num", val: 3 },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'leq',
+        kind: "leq",
         lhs: {
-          kind: 'num',
+          kind: "num",
           val: 3,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 1,
         },
       },
@@ -570,24 +570,24 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('and', () => {
+  test("and", () => {
     const tokens: Token[] = [
-      { kind: 'num', val: 1 },
-      { kind: 'reserved', str: '&&' },
-      { kind: 'num', val: 2 },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "num", val: 1 },
+      { kind: "reserved", str: "&&" },
+      { kind: "num", val: 2 },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'and',
+        kind: "and",
         lhs: {
-          kind: 'num',
+          kind: "num",
           val: 1,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 2,
         },
       },
@@ -597,24 +597,24 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('or', () => {
+  test("or", () => {
     const tokens: Token[] = [
-      { kind: 'num', val: 1 },
-      { kind: 'reserved', str: '||' },
-      { kind: 'num', val: 2 },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "num", val: 1 },
+      { kind: "reserved", str: "||" },
+      { kind: "num", val: 2 },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'or',
+        kind: "or",
         lhs: {
-          kind: 'num',
+          kind: "num",
           val: 1,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 2,
         },
       },
@@ -624,44 +624,44 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('complex operators', () => {
+  test("complex operators", () => {
     const tokens: Token[] = [
-      { kind: 'reserved', str: '(' },
-      { kind: 'num', val: 5 },
-      { kind: 'reserved', str: '+' },
-      { kind: 'num', val: 8 },
-      { kind: 'reserved', str: ')' },
-      { kind: 'reserved', str: '*' },
-      { kind: 'num', val: 15 },
-      { kind: 'reserved', str: '-' },
-      { kind: 'num', val: 8 },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "reserved", str: "(" },
+      { kind: "num", val: 5 },
+      { kind: "reserved", str: "+" },
+      { kind: "num", val: 8 },
+      { kind: "reserved", str: ")" },
+      { kind: "reserved", str: "*" },
+      { kind: "num", val: 15 },
+      { kind: "reserved", str: "-" },
+      { kind: "num", val: 8 },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'sub',
+        kind: "sub",
         lhs: {
-          kind: 'mul',
+          kind: "mul",
           lhs: {
-            kind: 'add',
+            kind: "add",
             lhs: {
-              kind: 'num',
+              kind: "num",
               val: 5,
             },
             rhs: {
-              kind: 'num',
+              kind: "num",
               val: 8,
             },
           },
           rhs: {
-            kind: 'num',
+            kind: "num",
             val: 15,
           },
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 8,
         },
       },
@@ -671,32 +671,32 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('assign', () => {
+  test("assign", () => {
     const tokens: Token[] = [
-      { kind: 'ident', str: 'x' },
-      { kind: 'reserved', str: '=' },
-      { kind: 'num', val: 4 },
-      { kind: 'reserved', str: '+' },
-      { kind: 'num', val: 5 },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "ident", str: "x" },
+      { kind: "reserved", str: "=" },
+      { kind: "num", val: 4 },
+      { kind: "reserved", str: "+" },
+      { kind: "num", val: 5 },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'assign',
+        kind: "assign",
         lhs: {
-          kind: 'var',
+          kind: "var",
           index: 0,
         },
         rhs: {
-          kind: 'add',
+          kind: "add",
           lhs: {
-            kind: 'num',
+            kind: "num",
             val: 4,
           },
           rhs: {
-            kind: 'num',
+            kind: "num",
             val: 5,
           },
         },
@@ -707,34 +707,34 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('var', () => {
+  test("var", () => {
     const tokens: Token[] = [
-      { kind: 'num', val: 2 },
-      { kind: 'reserved', str: '*' },
-      { kind: 'reserved', str: '(' },
-      { kind: 'num', val: 4 },
-      { kind: 'reserved', str: '+' },
-      { kind: 'ident', str: 'x' },
-      { kind: 'reserved', str: ')' },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "num", val: 2 },
+      { kind: "reserved", str: "*" },
+      { kind: "reserved", str: "(" },
+      { kind: "num", val: 4 },
+      { kind: "reserved", str: "+" },
+      { kind: "ident", str: "x" },
+      { kind: "reserved", str: ")" },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'mul',
+        kind: "mul",
         lhs: {
-          kind: 'num',
+          kind: "num",
           val: 2,
         },
         rhs: {
-          kind: 'add',
+          kind: "add",
           lhs: {
-            kind: 'num',
+            kind: "num",
             val: 4,
           },
           rhs: {
-            kind: 'var',
+            kind: "var",
             index: 0,
           },
         },
@@ -745,33 +745,33 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('input', () => {
+  test("input", () => {
     const tokens: Token[] = [
-      { kind: 'ident', str: 'x' },
-      { kind: 'reserved', str: '=' },
-      { kind: 'reserved', str: 'input' },
-      { kind: 'reserved', str: '(' },
-      { kind: 'reserved', str: ')' },
-      { kind: 'reserved', str: '+' },
-      { kind: 'num', val: 2 },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "ident", str: "x" },
+      { kind: "reserved", str: "=" },
+      { kind: "reserved", str: "input" },
+      { kind: "reserved", str: "(" },
+      { kind: "reserved", str: ")" },
+      { kind: "reserved", str: "+" },
+      { kind: "num", val: 2 },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'assign',
+        kind: "assign",
         lhs: {
-          kind: 'var',
+          kind: "var",
           index: 0,
         },
         rhs: {
-          kind: 'add',
+          kind: "add",
           lhs: {
-            kind: 'input',
+            kind: "input",
           },
           rhs: {
-            kind: 'num',
+            kind: "num",
             val: 2,
           },
         },
@@ -782,29 +782,29 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('putchar', () => {
+  test("putchar", () => {
     const tokens: Token[] = [
-      { kind: 'reserved', str: 'putchar' },
-      { kind: 'reserved', str: '(' },
-      { kind: 'num', val: 2 },
-      { kind: 'reserved', str: '+' },
-      { kind: 'num', val: 3 },
-      { kind: 'reserved', str: ')' },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "reserved", str: "putchar" },
+      { kind: "reserved", str: "(" },
+      { kind: "num", val: 2 },
+      { kind: "reserved", str: "+" },
+      { kind: "num", val: 3 },
+      { kind: "reserved", str: ")" },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'putchar',
+        kind: "putchar",
         arg: {
-          kind: 'add',
+          kind: "add",
           lhs: {
-            kind: 'num',
+            kind: "num",
             val: 2,
           },
           rhs: {
-            kind: 'num',
+            kind: "num",
             val: 3,
           },
         },
@@ -815,29 +815,29 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('print', () => {
+  test("print", () => {
     const tokens: Token[] = [
-      { kind: 'reserved', str: 'print' },
-      { kind: 'reserved', str: '(' },
-      { kind: 'num', val: 2 },
-      { kind: 'reserved', str: '+' },
-      { kind: 'num', val: 3 },
-      { kind: 'reserved', str: ')' },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "reserved", str: "print" },
+      { kind: "reserved", str: "(" },
+      { kind: "num", val: 2 },
+      { kind: "reserved", str: "+" },
+      { kind: "num", val: 3 },
+      { kind: "reserved", str: ")" },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'print',
+        kind: "print",
         arg: {
-          kind: 'add',
+          kind: "add",
           lhs: {
-            kind: 'num',
+            kind: "num",
             val: 2,
           },
           rhs: {
-            kind: 'num',
+            kind: "num",
             val: 3,
           },
         },
@@ -848,45 +848,45 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('if', () => {
+  test("if", () => {
     const tokens: Token[] = [
-      { kind: 'reserved', str: 'if' },
-      { kind: 'reserved', str: '(' },
-      { kind: 'num', val: 1 },
-      { kind: 'reserved', str: '+' },
-      { kind: 'num', val: 2 },
-      { kind: 'reserved', str: ')' },
-      { kind: 'reserved', str: '{' },
-      { kind: 'reserved', str: 'putchar' },
-      { kind: 'reserved', str: '(' },
-      { kind: 'num', val: 1 },
-      { kind: 'reserved', str: ')' },
-      { kind: 'reserved', str: ';' },
-      { kind: 'reserved', str: '}' },
-      { kind: 'eof' },
+      { kind: "reserved", str: "if" },
+      { kind: "reserved", str: "(" },
+      { kind: "num", val: 1 },
+      { kind: "reserved", str: "+" },
+      { kind: "num", val: 2 },
+      { kind: "reserved", str: ")" },
+      { kind: "reserved", str: "{" },
+      { kind: "reserved", str: "putchar" },
+      { kind: "reserved", str: "(" },
+      { kind: "num", val: 1 },
+      { kind: "reserved", str: ")" },
+      { kind: "reserved", str: ";" },
+      { kind: "reserved", str: "}" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'if',
+        kind: "if",
         cond: {
-          kind: 'add',
+          kind: "add",
           lhs: {
-            kind: 'num',
+            kind: "num",
             val: 1,
           },
           rhs: {
-            kind: 'num',
+            kind: "num",
             val: 2,
           },
         },
         consequence: {
-          kind: 'block',
+          kind: "block",
           stmts: [
             {
-              kind: 'putchar',
+              kind: "putchar",
               arg: {
-                kind: 'num',
+                kind: "num",
                 val: 1,
               },
             },
@@ -899,65 +899,65 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('if-else', () => {
+  test("if-else", () => {
     const tokens: Token[] = [
-      { kind: 'reserved', str: 'if' },
-      { kind: 'reserved', str: '(' },
-      { kind: 'num', val: 1 },
-      { kind: 'reserved', str: '-' },
-      { kind: 'num', val: 1 },
-      { kind: 'reserved', str: ')' },
-      { kind: 'reserved', str: '{' },
-      { kind: 'reserved', str: 'putchar' },
-      { kind: 'reserved', str: '(' },
-      { kind: 'num', val: 1 },
-      { kind: 'reserved', str: ')' },
-      { kind: 'reserved', str: ';' },
-      { kind: 'reserved', str: '}' },
-      { kind: 'reserved', str: 'else' },
-      { kind: 'reserved', str: '{' },
-      { kind: 'reserved', str: 'putchar' },
-      { kind: 'reserved', str: '(' },
-      { kind: 'num', val: 2 },
-      { kind: 'reserved', str: ')' },
-      { kind: 'reserved', str: ';' },
-      { kind: 'reserved', str: '}' },
-      { kind: 'eof' },
+      { kind: "reserved", str: "if" },
+      { kind: "reserved", str: "(" },
+      { kind: "num", val: 1 },
+      { kind: "reserved", str: "-" },
+      { kind: "num", val: 1 },
+      { kind: "reserved", str: ")" },
+      { kind: "reserved", str: "{" },
+      { kind: "reserved", str: "putchar" },
+      { kind: "reserved", str: "(" },
+      { kind: "num", val: 1 },
+      { kind: "reserved", str: ")" },
+      { kind: "reserved", str: ";" },
+      { kind: "reserved", str: "}" },
+      { kind: "reserved", str: "else" },
+      { kind: "reserved", str: "{" },
+      { kind: "reserved", str: "putchar" },
+      { kind: "reserved", str: "(" },
+      { kind: "num", val: 2 },
+      { kind: "reserved", str: ")" },
+      { kind: "reserved", str: ";" },
+      { kind: "reserved", str: "}" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'if',
+        kind: "if",
         cond: {
-          kind: 'sub',
+          kind: "sub",
           lhs: {
-            kind: 'num',
+            kind: "num",
             val: 1,
           },
           rhs: {
-            kind: 'num',
+            kind: "num",
             val: 1,
           },
         },
         consequence: {
-          kind: 'block',
+          kind: "block",
           stmts: [
             {
-              kind: 'putchar',
+              kind: "putchar",
               arg: {
-                kind: 'num',
+                kind: "num",
                 val: 1,
               },
             },
           ],
         },
         alternative: {
-          kind: 'block',
+          kind: "block",
           stmts: [
             {
-              kind: 'putchar',
+              kind: "putchar",
               arg: {
-                kind: 'num',
+                kind: "num",
                 val: 2,
               },
             },
@@ -970,75 +970,75 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('for', () => {
+  test("for", () => {
     const tokens: Token[] = [
-      { kind: 'reserved', str: 'for' },
-      { kind: 'reserved', str: '(' },
-      { kind: 'ident', str: 'x' },
-      { kind: 'reserved', str: '=' },
-      { kind: 'num', val: 3 },
-      { kind: 'reserved', str: ';' },
-      { kind: 'ident', str: 'x' },
-      { kind: 'reserved', str: ';' },
-      { kind: 'ident', str: 'x' },
-      { kind: 'reserved', str: '=' },
-      { kind: 'ident', str: 'x' },
-      { kind: 'reserved', str: '-' },
-      { kind: 'num', val: 1 },
-      { kind: 'reserved', str: ')' },
-      { kind: 'reserved', str: '{' },
-      { kind: 'reserved', str: 'putchar' },
-      { kind: 'reserved', str: '(' },
-      { kind: 'ident', str: 'x' },
-      { kind: 'reserved', str: ')' },
-      { kind: 'reserved', str: ';' },
-      { kind: 'reserved', str: '}' },
-      { kind: 'eof' },
+      { kind: "reserved", str: "for" },
+      { kind: "reserved", str: "(" },
+      { kind: "ident", str: "x" },
+      { kind: "reserved", str: "=" },
+      { kind: "num", val: 3 },
+      { kind: "reserved", str: ";" },
+      { kind: "ident", str: "x" },
+      { kind: "reserved", str: ";" },
+      { kind: "ident", str: "x" },
+      { kind: "reserved", str: "=" },
+      { kind: "ident", str: "x" },
+      { kind: "reserved", str: "-" },
+      { kind: "num", val: 1 },
+      { kind: "reserved", str: ")" },
+      { kind: "reserved", str: "{" },
+      { kind: "reserved", str: "putchar" },
+      { kind: "reserved", str: "(" },
+      { kind: "ident", str: "x" },
+      { kind: "reserved", str: ")" },
+      { kind: "reserved", str: ";" },
+      { kind: "reserved", str: "}" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'for',
+        kind: "for",
         init: {
-          kind: 'assign',
+          kind: "assign",
           lhs: {
-            kind: 'var',
+            kind: "var",
             index: 0,
           },
           rhs: {
-            kind: 'num',
+            kind: "num",
             val: 3,
           },
         },
         cond: {
-          kind: 'var',
+          kind: "var",
           index: 0,
         },
         after: {
-          kind: 'assign',
+          kind: "assign",
           lhs: {
-            kind: 'var',
+            kind: "var",
             index: 0,
           },
           rhs: {
-            kind: 'sub',
+            kind: "sub",
             lhs: {
-              kind: 'var',
+              kind: "var",
               index: 0,
             },
             rhs: {
-              kind: 'num',
+              kind: "num",
               val: 1,
             },
           },
         },
         body: {
-          kind: 'block',
+          kind: "block",
           stmts: [
             {
-              kind: 'putchar',
+              kind: "putchar",
               arg: {
-                kind: 'var',
+                kind: "var",
                 index: 0,
               },
             },
@@ -1051,52 +1051,52 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('while', () => {
+  test("while", () => {
     const tokens: Token[] = [
-      { kind: 'reserved', str: 'while' },
-      { kind: 'reserved', str: '(' },
-      { kind: 'reserved', str: '++' },
-      { kind: 'ident', str: 'x' },
-      { kind: 'reserved', str: '<' },
-      { kind: 'num', val: 3 },
-      { kind: 'reserved', str: ')' },
-      { kind: 'reserved', str: 'putchar' },
-      { kind: 'reserved', str: '(' },
-      { kind: 'num', val: 48 },
-      { kind: 'reserved', str: '+' },
-      { kind: 'ident', str: 'x' },
-      { kind: 'reserved', str: ')' },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "reserved", str: "while" },
+      { kind: "reserved", str: "(" },
+      { kind: "reserved", str: "++" },
+      { kind: "ident", str: "x" },
+      { kind: "reserved", str: "<" },
+      { kind: "num", val: 3 },
+      { kind: "reserved", str: ")" },
+      { kind: "reserved", str: "putchar" },
+      { kind: "reserved", str: "(" },
+      { kind: "num", val: 48 },
+      { kind: "reserved", str: "+" },
+      { kind: "ident", str: "x" },
+      { kind: "reserved", str: ")" },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'while',
+        kind: "while",
         cond: {
-          kind: 'lss',
+          kind: "lss",
           lhs: {
-            kind: 'pre-inc',
+            kind: "pre-inc",
             operand: {
-              kind: 'var',
+              kind: "var",
               index: 0,
             },
           },
           rhs: {
-            kind: 'num',
+            kind: "num",
             val: 3,
           },
         },
         body: {
-          kind: 'putchar',
+          kind: "putchar",
           arg: {
-            kind: 'add',
+            kind: "add",
             lhs: {
-              kind: 'num',
+              kind: "num",
               val: 48,
             },
             rhs: {
-              kind: 'var',
+              kind: "var",
               index: 0,
             },
           },
@@ -1108,54 +1108,54 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('block', () => {
+  test("block", () => {
     const tokens: Token[] = [
-      { kind: 'ident', str: 'z' },
-      { kind: 'reserved', str: '=' },
-      { kind: 'reserved', str: '{' },
-      { kind: 'ident', str: 'x' },
-      { kind: 'reserved', str: '=' },
-      { kind: 'num', val: 1 },
-      { kind: 'reserved', str: ';' },
-      { kind: 'ident', str: 'y' },
-      { kind: 'reserved', str: '=' },
-      { kind: 'num', val: 2 },
-      { kind: 'reserved', str: '}' },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "ident", str: "z" },
+      { kind: "reserved", str: "=" },
+      { kind: "reserved", str: "{" },
+      { kind: "ident", str: "x" },
+      { kind: "reserved", str: "=" },
+      { kind: "num", val: 1 },
+      { kind: "reserved", str: ";" },
+      { kind: "ident", str: "y" },
+      { kind: "reserved", str: "=" },
+      { kind: "num", val: 2 },
+      { kind: "reserved", str: "}" },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'assign',
+        kind: "assign",
         lhs: {
-          kind: 'var',
+          kind: "var",
           index: 0,
         },
         rhs: {
-          kind: 'block',
+          kind: "block",
           stmts: [
             {
-              kind: 'assign',
+              kind: "assign",
               lhs: {
-                kind: 'var',
+                kind: "var",
                 index: 1,
               },
               rhs: {
-                kind: 'num',
+                kind: "num",
                 val: 1,
               },
             },
             {
-              kind: 'rtn',
+              kind: "rtn",
               expr: {
-                kind: 'assign',
+                kind: "assign",
                 lhs: {
-                  kind: 'var',
+                  kind: "var",
                   index: 2,
                 },
                 rhs: {
-                  kind: 'num',
+                  kind: "num",
                   val: 2,
                 },
               },
@@ -1169,96 +1169,96 @@ describe('parse', () => {
     expect(nodes).toEqual(expected);
   });
 
-  test('complex', () => {
+  test("complex", () => {
     const tokens: Token[] = [
-      { kind: 'ident', str: 'foo' },
-      { kind: 'reserved', str: '=' },
-      { kind: 'num', val: 1 },
-      { kind: 'reserved', str: ';' },
-      { kind: 'ident', str: 'bar' },
-      { kind: 'reserved', str: '=' },
-      { kind: 'num', val: 2 },
-      { kind: 'reserved', str: ';' },
-      { kind: 'reserved', str: 'putchar' },
-      { kind: 'reserved', str: '(' },
-      { kind: 'num', val: 1 },
-      { kind: 'reserved', str: '+' },
-      { kind: 'num', val: 2 },
-      { kind: 'reserved', str: '*' },
-      { kind: 'reserved', str: '(' },
-      { kind: 'num', val: 3 },
-      { kind: 'reserved', str: '+' },
-      { kind: 'num', val: 4 },
-      { kind: 'reserved', str: ')' },
-      { kind: 'reserved', str: '-' },
-      { kind: 'ident', str: 'foo' },
-      { kind: 'reserved', str: '*' },
-      { kind: 'ident', str: 'bar' },
-      { kind: 'reserved', str: ')' },
-      { kind: 'reserved', str: ';' },
-      { kind: 'eof' },
+      { kind: "ident", str: "foo" },
+      { kind: "reserved", str: "=" },
+      { kind: "num", val: 1 },
+      { kind: "reserved", str: ";" },
+      { kind: "ident", str: "bar" },
+      { kind: "reserved", str: "=" },
+      { kind: "num", val: 2 },
+      { kind: "reserved", str: ";" },
+      { kind: "reserved", str: "putchar" },
+      { kind: "reserved", str: "(" },
+      { kind: "num", val: 1 },
+      { kind: "reserved", str: "+" },
+      { kind: "num", val: 2 },
+      { kind: "reserved", str: "*" },
+      { kind: "reserved", str: "(" },
+      { kind: "num", val: 3 },
+      { kind: "reserved", str: "+" },
+      { kind: "num", val: 4 },
+      { kind: "reserved", str: ")" },
+      { kind: "reserved", str: "-" },
+      { kind: "ident", str: "foo" },
+      { kind: "reserved", str: "*" },
+      { kind: "ident", str: "bar" },
+      { kind: "reserved", str: ")" },
+      { kind: "reserved", str: ";" },
+      { kind: "eof" },
     ];
 
     const expected: AstNode[] = [
       {
-        kind: 'assign',
+        kind: "assign",
         lhs: {
-          kind: 'var',
+          kind: "var",
           index: 0,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 1,
         },
       },
       {
-        kind: 'assign',
+        kind: "assign",
         lhs: {
-          kind: 'var',
+          kind: "var",
           index: 1,
         },
         rhs: {
-          kind: 'num',
+          kind: "num",
           val: 2,
         },
       },
       {
-        kind: 'putchar',
+        kind: "putchar",
         arg: {
-          kind: 'sub',
+          kind: "sub",
           lhs: {
-            kind: 'add',
+            kind: "add",
             lhs: {
-              kind: 'num',
+              kind: "num",
               val: 1,
             },
             rhs: {
-              kind: 'mul',
+              kind: "mul",
               lhs: {
-                kind: 'num',
+                kind: "num",
                 val: 2,
               },
               rhs: {
-                kind: 'add',
+                kind: "add",
                 lhs: {
-                  kind: 'num',
+                  kind: "num",
                   val: 3,
                 },
                 rhs: {
-                  kind: 'num',
+                  kind: "num",
                   val: 4,
                 },
               },
             },
           },
           rhs: {
-            kind: 'mul',
+            kind: "mul",
             lhs: {
-              kind: 'var',
+              kind: "var",
               index: 0,
             },
             rhs: {
-              kind: 'var',
+              kind: "var",
               index: 1,
             },
           },
