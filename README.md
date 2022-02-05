@@ -1,8 +1,10 @@
-# bigbrain
+# Bigbrain
 
 [![CI](https://github.com/dqn/bigbrain/workflows/CI/badge.svg)](https://github.com/dqn/bigbrain/actions)
 
 High-level programming language that can be compiled to Brainfuck.
+
+[Online Demo](https://bigbrain-dqn.vercel.app/)
 
 ## Usage
 
