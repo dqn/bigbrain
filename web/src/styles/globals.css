@@ -5,4 +5,5 @@
 :root {
   font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Yu Gothic",
     "YuGothic", Verdana, Meiryo, sans-serif;
+  @apply text-text;
 }
