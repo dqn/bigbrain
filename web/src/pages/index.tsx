@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import clsx from "clsx";
 import { ChangeEventHandler, useCallback, useState } from "react";
-import { compile } from "../../../dist";
+import { compile } from "../bigbrain";
 import { run } from "../brainfuck/run";
 
 const ExternalLink: React.FC<JSX.IntrinsicElements["a"]> = (props) => {
